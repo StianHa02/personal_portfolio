@@ -1,30 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { BentoBox } from "./ui";
+import { BentoBox, Toast } from "./ui";
 import { FaPaperPlane } from "react-icons/fa";
 
 const inter = { style: { fontFamily: "var(--font-inter), sans-serif" } };
 const interObj = { fontFamily: "var(--font-inter), sans-serif" };
 
 type ToastType = "success" | "error" | "info";
-
-function Toast({ message, type, onClose }: { message: string; type: ToastType; onClose: () => void }) {
-    const color: Record<ToastType, string> = {
-        success: "rgba(110,231,183,0.85)",
-        error:   "rgba(252,100,100,0.75)",
-        info:    "rgba(255,255,255,0.5)",
-    };
-    return (
-        <div
-            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 px-6 py-3 rounded-xl"
-            style={{ ...inter.style, background: "#0b0b12", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 24px rgba(0,0,0,0.5)", color: color[type] }}
-        >
-            <span className="text-sm font-normal tracking-wide">{message}</span>
-            <button onClick={onClose} className="text-white/20 hover:text-white/50 transition-colors text-[0.6rem]">✕</button>
-        </div>
-    );
-}
 
 /* ── Redesigned contact form field ──────────────────────────────── */
 function Field({
@@ -253,17 +236,16 @@ export default function About() {
 
                     {/* Academic Journey */}
                     <BentoBox title="Academic Journey">
-                        <div style={inter.style}>
-                            <h3 className="font-medium text-[0.95rem] mb-1.5"
-                                style={{ color: "rgba(237,233,223,0.9)" }}>
-                                Data Science Student @ UiB
-                            </h3>
-                            <p className="text-[0.7rem] tracking-[0.2em] uppercase mb-4 font-medium"
-                               style={{ color: "rgba(255,255,255,0.4)" }}>
-                                2023 — Present
-                            </p>
-                            <p className="text-[0.85rem] font-normal leading-relaxed"
-                               style={{ color: "rgba(255,255,255,0.5)" }}>
+                        <div style={{ ...inter.style, width: "100%" }}>
+                            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "0.75rem" }}>
+                                <h3 style={{ fontSize: "0.95rem", fontWeight: 500, color: "rgba(237,233,223,0.9)", margin: 0 }}>
+                                    Data Science Student @ UiB
+                                </h3>
+                                <span style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 500, color: "rgba(255,255,255,0.35)", flexShrink: 0, marginLeft: "0.75rem" }}>
+                                    2023 — Present
+                                </span>
+                            </div>
+                            <p style={{ fontSize: "0.85rem", lineHeight: 1.65, color: "rgba(255,255,255,0.5)", margin: 0 }}>
                                 Integrated master&apos;s covering machine learning, mathematics, statistics,
                                 software development, and data visualization — including industry internship
                                 and master&apos;s thesis.
@@ -274,7 +256,14 @@ export default function About() {
                 </div>
             </div>
 
-            {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onClose={() => setToast(null)}
+                    duration={4000}
+                />
+            )}
         </div>
     );
 }

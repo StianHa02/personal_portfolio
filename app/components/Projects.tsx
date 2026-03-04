@@ -17,13 +17,22 @@ interface Project {
 
 const projects: Project[] = [
     {
-        title: "Personal Portfolio Website",
+        title: "Personal Portfolio Website V1",
         description: "Modern and interactive portfolio website featuring animated grid backgrounds, bento layouts, toast notifications, and smooth transitions. Built with Next.js, TypeScript and deployed on Vercel.",
         techStack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel", "Aceternity UI"],
         category: "frontend",
         githubUrl: "https://github.com/StianHa02/personal_website",
         demoUrl: "https://stianha.com",
         imageUrl: "/images/projects/portfolio.png",
+    },
+    {
+        title: "Personal Portfolio Website V2",
+        description: "Modern and interactive portfolio website featuring animated grid backgrounds, bento layouts, toast notifications, and smooth transitions. Built with Next.js, TypeScript and deployed on Vercel.",
+        techStack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel", "Aceternity UI"],
+        category: "frontend",
+        githubUrl: "https://github.com/StianHa02/personal_portfolio",
+        demoUrl: "",
+        imageUrl: "/images/projects/portfoliov2.png",
     },
     {
         title: "Bergen Klatreklubb Route Database",
@@ -42,6 +51,7 @@ const projects: Project[] = [
         demoUrl: "https://blurthatguy.no",
         imageUrl: "/images/projects/blurthatguy.png",
     },
+
 ];
 
 const filterButtons = [
