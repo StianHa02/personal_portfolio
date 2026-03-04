@@ -71,14 +71,34 @@ npm start
 
 ---
 
+## Project Structure
 
-Notes
-
-- The UI follows a small set of reusable primitives (notably `BentoBox`) so pages are composed from consistent card containers.
-- The Rubik's Cube and its solve animation live entirely in `CubeRenderer.tsx` (no WebGL / three.js).
-- Sensitive keys (e.g. `RESEND_API_KEY`) should be stored in `.env.local` and must not be committed to the repo. If you see `.env.local` in the repo history or as a tracked file, remove/untrack it and add it to `.gitignore`.
-
-If you want, I can also add a short developer quickstart and a list of the most helpful dev commands under this section (dev, build, lint, format).
+```
+personal_portfolio/
+├── app/
+│   ├── page.tsx                 # Root page – scroll tracking, section wiring, cube opacity
+│   ├── layout.tsx               # Global layout – fonts, meta, CSS import
+│   ├── globals.css              # Tailwind import + site-wide resets
+│   ├── favicon.ico
+│   └── components/
+│       ├── CubeRenderer.tsx     # Canvas 2D Rubik's Cube renderer & animation
+│       ├── Hero.tsx             # Landing section – name, tagline
+│       ├── Projects.tsx         # Project cards with category filters
+│       ├── Skills.tsx           # Skills & Technologies grid + legend
+│       ├── About.tsx            # Bio, contact form, academic journey
+│       ├── Footer.tsx           # Closing section – social links
+│       ├── theme-provider.tsx   # Dark / light theme context (unused)
+│       ├── index.ts             # Barrel re-exports
+│       │
+│       └── ui/
+│           ├── BentoBox.tsx     # Reusable card primitive used everywhere
+│           ├── RightDotNav.tsx  # Fixed dot-nav sidebar (desktop only)
+│           └── index.ts         # UI barrel re-exports
+├── public/
+│   └── images/
+│       └── projects/            # Project preview screenshots
+└── README.md
+```
 
 ---
 

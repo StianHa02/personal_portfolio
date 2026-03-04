@@ -93,10 +93,10 @@ export default function Home() {
             <main className="relative z-10">
                 <section id="hero" className="w-full" style={{ minHeight: "100dvh" }}>
                     <div
-                        className="absolute top-6 md:top-8 left-1/2 -translate-x-1/2 transition-all duration-700 z-20"
+                        className="absolute top-8 left-1/2 -translate-x-1/2 transition-all duration-700 z-20"
                         style={{ opacity: solved ? 1 : 1 }}
                     >
-                        <span className="text-[0.5rem] md:text-[0.55rem] tracking-[0.38em] uppercase text-[rgba(252,212,53,0.75)]">
+                        <span className="text-[0.55rem] tracking-[0.38em] uppercase text-[rgba(252,212,53,0.75)]">
                             Scroll down to solve the cube
                         </span>
                     </div>
