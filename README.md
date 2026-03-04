@@ -44,16 +44,6 @@ cd personal_website
 npm install
 ```
 
-### Environment Variables
-
-Create a `.env.local` file in the root:
-
-```env
-RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxx
-```
-
-Get your free API key at [resend.com](https://resend.com).
-
 ### Development
 
 ```bash
@@ -121,4 +111,8 @@ The cube auto-rotates on the Y axis continuously while the scroll position drive
 
 ## License
 
-MIT — feel free to use this as inspiration for your own portfolio.
+## License
+
+## License
+
+[MIT](https://github.com/StianHa02/personal_portfolio/blob/main/LICENSE) — feel free to use this as inspiration for your own portfolio.
