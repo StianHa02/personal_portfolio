@@ -44,16 +44,6 @@ cd personal_website
 npm install
 ```
 
-### Environment Variables
-
-Create a `.env.local` file in the root:
-
-```env
-RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxx
-```
-
-Get your free API key at [resend.com](https://resend.com).
-
 ### Development
 
 ```bash
