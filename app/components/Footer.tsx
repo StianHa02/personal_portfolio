@@ -1,7 +1,7 @@
 "use client";
 
 import { Cormorant_Garamond } from "next/font/google";
-import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaEnvelope, FaCube } from "react-icons/fa";
 
 const cormorant = Cormorant_Garamond({
     subsets: ["latin"],
@@ -11,7 +11,8 @@ const cormorant = Cormorant_Garamond({
 const links = [
     { label: "GitHub",   href: "https://github.com/StianHa02",          icon: FaGithub   },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/stian-gia-huy-ha/",        icon: FaLinkedin },
-    { label: "Email",    href: "mailto:Stianha02@hotmail.com",               icon: FaEnvelope },
+    { label: "Email",    href: "mailto:Stianha02@hotmail.com", icon: FaEnvelope },
+    { label: "WCA",      href: "https://www.worldcubeassociation.org/persons/2018HAST01", icon: FaCube  },
 ];
 
 export default function Footer() {
