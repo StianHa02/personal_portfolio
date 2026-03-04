@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import CubeRenderer from "./components/CubeRenderer";
 
 const SECS=[
@@ -12,55 +12,11 @@ const SECS=[
 const TOTAL=SECS.length+1;
 
 export default function App() {
-    // Typed refs and state
-    const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
+    // Refs and state for scroll tracking
     const scrollRef = useRef<HTMLDivElement | null>(null);
-    const rafRef = useRef<number | null>(null);
-    const ryRef = useRef<number>(0.5);
-    const lastTs = useRef<number | null>(null);
     const spRef = useRef<number>(0);
     const [sp,setSp] = useState<number>(0);
 
-    const resize = useCallback(()=>{
-        const c = canvasRef.current; if(!c) return;
-        const dpr = window.devicePixelRatio || 1;
-        // set canvas size in device pixels
-        c.width = Math.floor(window.innerWidth * dpr);
-        c.height = Math.floor(window.innerHeight * dpr);
-        c.style.width = window.innerWidth + "px";
-        c.style.height = window.innerHeight + "px";
-        const ctx = c.getContext("2d");
-        if (!ctx) return;
-        // reset transform then set scale deterministically to avoid multiplying scales on resize
-        if (typeof ctx.resetTransform === "function") ctx.resetTransform();
-        // setTransform(a,b,c,d,e,f) where a = scaleX, d = scaleY
-        if (typeof ctx.setTransform === "function") ctx.setTransform(dpr,0,0,dpr,0,0);
-        else ctx.scale(dpr,dpr);
-        ctxRef.current = ctx;
-        lastTs.current = null; // avoid huge dt after resize
-    },[]);
-
-    const loop = useCallback((ts:number)=>{
-        if(!lastTs.current) lastTs.current = ts;
-        const dt = (ts - lastTs.current) / 1000;
-        lastTs.current = ts;
-        ryRef.current += dt * 0.22;
-        const c = canvasRef.current;
-        const ctx = ctxRef.current;
-        if (c && ctx) {
-            const dpr = window.devicePixelRatio || 1;
-            // drawScene(ctx, c.width / dpr, c.height / dpr, spRef.current, ryRef.current, -0.38);
-        }
-        rafRef.current = requestAnimationFrame(loop);
-    },[]);
-
-    useEffect(()=>{
-        resize();
-        window.addEventListener("resize",resize);
-        rafRef.current = requestAnimationFrame(loop);
-        return ()=>{ window.removeEventListener("resize",resize); if (rafRef.current !== null) cancelAnimationFrame(rafRef.current); rafRef.current = null; ctxRef.current = null; };
-    },[resize,loop]);
 
     useEffect(()=>{
         const el = scrollRef.current; if(!el) return;
@@ -103,7 +59,7 @@ export default function App() {
                             <p className="mb-3 text-[0.58rem] tracking-[0.42em] text-white/32 uppercase">Creative Developer</p>
                             <h1 className="m-0 font-normal leading-none text-[clamp(2.6rem,10vw,6rem)] tracking-[-0.03em] text-[#ede9df]">Your Name.</h1>
                             <div className="mt-4 flex items-center gap-3">
-                                <div className="w-[26px] h-[1px] bg-white/20" />
+                                <div className="w-6.5 h-px bg-white/20" />
                                 <span className="text-[0.52rem] tracking-[0.28em] text-white/22 uppercase">scroll to solve</span>
                             </div>
                         </div>
@@ -117,7 +73,7 @@ export default function App() {
                             return (
                                 <div key={i} className="absolute bottom-[11vh] left-6 right-6" style={{opacity:alpha, transform:`translateY(${ty}px)`, pointerEvents: alpha < 0.05 ? 'none' : 'auto'}}>
                                     <p className="mb-1 text-[0.52rem] tracking-[0.4em] text-[rgba(252,212,53,0.7)] uppercase">{sec.tag}</p>
-                                    <h2 className="m-0 font-[400] text-[clamp(1.9rem,8vw,4rem)] leading-[1.06] tracking-[-0.025em] text-[#ede9df] whitespace-pre-line">{sec.h}</h2>
+                                    <h2 className="m-0 font-normal text-[clamp(1.9rem,8vw,4rem)] leading-[1.06] tracking-[-0.025em] text-[#ede9df] whitespace-pre-line">{sec.h}</h2>
                                     <p className="m-0 leading-[1.75] text-[clamp(0.82rem,3.5vw,0.95rem)] text-[rgba(237,233,223,0.48)] whitespace-pre-line">{sec.b}</p>
                                     {sec.cta&&(
                                         <button style={{
@@ -155,8 +111,6 @@ export default function App() {
                     </div>
                 </div>
             </div>
-
-            {/* global small styles moved to app/globals.css */}
          </div>
      );
  }

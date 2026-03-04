@@ -40,10 +40,12 @@ const FACE_VERTS_STICKER: Vec3[][] = [
     [[-S,S,-B],[S,S,-B],[S,-S,-B],[-S,-S,-B]],
 ];
 
-function buildSolved() {
-    const out:any[] = [];
+type Piece = { pos: Vec3; stickers: (FaceKey | null)[] };
+
+function buildSolved(): Piece[] {
+    const out: Piece[] = [];
     for (let x=-1;x<=1;x++) for (let y=-1;y<=1;y++) for (let z=-1;z<=1;z++) {
-        out.push({ pos:[x,y,z], stickers:[
+        out.push({ pos:[x,y,z] as Vec3, stickers:[
                 x===1?"R":null, x===-1?"O":null,
                 y===1?"W":null, y===-1?"Y":null,
                 z===1?"G":null, z===-1?"B":null,
@@ -52,7 +54,7 @@ function buildSolved() {
     return out;
 }
 
-function applyMove(pieces: {pos: Vec3, stickers: (FaceKey|null)[]}[], axis: Axis, layer: number, angle: number) {
+function applyMove(pieces: Piece[], axis: Axis, layer: number, angle: number): Piece[] {
     return pieces.map(({pos,stickers})=>{
         const coord = axis === "X" ? pos[0] : axis === "Y" ? pos[1] : pos[2];
         if (Math.round(coord) !== layer) return {pos,stickers};
@@ -183,6 +185,12 @@ export default function CubeRenderer({ sp }: { sp: number }) {
     const rafRef = useRef<number | null>(null);
     const ryRef = useRef<number>(0.5);
     const lastTs = useRef<number | null>(null);
+    const spRef = useRef<number>(sp);
+
+    // Update spRef when sp changes
+    useEffect(() => {
+        spRef.current = sp;
+    }, [sp]);
 
     const resize = useCallback(()=>{
         const c = canvasRef.current; if(!c) return;
@@ -209,10 +217,11 @@ export default function CubeRenderer({ sp }: { sp: number }) {
         const ctx = ctxRef.current;
         if (c && ctx) {
             const dpr = window.devicePixelRatio || 1;
-            drawScene(ctx, c.width / dpr, c.height / dpr, sp, ryRef.current, -0.38);
+            drawScene(ctx, c.width / dpr, c.height / dpr, spRef.current, ryRef.current, -0.38);
         }
+        // eslint-disable-next-line react-hooks/immutability
         rafRef.current = requestAnimationFrame(loop);
-    },[sp]);
+    },[]);
 
     useEffect(()=>{
         resize();
