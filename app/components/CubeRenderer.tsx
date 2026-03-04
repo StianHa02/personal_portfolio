@@ -195,10 +195,13 @@ export default function CubeRenderer({ sp, opacity = 1 }: { sp: number; opacity?
     const resize = useCallback(()=>{
         const c = canvasRef.current; if(!c) return;
         const dpr = window.devicePixelRatio || 1;
-        c.width = Math.floor(window.innerWidth * dpr);
-        c.height = Math.floor(window.innerHeight * dpr);
-        c.style.width = window.innerWidth + "px";
-        c.style.height = window.innerHeight + "px";
+        // Use visualViewport for real viewport on mobile (excludes browser chrome)
+        const vw = window.visualViewport?.width ?? window.innerWidth;
+        const vh = window.visualViewport?.height ?? window.innerHeight;
+        c.width = Math.floor(vw * dpr);
+        c.height = Math.floor(vh * dpr);
+        c.style.width = vw + "px";
+        c.style.height = vh + "px";
         const ctx = c.getContext("2d");
         if (!ctx) return;
         if (typeof ctx.resetTransform === "function") ctx.resetTransform();
@@ -226,9 +229,11 @@ export default function CubeRenderer({ sp, opacity = 1 }: { sp: number; opacity?
     useEffect(()=>{
         resize();
         window.addEventListener("resize", resize);
+        window.visualViewport?.addEventListener("resize", resize);
         rafRef.current = requestAnimationFrame(loop);
         return ()=>{
             window.removeEventListener("resize", resize);
+            window.visualViewport?.removeEventListener("resize", resize);
             if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
             rafRef.current = null;
             ctxRef.current = null;

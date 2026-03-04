@@ -17,6 +17,11 @@ const NAV_SECTIONS = [
     { id: "footer",   label: "Contact"  },
 ];
 
+// How many px from the absolute bottom counts as "fully scrolled".
+// Needs to be generous because fast fling scrolling can overshoot by 50-100px
+// before the browser fires the final scroll event.
+const SNAP_THRESHOLD = 120;
+
 export default function Home() {
     const [sp, setSp]                = useState(0);
     const [activeSection, setActive] = useState("hero");
@@ -24,10 +29,17 @@ export default function Home() {
     useEffect(() => {
         const fn = () => {
             const max = document.documentElement.scrollHeight - window.innerHeight;
-            setSp(max > 0 ? Math.min(Math.max(window.scrollY / max, 0), 1) : 0);
+            if (max <= 0) { setSp(0); return; }
+
+            const raw = window.scrollY / max;
+
+            // Snap to exactly 1 when within SNAP_THRESHOLD px of the bottom,
+            // so fast scrolling always triggers the solved state.
+            const atBottom = window.scrollY >= max - SNAP_THRESHOLD;
+            setSp(atBottom ? 1 : Math.min(Math.max(raw, 0), 1));
         };
         window.addEventListener("scroll", fn, { passive: true });
-        fn(); // run once on mount
+        fn();
         return () => window.removeEventListener("scroll", fn);
     }, []);
 
@@ -49,14 +61,24 @@ export default function Home() {
 
     const scrollTo = (id: string) => {
         if (id === "footer") {
-            // Scroll to absolute bottom so sp reaches 1.0 and cube is fully solved
-            window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
+            const max = document.documentElement.scrollHeight - window.innerHeight;
+            window.scrollTo({ top: max, behavior: "smooth" });
         } else {
             document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
         }
     };
 
-    const solved = sp > 0.92;
+    const solved = sp >= 0.97;
+
+    // Once solved, snap scroll position to the true bottom so no leftover
+    // scroll distance remains after the snap threshold kicked in early.
+    useEffect(() => {
+        if (!solved) return;
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        if (window.scrollY < max) {
+            window.scrollTo({ top: max, behavior: "instant" });
+        }
+    }, [solved]);
 
     // Dim the cube on content sections (projects, skills, about)
     const isMiddleSection = activeSection === "projects" || activeSection === "skills" || activeSection === "about";
@@ -69,7 +91,7 @@ export default function Home() {
             <RightDotNav sections={NAV_SECTIONS} activeSection={activeSection} solved={solved} onNavigate={scrollTo} />
 
             <main className="relative z-10">
-                <section id="hero" className="w-full min-h-screen">
+                <section id="hero" className="w-full" style={{ minHeight: "100dvh" }}>
                     <div
                         className="absolute top-8 left-1/2 -translate-x-1/2 transition-all duration-700 z-20"
                         style={{ opacity: solved ? 1 : 1 }}
@@ -81,22 +103,23 @@ export default function Home() {
                     <Hero />
                 </section>
 
-                <section id="projects" className="w-full min-h-screen flex items-center justify-center">
+                <section id="projects" className="w-full flex items-center justify-center" style={{ minHeight: "100dvh" }}>
                     <Projects />
                 </section>
 
-                <section id="skills" className="w-full min-h-screen flex items-center justify-center">
+                <section id="skills" className="w-full flex items-center justify-center" style={{ minHeight: "100dvh" }}>
                     <Skills />
                 </section>
 
-                <section id="about" className="w-full min-h-screen flex items-center justify-center">
+                <section id="about" className="w-full flex items-center justify-center" style={{ minHeight: "100dvh" }}>
                     <About />
                 </section>
 
                 <section
                     id="footer"
-                    className="relative w-full min-h-screen transition-all duration-1000 ease-out"
+                    className="relative w-full transition-all duration-1000 ease-out overflow-hidden"
                     style={{
+                        height: "100dvh",
                         opacity:       solved ? 1 : 0,
                         pointerEvents: solved ? "auto" : "none",
                         transform:     solved ? "translateY(0px)" : "translateY(48px)",
@@ -107,16 +130,13 @@ export default function Home() {
                         style={{ opacity: solved ? 1 : 0 }}
                     >
                         <div className="flex flex-col items-center gap-2">
-                            {/* The Festive Emoji with a glow */}
                             <span className="text-xl animate-bounce" style={{ filter: "drop-shadow(0 0 8px rgba(252,212,53,0.8))" }}>
-            ✨
-        </span>
-
-                            {/* The Text */}
+                                ✨
+                            </span>
                             <span className="text-[0.6rem] tracking-[0.45em] uppercase font-bold text-[#fcd435]"
                                   style={{ textShadow: "0 0 15px rgba(252,212,53,0.5)" }}>
-            Cube Solved
-        </span>
+                                Cube Solved
+                            </span>
                         </div>
                     </div>
                     <Footer />

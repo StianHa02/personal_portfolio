@@ -10,14 +10,14 @@ const cormorant = Cormorant_Garamond({
 
 const links = [
     { label: "GitHub",   href: "https://github.com/StianHa02",          icon: FaGithub   },
-    { label: "LinkedIn", href: "https://linkedin.com/in/stianha",        icon: FaLinkedin },
-    { label: "Email",    href: "mailto:hello@stianha.com",               icon: FaEnvelope },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/stian-gia-huy-ha/",        icon: FaLinkedin },
+    { label: "Email",    href: "mailto:Stianha02@hotmail.com",               icon: FaEnvelope },
 ];
 
 export default function Footer() {
     return (
-        <div className="relative w-full min-h-screen flex flex-col items-start justify-end"
-             style={{ paddingBottom: "10rem", paddingLeft: "clamp(2rem, 6vw, 9rem)", paddingRight: "4rem" }}>
+        <div className="relative w-full flex flex-col items-start justify-end"
+             style={{ height: "100%", paddingBottom: "10rem", paddingLeft: "clamp(2rem, 6vw, 9rem)", paddingRight: "4rem" }}>
             <div className={`flex flex-col items-start gap-8 max-w-2xl ${cormorant.className}`}>
 
                 <p className="text-[0.7rem] tracking-[0.4em] uppercase text-white/70 font-light">
@@ -49,14 +49,7 @@ export default function Footer() {
                     ))}
                 </div>
 
-                <div className="mt-12 pt-8 w-full flex items-center gap-12" style={{ borderTop: "1px solid rgba(255,255,255,0.15)" }}>
-                    <span className="text-[0.6rem] tracking-[0.3em] uppercase text-white/50 font-light">
-                        © {new Date().getFullYear()} Stian Gia Huy Ha
-                    </span>
-                    <span className="text-[0.6rem] tracking-[0.3em] uppercase text-white/50 font-light">
-                        Bergen, Norway
-                    </span>
-                </div>
+
             </div>
         </div>
     );

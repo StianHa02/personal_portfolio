@@ -7,8 +7,8 @@ const cormorant = Cormorant_Garamond({
 
 export default function Hero() {
     return (
-        <div className="relative h-screen w-full flex items-end justify-start"
-             style={{ paddingBottom: "10rem", paddingLeft: "clamp(2rem, 6vw, 9rem)", paddingRight: "4rem" }}>
+        <div className="relative w-full flex items-end justify-start"
+             style={{ minHeight: "100dvh", paddingBottom: "10rem", paddingLeft: "clamp(2rem, 6vw, 9rem)", paddingRight: "4rem" }}>
             <div className={`flex flex-col items-start gap-6 ${cormorant.className}`}>
 
                 <p className="text-[0.75rem] tracking-[0.5em] uppercase text-white/80 font-light">

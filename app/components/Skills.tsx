@@ -66,13 +66,11 @@ export default function Skills() {
         <div className="relative w-full min-h-screen flex items-center justify-center">
             <div className="relative w-full max-w-7xl mx-auto px-6 md:px-8 py-24">
 
-                <div className="text-center mb-16">
-                    <p className="text-[0.65rem] tracking-[0.35em] uppercase text-white/50 font-medium mb-3"
-                       style={inter.style}>
+                <div style={{ textAlign: "center", marginBottom: "5rem" }}>
+                    <p style={{ ...inter.style, fontSize: "0.65rem", letterSpacing: "0.35em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", fontWeight: 500, marginBottom: "0.75rem" }}>
                         What I work with
                     </p>
-                    <h1 className="text-[clamp(2rem,5vw,3.5rem)] font-light leading-none tracking-[-0.02em] text-[#ede9df]"
-                        style={inter.style}>
+                    <h1 style={{ ...inter.style, fontSize: "clamp(2rem,5vw,3.5rem)", fontWeight: 300, lineHeight: 1, letterSpacing: "-0.02em", color: "#ede9df", margin: 0 }}>
                         Skills &amp; Technologies
                     </h1>
                 </div>
@@ -91,7 +89,7 @@ export default function Skills() {
                                                 fontFamily: "var(--font-inter), sans-serif",
                                                 fontSize: "0.85rem",
                                                 letterSpacing: "0.01em",
-                                                padding: "0.6rem 1rem",
+                                                padding: "0.65rem 1.15rem",
                                                 whiteSpace: "nowrap",
                                                 ...cfg.pill,
                                             }}
@@ -107,7 +105,7 @@ export default function Skills() {
                 </div>
 
                 {/* Legend */}
-                <div className="flex items-center justify-center gap-10 mt-8">
+                <div className="flex items-center justify-center gap-10" style={{ marginTop: "3rem" }}>
                     {(["Expert", "Proficient", "Learning"] as const).map(level => (
                         <div key={level} className="flex items-center gap-2.5">
                             <span className="w-2.5 h-2.5 rounded-full" style={{ background: levelConfig[level].dot }} />

@@ -5,14 +5,15 @@ import { BentoBox } from "./ui";
 import { FaPaperPlane } from "react-icons/fa";
 
 const inter = { style: { fontFamily: "var(--font-inter), sans-serif" } };
+const interObj = { fontFamily: "var(--font-inter), sans-serif" };
 
 type ToastType = "success" | "error" | "info";
 
 function Toast({ message, type, onClose }: { message: string; type: ToastType; onClose: () => void }) {
     const color: Record<ToastType, string> = {
-        success: "rgba(237,233,223,0.65)",
-        error:   "rgba(252,100,100,0.65)",
-        info:    "rgba(255,255,255,0.4)",
+        success: "rgba(110,231,183,0.85)",
+        error:   "rgba(252,100,100,0.75)",
+        info:    "rgba(255,255,255,0.5)",
     };
     return (
         <div
@@ -25,8 +26,59 @@ function Toast({ message, type, onClose }: { message: string; type: ToastType; o
     );
 }
 
+/* ── Redesigned contact form field ──────────────────────────────── */
+function Field({
+                   label,
+                   children,
+               }: {
+    label: string;
+    children: React.ReactNode;
+}) {
+    return (
+        <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <label style={{
+                ...interObj,
+                fontSize: "0.6rem",
+                fontWeight: 600,
+                letterSpacing: "0.25em",
+                textTransform: "uppercase",
+                color: "rgba(255,255,255,0.3)",
+            }}>
+                {label}
+            </label>
+            {children}
+        </div>
+    );
+}
+
+const inputStyle: React.CSSProperties = {
+    fontFamily: "var(--font-inter), sans-serif",
+    width: "100%",
+    padding: "0.875rem 1.125rem",
+    fontSize: "0.875rem",
+    fontWeight: 400,
+    letterSpacing: "0.01em",
+    color: "rgba(255,255,255,0.75)",
+    background: "rgba(255,255,255,0.03)",
+    borderWidth: "1px",
+    borderStyle: "solid",
+    borderColor: "rgba(255,255,255,0.08)",
+    borderRadius: "0.625rem",
+    outline: "none",
+    transition: "border-color 0.2s, background 0.2s",
+    boxSizing: "border-box",
+} as React.CSSProperties;
+
+const focusStyle: React.CSSProperties = {
+    borderColor: "rgba(255,255,255,0.22)",
+    background: "rgba(255,255,255,0.055)",
+};
+
+/* ─────────────────────────────────────────────────────────────────── */
+
 export default function About() {
     const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
+    const [focused, setFocused] = useState<string | null>(null);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -49,28 +101,16 @@ export default function About() {
         { name: "SEO",          desc: "Search engine optimization"   },
     ];
 
-    const fieldStyle: React.CSSProperties = {
-        fontFamily: "var(--font-inter), sans-serif",
-        background: "rgba(255,255,255,0.03)",
-        border: "1px solid rgba(255,255,255,0.1)",
-        color: "rgba(255,255,255,0.7)",
-        borderRadius: "0.5rem",
-    };
-
-    const inputClass = `w-full px-5 py-3.5 text-[0.85rem] font-normal tracking-wide placeholder:text-white/20
-        focus:outline-none focus:border-white/20 transition-colors duration-300`;
-
     return (
         <div className="relative w-full min-h-screen flex items-center justify-center">
             <div className="relative w-full max-w-7xl mx-auto px-6 md:px-8 py-24">
 
-                <div className="text-center mb-16">
-                    <p className="text-[0.65rem] tracking-[0.35em] uppercase text-white/50 font-medium mb-3"
-                       style={inter.style}>
+                {/* Header — 5rem gap to match Projects */}
+                <div style={{ textAlign: "center", marginBottom: "5rem" }}>
+                    <p style={{ ...interObj, fontSize: "0.65rem", letterSpacing: "0.35em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", fontWeight: 500, marginBottom: "0.75rem" }}>
                         Who I am
                     </p>
-                    <h1 className="text-[clamp(2rem,5vw,3.5rem)] font-light leading-none tracking-[-0.02em] text-[#ede9df]"
-                        style={inter.style}>
+                    <h1 style={{ ...interObj, fontSize: "clamp(2rem,5vw,3.5rem)", fontWeight: 300, lineHeight: 1, letterSpacing: "-0.02em", color: "#ede9df", margin: 0 }}>
                         About Me
                     </h1>
                 </div>
@@ -102,68 +142,112 @@ export default function About() {
 
                     {/* Currently Learning */}
                     <BentoBox title="Currently Learning">
-                        <ul className="space-y-5" style={inter.style}>
+                        <ul style={{ ...inter.style, listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "1rem" }}>
                             {learning.map(({ name, desc }) => (
-                                <li key={name} className="flex items-center gap-3">
-                                    <span className="w-2 h-2 rounded-full shrink-0"
-                                          style={{ background: "rgba(237,233,223,0.45)" }} />
-                                    <span className="text-[0.85rem] font-normal leading-snug"
-                                          style={{ color: "rgba(255,255,255,0.55)" }}>
-                                        <span style={{ color: "rgba(255,255,255,0.8)" }}>{name}</span>
-                                        <span style={{ color: "rgba(255,255,255,0.25)" }}> — </span>
-                                        {desc}
-                                    </span>
+                                <li key={name} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%", gap: "0.75rem" }}>
+                                    <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
+                                        <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "rgba(237,233,223,0.45)", flexShrink: 0, display: "inline-block" }} />
+                                        <span style={{ fontSize: "0.85rem", fontWeight: 500, color: "rgba(255,255,255,0.85)" }}>{name}</span>
+                                    </div>
+                                    <span style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.35)", textAlign: "right" }}>{desc}</span>
                                 </li>
                             ))}
                         </ul>
                     </BentoBox>
 
-                    {/* Contact Form — 2 cols */}
+                    {/* Contact Form — redesigned, 2 cols */}
                     <BentoBox title="Contact Me" className="lg:col-span-2">
-                        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                            <div className="grid md:grid-cols-2 gap-4">
-                                <div className="flex flex-col gap-1.5">
-                                    <label className="text-[0.65rem] tracking-[0.2em] uppercase font-medium"
-                                           style={{ ...inter.style, color: "rgba(255,255,255,0.35)" }}>Name</label>
-                                    <input type="text" name="name" placeholder="John Doe" required
-                                           className={inputClass} style={fieldStyle} />
-                                </div>
-                                <div className="flex flex-col gap-1.5">
-                                    <label className="text-[0.65rem] tracking-[0.2em] uppercase font-medium"
-                                           style={{ ...inter.style, color: "rgba(255,255,255,0.35)" }}>Email</label>
-                                    <input type="email" name="email" placeholder="john@example.com" required
-                                           className={inputClass} style={fieldStyle} />
-                                </div>
+                        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+
+                            {/* Name + Email row */}
+                            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                                <Field label="Name">
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        placeholder="John Doe"
+                                        required
+                                        style={{ ...inputStyle, ...(focused === "name" ? focusStyle : {}) }}
+                                        onFocus={() => setFocused("name")}
+                                        onBlur={() => setFocused(null)}
+                                    />
+                                </Field>
+                                <Field label="Email">
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        placeholder="john@example.com"
+                                        required
+                                        style={{ ...inputStyle, ...(focused === "email" ? focusStyle : {}) }}
+                                        onFocus={() => setFocused("email")}
+                                        onBlur={() => setFocused(null)}
+                                    />
+                                </Field>
                             </div>
-                            <div className="flex flex-col gap-1.5">
-                                <label className="text-[0.65rem] tracking-[0.2em] uppercase font-medium"
-                                       style={{ ...inter.style, color: "rgba(255,255,255,0.35)" }}>Message</label>
-                                <textarea name="message" placeholder="Tell me about your project or idea..." rows={5} required
-                                          className={`${inputClass} resize-none`} style={fieldStyle} />
-                            </div>
+
+                            {/* Message */}
+                            <Field label="Message">
+                                <textarea
+                                    name="message"
+                                    placeholder="Tell me about your project or idea..."
+                                    rows={5}
+                                    required
+                                    style={{
+                                        ...inputStyle,
+                                        resize: "none",
+                                        ...(focused === "message" ? focusStyle : {}),
+                                    }}
+                                    onFocus={() => setFocused("message")}
+                                    onBlur={() => setFocused(null)}
+                                />
+                            </Field>
+
                             <input type="hidden" name="subject"   value="New portfolio contact" />
                             <input type="hidden" name="from_name" value="My Portfolio" />
 
-                            <button type="submit"
-                                    className="self-start flex items-center gap-3 rounded-xl transition-all duration-300 cursor-pointer"
+                            {/* Submit */}
+                            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1rem", marginTop: "0.25rem" }}>
+                                <p style={{ ...interObj, fontSize: "0.72rem", color: "rgba(255,255,255,0.22)", letterSpacing: "0.02em" }}>
+                                    I&apos;ll get back to you within 24 hours.
+                                </p>
+                                <button
+                                    type="submit"
                                     style={{
-                                        ...inter.style,
-                                        padding: "0.75rem 1.75rem",
-                                        background: "linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))",
+                                        ...interObj,
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: "0.6rem",
+                                        padding: "0.75rem 1.5rem",
+                                        borderRadius: "0.625rem",
+                                        fontSize: "0.72rem",
+                                        fontWeight: 600,
+                                        letterSpacing: "0.1em",
+                                        textTransform: "uppercase",
+                                        cursor: "pointer",
                                         border: "1px solid rgba(255,255,255,0.12)",
-                                        color: "rgba(255,255,255,0.6)",
+                                        background: "rgba(255,255,255,0.05)",
+                                        color: "rgba(255,255,255,0.65)",
+                                        transition: "all 0.2s ease",
+                                        flexShrink: 0,
                                     }}
                                     onMouseEnter={e => {
-                                        e.currentTarget.style.color = "rgba(255,255,255,0.9)";
-                                        e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)";
+                                        const el = e.currentTarget;
+                                        el.style.background = "rgba(255,255,255,0.1)";
+                                        el.style.borderColor = "rgba(255,255,255,0.25)";
+                                        el.style.color = "rgba(255,255,255,0.9)";
                                     }}
                                     onMouseLeave={e => {
-                                        e.currentTarget.style.color = "rgba(255,255,255,0.6)";
-                                        e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
-                                    }}>
-                                <FaPaperPlane className="text-xs" />
-                                <span className="text-[0.75rem] tracking-[0.1em] uppercase font-medium">Send Message</span>
-                            </button>
+                                        const el = e.currentTarget;
+                                        el.style.background = "rgba(255,255,255,0.05)";
+                                        el.style.borderColor = "rgba(255,255,255,0.12)";
+                                        el.style.color = "rgba(255,255,255,0.65)";
+                                    }}
+                                >
+                                    <FaPaperPlane style={{ fontSize: "0.65rem" }} />
+                                    Send Message
+                                </button>
+                            </div>
+
                         </form>
                     </BentoBox>
 
