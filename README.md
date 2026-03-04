@@ -113,4 +113,4 @@ The cube auto-rotates on the Y axis continuously while the scroll position drive
 
 ## License
 
-[MIT](https://opensource.org/licenses/MIT) — feel free to use this as inspiration for your own portfolio.
+[MIT]([https://opensource.org/licenses/MIT](https://github.com/StianHa02/personal_portfolio/blob/main/LICENSE)) — feel free to use this as inspiration for your own portfolio.
