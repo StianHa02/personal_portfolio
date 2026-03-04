@@ -23,9 +23,10 @@ export default function Home() {
     useEffect(() => {
         const fn = () => {
             const max = document.documentElement.scrollHeight - window.innerHeight;
-            setSp(max > 0 ? Math.min(window.scrollY / max, 1) : 0);
+            setSp(max > 0 ? Math.min(Math.max(window.scrollY / max, 0), 1) : 0);
         };
         window.addEventListener("scroll", fn, { passive: true });
+        fn(); // run once on mount
         return () => window.removeEventListener("scroll", fn);
     }, []);
 
@@ -36,7 +37,7 @@ export default function Home() {
                     if (entry.isIntersecting) setActive(entry.target.id);
                 });
             },
-            { threshold: 0.4 }
+            { threshold: 0.3 }
         );
         NAV_SECTIONS.forEach(s => {
             const el = document.getElementById(s.id);
@@ -45,14 +46,24 @@ export default function Home() {
         return () => observer.disconnect();
     }, []);
 
-    const scrollTo = (id: string) =>
-        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    const scrollTo = (id: string) => {
+        if (id === "footer") {
+            // Scroll to absolute bottom so sp reaches 1.0 and cube is fully solved
+            window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "smooth" });
+        } else {
+            document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+        }
+    };
 
-    const solved = sp > 0.93;
+    const solved = sp > 0.92;
+
+    // Dim the cube on content sections (projects, skills, about)
+    const isMiddleSection = activeSection === "projects" || activeSection === "skills" || activeSection === "about";
+    const cubeOpacity = isMiddleSection ? 0.18 : 1;
 
     return (
         <div className="relative bg-[#0e0e16]">
-            <CubeRenderer sp={sp} />
+            <CubeRenderer sp={Math.min(sp, 1)} opacity={cubeOpacity} />
 
             {/* Right dot nav — desktop only */}
             <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 hidden md:flex flex-col items-center gap-6">
@@ -82,7 +93,15 @@ export default function Home() {
                                         : "none",
                                 }}
                             />
-                            <span className="pointer-events-none absolute right-7 top-1/2 -translate-y-1/2 text-[0.6rem] tracking-[0.2em] uppercase text-white whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                            {/* Label: always visible when active, hover-only otherwise */}
+                            <span
+                                className={`pointer-events-none absolute right-7 top-1/2 -translate-y-1/2 text-[0.6rem] tracking-[0.2em] uppercase whitespace-nowrap transition-opacity duration-300 ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                                style={{
+                                    fontFamily: "var(--font-inter), sans-serif",
+                                    color: isActive ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.7)",
+                                    fontWeight: isActive ? 500 : 400,
+                                }}
+                            >
                                 {section.label}
                             </span>
                         </button>
@@ -90,10 +109,10 @@ export default function Home() {
                 })}
             </div>
 
-            <main>
+            <main className="relative z-10">
                 <section id="hero" className="w-full min-h-screen">
                     <div
-                        className="absolute top-8 left-1/2 -translate-x-1/2 transition-all duration-700"
+                        className="absolute top-8 left-1/2 -translate-x-1/2 transition-all duration-700 z-20"
                         style={{ opacity: solved ? 1 : 1 }}
                     >
                         <span className="text-[0.55rem] tracking-[0.38em] uppercase text-[rgba(252,212,53,0.75)]">
@@ -117,7 +136,7 @@ export default function Home() {
 
                 <section
                     id="footer"
-                    className="relative w-full min-h-screen flex items-center justify-center transition-all duration-1000 ease-out"
+                    className="relative w-full min-h-screen transition-all duration-1000 ease-out"
                     style={{
                         opacity:       solved ? 1 : 0,
                         pointerEvents: solved ? "auto" : "none",
@@ -125,7 +144,7 @@ export default function Home() {
                     }}
                 >
                     <div
-                        className="absolute top-8 left-1/2 -translate-x-1/2 transition-all duration-700"
+                        className="absolute top-8 left-1/2 -translate-x-1/2 transition-all duration-700 z-20"
                         style={{ opacity: solved ? 1 : 0 }}
                     >
                         <span className="text-[0.55rem] tracking-[0.38em] uppercase text-[rgba(252,212,53,0.75)]">

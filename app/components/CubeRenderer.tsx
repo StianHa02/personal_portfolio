@@ -179,7 +179,7 @@ function drawScene(ctx: CanvasRenderingContext2D, W:number, H2:number, sp:number
     }
 }
 
-export default function CubeRenderer({ sp }: { sp: number }) {
+export default function CubeRenderer({ sp, opacity = 1 }: { sp: number; opacity?: number }) {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
     const rafRef = useRef<number | null>(null);
@@ -236,7 +236,7 @@ export default function CubeRenderer({ sp }: { sp: number }) {
     },[resize, loop]);
 
     return (
-        <canvas ref={canvasRef} style={{position: 'fixed', top: 0, left: 0, zIndex: 0, display: 'block'}} />
+        <canvas ref={canvasRef} style={{position: 'fixed', top: 0, left: 0, zIndex: 0, display: 'block', opacity, transition: 'opacity 0.6s ease'}} />
     );
 }
 

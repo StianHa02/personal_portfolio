@@ -7,22 +7,21 @@ const cormorant = Cormorant_Garamond({
 
 export default function Hero() {
     return (
-        <div className="relative h-screen w-full flex items-end justify-start pb-[11vh] px-8">
-            <div className={`flex flex-col items-start gap-4 ${cormorant.className}`}>
+        <div className="relative h-screen w-full flex items-end justify-start"
+             style={{ paddingBottom: "10rem", paddingLeft: "clamp(2rem, 6vw, 9rem)", paddingRight: "4rem" }}>
+            <div className={`flex flex-col items-start gap-6 ${cormorant.className}`}>
 
-                <p className="text-[0.6rem] tracking-[0.4em] uppercase text-white/30 font-light">
+                <p className="text-[0.75rem] tracking-[0.5em] uppercase text-white/80 font-light">
                     Data Science Student &amp; Full-Stack Developer
                 </p>
 
-                <h1 className="text-[clamp(3rem,10vw,7rem)] font-light leading-none tracking-[-0.02em] text-[#ede9df]">
+                <h1 className="text-[clamp(3.5rem,12vw,8.5rem)] font-light leading-[0.9] tracking-[-0.03em] text-white">
                     Stian Gia<br />Huy Ha.
                 </h1>
 
-                <p className="text-base font-light text-white/40 max-w-sm leading-relaxed tracking-wide">
+                <p className="text-lg font-light text-white/85 max-w-md leading-relaxed tracking-wide mt-4">
                     Showcasing my projects in modern web development.
                 </p>
-
-
             </div>
         </div>
     );

@@ -1,14 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Cormorant_Garamond } from "next/font/google";
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 import { BentoBox } from "./ui";
 
-const cormorant = Cormorant_Garamond({
-    subsets: ["latin"],
-    weight: ["300", "400", "600"],
-});
+const inter = { style: { fontFamily: "var(--font-inter), sans-serif" } };
 
 interface Project {
     title: string;
@@ -64,26 +60,29 @@ export default function Projects() {
             <div className="relative w-full max-w-7xl mx-auto px-6 md:px-8 py-24">
 
                 {/* Section header */}
-                <div className="text-center mb-12">
-                    <p className={`text-[0.6rem] tracking-[0.4em] uppercase text-white/30 font-light mb-3 ${cormorant.className}`}>
+                <div className="text-center mb-16">
+                    <p className="text-[0.65rem] tracking-[0.35em] uppercase text-white/50 font-medium mb-3"
+                       style={inter.style}>
                         What I&apos;ve built
                     </p>
-                    <h1 className={`text-[clamp(2rem,5vw,3.5rem)] font-light leading-none tracking-[-0.02em] text-[#ede9df] mb-8 ${cormorant.className}`}>
+                    <h1 className="text-[clamp(2rem,5vw,3.5rem)] font-light leading-none tracking-[-0.02em] text-[#ede9df] mb-10"
+                        style={inter.style}>
                         Projects
                     </h1>
 
                     {/* Filter pills */}
-                    <div className="inline-flex items-center gap-2">
+                    <div className="inline-flex items-center gap-3">
                         {filterButtons.map(btn => (
                             <button
                                 key={btn.value}
                                 onClick={() => setFilter(btn.value as typeof filter)}
-                                className={`px-5 py-2 rounded-lg text-[0.55rem] tracking-[0.3em] uppercase font-light transition-all duration-300 cursor-pointer ${cormorant.className}`}
-                                style={
-                                    filter === btn.value
-                                        ? { color: "rgba(237,233,223,0.65)", background: "rgba(237,233,223,0.07)", border: "1px solid rgba(237,233,223,0.14)" }
-                                        : { color: "rgba(255,255,255,0.25)", background: "transparent",              border: "1px solid rgba(255,255,255,0.07)" }
-                                }
+                                className="px-6 py-2.5 rounded-lg text-[0.7rem] tracking-[0.12em] uppercase font-medium transition-all duration-300 cursor-pointer"
+                                style={{
+                                    fontFamily: "var(--font-inter), sans-serif",
+                                    ...(filter === btn.value
+                                        ? { color: "rgba(237,233,223,0.9)", background: "rgba(237,233,223,0.09)", border: "1px solid rgba(237,233,223,0.2)" }
+                                        : { color: "rgba(255,255,255,0.45)", background: "transparent", border: "1px solid rgba(255,255,255,0.12)" })
+                                }}
                             >
                                 {btn.label}
                             </button>
@@ -93,7 +92,8 @@ export default function Projects() {
 
                 {filtered.length === 0 ? (
                     <div className="flex items-center justify-center py-24">
-                        <p className={`text-[0.6rem] tracking-[0.4em] uppercase text-white/20 font-light ${cormorant.className}`}>
+                        <p className="text-[0.65rem] tracking-[0.3em] uppercase text-white/20 font-medium"
+                           style={inter.style}>
                             No projects in this category
                         </p>
                     </div>
@@ -119,7 +119,8 @@ export default function Projects() {
                                             />
                                         ) : (
                                             <div className="w-full h-full flex items-center justify-center">
-                                                <span className={`text-[0.5rem] tracking-[0.35em] uppercase text-white/15 font-light ${cormorant.className}`}>
+                                                <span className="text-[0.6rem] tracking-[0.3em] uppercase text-white/15 font-medium"
+                                                      style={inter.style}>
                                                     {isComingSoon ? "In Development" : "No Preview"}
                                                 </span>
                                             </div>
@@ -127,28 +128,32 @@ export default function Projects() {
                                     </div>
 
                                     {/* Title */}
-                                    <h3 className={`text-[1.05rem] font-light text-[#ede9df]/75 leading-snug tracking-wide mb-3 ${cormorant.className}`}>
+                                    <h3 className="text-[1.1rem] font-medium text-[#ede9df]/90 leading-snug tracking-wide mb-3"
+                                        style={inter.style}>
                                         {project.title}
                                     </h3>
 
                                     {/* Description */}
-                                    <p className={`text-sm font-light leading-relaxed tracking-wide mb-5 flex-1 ${cormorant.className}`}
-                                       style={{ color: "rgba(255,255,255,0.32)" }}>
+                                    <p className="text-[0.85rem] font-normal leading-relaxed tracking-wide mb-5 flex-1"
+                                       style={{ ...inter.style, color: "rgba(255,255,255,0.52)" }}>
                                         {project.description}
                                     </p>
 
                                     {/* Tech stack */}
-                                    <div className="flex flex-wrap gap-1.5 mb-5">
+                                    <div className="flex flex-wrap gap-2.5 mb-6">
                                         {project.techStack.map((tech, i) => (
                                             <span
                                                 key={i}
-                                                className={`px-2.5 py-1 rounded-md font-light ${cormorant.className}`}
+                                                className="rounded-lg font-medium"
                                                 style={{
-                                                    fontSize: "0.65rem",
-                                                    letterSpacing: "0.05em",
-                                                    color: "rgba(255,255,255,0.28)",
-                                                    background: "rgba(255,255,255,0.04)",
-                                                    border: "1px solid rgba(255,255,255,0.08)",
+                                                    fontFamily: "var(--font-inter), sans-serif",
+                                                    fontSize: "0.82rem",
+                                                    letterSpacing: "0.01em",
+                                                    padding: "0.5rem 0.9rem",
+                                                    color: "rgba(147,197,253,0.8)",
+                                                    background: "rgba(147,197,253,0.07)",
+                                                    border: "1px solid rgba(147,197,253,0.15)",
+                                                    whiteSpace: "nowrap",
                                                 }}
                                             >
                                                 {tech}
@@ -157,31 +162,70 @@ export default function Projects() {
                                     </div>
 
                                     {/* Links */}
-                                    <div className="flex items-center gap-6 mt-auto pt-4"
-                                         style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                                    <div className="flex items-center gap-3 mt-auto pt-5"
+                                         style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
                                         {project.demoUrl && !isComingSoon && (
                                             <a href={project.demoUrl} target="_blank" rel="noopener noreferrer"
-                                               className={`flex items-center gap-2 transition-colors duration-300 group ${cormorant.className}`}
-                                               style={{ color: "rgba(237,233,223,0.38)" }}
-                                               onMouseEnter={e => (e.currentTarget.style.color = "rgba(237,233,223,0.68)")}
-                                               onMouseLeave={e => (e.currentTarget.style.color = "rgba(237,233,223,0.38)")}>
-                                                <FaExternalLinkAlt className="text-[0.55rem]" />
-                                                <span className="text-[0.58rem] tracking-[0.3em] uppercase font-light">Live Demo</span>
+                                               className="flex items-center gap-2.5 rounded-lg transition-all duration-300"
+                                               style={{
+                                                   fontFamily: "var(--font-inter), sans-serif",
+                                                   fontSize: "0.78rem",
+                                                   fontWeight: 600,
+                                                   letterSpacing: "0.06em",
+                                                   padding: "0.65rem 1.25rem",
+                                                   background: "rgba(110,231,183,0.12)",
+                                                   border: "1px solid rgba(110,231,183,0.28)",
+                                                   color: "rgba(110,231,183,0.95)",
+                                               }}
+                                               onMouseEnter={e => {
+                                                   e.currentTarget.style.background = "rgba(110,231,183,0.22)";
+                                                   e.currentTarget.style.borderColor = "rgba(110,231,183,0.45)";
+                                               }}
+                                               onMouseLeave={e => {
+                                                   e.currentTarget.style.background = "rgba(110,231,183,0.12)";
+                                                   e.currentTarget.style.borderColor = "rgba(110,231,183,0.28)";
+                                               }}>
+                                                <FaExternalLinkAlt style={{ fontSize: "0.65rem" }} />
+                                                <span>Live Demo</span>
                                             </a>
                                         )}
                                         {project.githubUrl && (
                                             <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
-                                               className={`flex items-center gap-2 transition-colors duration-300 ${cormorant.className}`}
-                                               style={{ color: "rgba(255,255,255,0.25)" }}
-                                               onMouseEnter={e => (e.currentTarget.style.color = "rgba(255,255,255,0.52)")}
-                                               onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.25)")}>
-                                                <FaGithub className="text-[0.55rem]" />
-                                                <span className="text-[0.58rem] tracking-[0.3em] uppercase font-light">Code</span>
+                                               className="flex items-center gap-2.5 rounded-lg transition-all duration-300"
+                                               style={{
+                                                   fontFamily: "var(--font-inter), sans-serif",
+                                                   fontSize: "0.78rem",
+                                                   fontWeight: 600,
+                                                   letterSpacing: "0.06em",
+                                                   padding: "0.65rem 1.25rem",
+                                                   background: "rgba(255,255,255,0.06)",
+                                                   border: "1px solid rgba(255,255,255,0.15)",
+                                                   color: "rgba(255,255,255,0.75)",
+                                               }}
+                                               onMouseEnter={e => {
+                                                   e.currentTarget.style.background = "rgba(255,255,255,0.12)";
+                                                   e.currentTarget.style.borderColor = "rgba(255,255,255,0.28)";
+                                               }}
+                                               onMouseLeave={e => {
+                                                   e.currentTarget.style.background = "rgba(255,255,255,0.06)";
+                                                   e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
+                                               }}>
+                                                <FaGithub style={{ fontSize: "0.8rem" }} />
+                                                <span>Code</span>
                                             </a>
                                         )}
                                         {isComingSoon && (
-                                            <span className={`text-[0.58rem] tracking-[0.3em] uppercase font-light ${cormorant.className}`}
-                                                  style={{ color: "rgba(255,255,255,0.15)" }}>
+                                            <span className="rounded-lg"
+                                                  style={{
+                                                      fontFamily: "var(--font-inter), sans-serif",
+                                                      fontSize: "0.78rem",
+                                                      fontWeight: 600,
+                                                      letterSpacing: "0.06em",
+                                                      padding: "0.65rem 1.25rem",
+                                                      color: "rgba(251,191,36,0.65)",
+                                                      background: "rgba(251,191,36,0.07)",
+                                                      border: "1px solid rgba(251,191,36,0.15)",
+                                                  }}>
                                                 In Development
                                             </span>
                                         )}
