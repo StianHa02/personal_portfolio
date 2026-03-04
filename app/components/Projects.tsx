@@ -22,7 +22,7 @@ const projects: Project[] = [
         techStack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel", "Aceternity UI"],
         category: "frontend",
         githubUrl: "https://github.com/StianHa02/personal_website",
-        demoUrl: "https://stianha.com",
+        demoUrl: "https://personal-website-mu-eight-95.vercel.app/",
         imageUrl: "/images/projects/portfolio.png",
     },
     {
@@ -31,7 +31,7 @@ const projects: Project[] = [
         techStack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel", "Aceternity UI"],
         category: "frontend",
         githubUrl: "https://github.com/StianHa02/personal_portfolio",
-        demoUrl: "",
+        demoUrl: "https://stianha.com",
         imageUrl: "/images/projects/portfoliov2.png",
     },
     {

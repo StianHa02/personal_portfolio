@@ -67,14 +67,35 @@ export default function About() {
         e.preventDefault();
         setToast({ message: "Sending...", type: "info" });
         const form = e.currentTarget;
-        const formData = new FormData(form);
-        formData.append("access_key", process.env.NEXT_PUBLIC_WEB3FORMS_KEY as string);
+        const data = new FormData(form);
+
+        const payload = {
+            access_key: process.env.NEXT_PUBLIC_WEB3FORMS_KEY,
+            name:       data.get("name"),
+            email:      data.get("email"),
+            message:    data.get("message"),
+            subject:    "New portfolio contact",
+            from_name:  "My Portfolio",
+        };
+
         try {
-            const res  = await fetch("https://api.web3forms.com/submit", { method: "POST", body: formData });
-            const data: { success: boolean } = await res.json();
-            if (data.success) { setToast({ message: "Message sent.", type: "success" }); form.reset(); }
-            else               { setToast({ message: "Something went wrong.", type: "error" }); }
-        } catch { setToast({ message: "Network error.", type: "error" }); }
+            const res = await fetch("https://api.web3forms.com/submit", {
+                method:  "POST",
+                headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                body:    JSON.stringify(payload),
+            });
+            const json: { success: boolean; message?: string } = await res.json();
+            if (json.success) {
+                setToast({ message: "Message sent!", type: "success" });
+                form.reset();
+            } else {
+                console.error("Web3Forms error:", json.message);
+                setToast({ message: json.message ?? "Something went wrong.", type: "error" });
+            }
+        } catch (err) {
+            console.error("Fetch error:", err);
+            setToast({ message: "Network error — please try again.", type: "error" });
+        }
     };
 
     const learning = [
@@ -185,8 +206,7 @@ export default function About() {
                                 />
                             </Field>
 
-                            <input type="hidden" name="subject"   value="New portfolio contact" />
-                            <input type="hidden" name="from_name" value="My Portfolio" />
+
 
                             {/* Submit */}
                             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1rem", marginTop: "0.25rem" }}>
