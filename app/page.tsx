@@ -7,6 +7,7 @@ import Projects from "./components/Projects";
 import Skills from "./components/Skills";
 import Footer from "./components/Footer";
 import CubeRenderer from "./components/CubeRenderer";
+import RightDotNav from "./components/ui/RightDotNav";
 
 const NAV_SECTIONS = [
     { id: "hero",     label: "Home"     },
@@ -65,49 +66,7 @@ export default function Home() {
         <div className="relative bg-[#0e0e16]">
             <CubeRenderer sp={Math.min(sp, 1)} opacity={cubeOpacity} />
 
-            {/* Right dot nav — desktop only */}
-            <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 hidden md:flex flex-col items-center gap-6">
-                <div className="absolute top-0 bottom-0 w-px bg-white/10" />
-                {NAV_SECTIONS.map(section => {
-                    const isActive  = activeSection === section.id;
-                    const isContact = section.id === "footer";
-                    return (
-                        <button
-                            key={section.id}
-                            onClick={() => scrollTo(section.id)}
-                            className="relative z-10 cursor-pointer group flex items-center justify-center"
-                            aria-label={section.label}
-                        >
-                            <div
-                                className="rounded-full transition-all duration-300"
-                                style={{
-                                    width:      isActive ? 12 : 8,
-                                    height:     isActive ? 12 : 8,
-                                    background: isActive
-                                        ? (isContact && solved ? "#fcd435" : "#ffffff")
-                                        : "rgba(255,255,255,0.25)",
-                                    boxShadow: isActive
-                                        ? (isContact && solved
-                                            ? "0 0 8px rgba(252,212,53,0.7)"
-                                            : "0 0 6px rgba(255,255,255,0.4)")
-                                        : "none",
-                                }}
-                            />
-                            {/* Label: always visible when active, hover-only otherwise */}
-                            <span
-                                className={`pointer-events-none absolute right-7 top-1/2 -translate-y-1/2 text-[0.6rem] tracking-[0.2em] uppercase whitespace-nowrap transition-opacity duration-300 ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
-                                style={{
-                                    fontFamily: "var(--font-inter), sans-serif",
-                                    color: isActive ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.7)",
-                                    fontWeight: isActive ? 500 : 400,
-                                }}
-                            >
-                                {section.label}
-                            </span>
-                        </button>
-                    );
-                })}
-            </div>
+            <RightDotNav sections={NAV_SECTIONS} activeSection={activeSection} solved={solved} onNavigate={scrollTo} />
 
             <main className="relative z-10">
                 <section id="hero" className="w-full min-h-screen">
@@ -147,9 +106,18 @@ export default function Home() {
                         className="absolute top-8 left-1/2 -translate-x-1/2 transition-all duration-700 z-20"
                         style={{ opacity: solved ? 1 : 0 }}
                     >
-                        <span className="text-[0.55rem] tracking-[0.38em] uppercase text-[rgba(252,212,53,0.75)]">
-                            ✦ Cube solved — you made it
-                        </span>
+                        <div className="flex flex-col items-center gap-2">
+                            {/* The Festive Emoji with a glow */}
+                            <span className="text-xl animate-bounce" style={{ filter: "drop-shadow(0 0 8px rgba(252,212,53,0.8))" }}>
+            ✨
+        </span>
+
+                            {/* The Text */}
+                            <span className="text-[0.6rem] tracking-[0.45em] uppercase font-bold text-[#fcd435]"
+                                  style={{ textShadow: "0 0 15px rgba(252,212,53,0.5)" }}>
+            Cube Solved
+        </span>
+                        </div>
                     </div>
                     <Footer />
                 </section>

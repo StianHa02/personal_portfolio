@@ -59,7 +59,6 @@ export default function Projects() {
         <div className="relative w-full min-h-screen flex items-center justify-center">
             <div className="relative w-full max-w-7xl mx-auto px-6 md:px-8 py-24">
 
-                {/* Section header */}
                 <div className="text-center mb-16">
                     <p className="text-[0.65rem] tracking-[0.35em] uppercase text-white/50 font-medium mb-3"
                        style={inter.style}>
@@ -70,7 +69,6 @@ export default function Projects() {
                         Projects
                     </h1>
 
-                    {/* Filter pills */}
                     <div className="inline-flex items-center gap-3">
                         {filterButtons.map(btn => (
                             <button
@@ -104,14 +102,12 @@ export default function Projects() {
                             const isComingSoon = project.imageUrl === "Coming Soon";
 
                             return (
-                                <BentoBox key={project.title} accent={idx === 0} className="flex flex-col">
-                                    {/* Image */}
+                                <BentoBox key={project.title} accent={idx === 0} className="flex flex-col h-full">
                                     <div
-                                        className="w-full h-44 mb-6 rounded-lg overflow-hidden"
+                                        className="w-full h-44 mb-6 rounded-lg overflow-hidden shrink-0"
                                         style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}
                                     >
                                         {hasImage ? (
-                                            // eslint-disable-next-line @next/next/no-img-element
                                             <img
                                                 src={project.imageUrl}
                                                 alt={project.title}
@@ -127,46 +123,46 @@ export default function Projects() {
                                         )}
                                     </div>
 
-                                    {/* Title */}
                                     <h3 className="text-[1.1rem] font-medium text-[#ede9df]/90 leading-snug tracking-wide mb-3"
                                         style={inter.style}>
                                         {project.title}
                                     </h3>
 
-                                    {/* Description */}
-                                    <p className="text-[0.85rem] font-normal leading-relaxed tracking-wide mb-5 flex-1"
+                                    {/* Description - Added a fixed bottom margin */}
+                                    <p className="text-[0.88rem] font-normal leading-relaxed tracking-wide mb-8"
                                        style={{ ...inter.style, color: "rgba(255,255,255,0.52)" }}>
                                         {project.description}
                                     </p>
 
-                                    {/* Tech stack */}
-                                    <div className="flex flex-wrap gap-2.5 mb-6">
-                                        {project.techStack.map((tech, i) => (
-                                            <span
-                                                key={i}
-                                                className="rounded-lg font-medium"
-                                                style={{
-                                                    fontFamily: "var(--font-inter), sans-serif",
-                                                    fontSize: "0.82rem",
-                                                    letterSpacing: "0.01em",
-                                                    padding: "0.5rem 0.9rem",
-                                                    color: "rgba(147,197,253,0.8)",
-                                                    background: "rgba(147,197,253,0.07)",
-                                                    border: "1px solid rgba(147,197,253,0.15)",
-                                                    whiteSpace: "nowrap",
-                                                }}
-                                            >
-                                                {tech}
-                                            </span>
-                                        ))}
+                                    {/* Tech stack - Added pt-2 to ensure gap from text even if text grows */}
+                                    <div className="flex-1 pt-2">
+                                        <div className="flex flex-wrap gap-2.5">
+                                            {project.techStack.map((tech, i) => (
+                                                <span
+                                                    key={i}
+                                                    className="rounded-lg font-medium"
+                                                    style={{
+                                                        fontFamily: "var(--font-inter), sans-serif",
+                                                        fontSize: "0.72rem",
+                                                        letterSpacing: "0.01em",
+                                                        padding: "0.45rem 0.8rem",
+                                                        color: "rgba(147,197,253,0.8)",
+                                                        background: "rgba(147,197,253,0.07)",
+                                                        border: "1px solid rgba(147,197,253,0.15)",
+                                                        whiteSpace: "nowrap",
+                                                    }}
+                                                >
+                                                    {tech}
+                                                </span>
+                                            ))}
+                                        </div>
                                     </div>
 
-                                    {/* Links */}
-                                    <div className="flex items-center gap-3 mt-auto pt-5"
+                                    <div className="flex items-center gap-4 mt-8 pt-6"
                                          style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
                                         {project.demoUrl && !isComingSoon && (
                                             <a href={project.demoUrl} target="_blank" rel="noopener noreferrer"
-                                               className="flex items-center gap-2.5 rounded-lg transition-all duration-300"
+                                               className="flex items-center gap-3 rounded-lg transition-all duration-300"
                                                style={{
                                                    fontFamily: "var(--font-inter), sans-serif",
                                                    fontSize: "0.78rem",
@@ -191,7 +187,7 @@ export default function Projects() {
                                         )}
                                         {project.githubUrl && (
                                             <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
-                                               className="flex items-center gap-2.5 rounded-lg transition-all duration-300"
+                                               className="flex items-center gap-3 rounded-lg transition-all duration-300"
                                                style={{
                                                    fontFamily: "var(--font-inter), sans-serif",
                                                    fontSize: "0.78rem",
@@ -213,21 +209,6 @@ export default function Projects() {
                                                 <FaGithub style={{ fontSize: "0.8rem" }} />
                                                 <span>Code</span>
                                             </a>
-                                        )}
-                                        {isComingSoon && (
-                                            <span className="rounded-lg"
-                                                  style={{
-                                                      fontFamily: "var(--font-inter), sans-serif",
-                                                      fontSize: "0.78rem",
-                                                      fontWeight: 600,
-                                                      letterSpacing: "0.06em",
-                                                      padding: "0.65rem 1.25rem",
-                                                      color: "rgba(251,191,36,0.65)",
-                                                      background: "rgba(251,191,36,0.07)",
-                                                      border: "1px solid rgba(251,191,36,0.15)",
-                                                  }}>
-                                                In Development
-                                            </span>
                                         )}
                                     </div>
                                 </BentoBox>
