@@ -287,13 +287,10 @@ export default function Projects() {
 
     return (
         <div className="relative w-full min-h-screen flex items-center justify-center">
-            <div className="relative w-full max-w-7xl mx-auto px-6 md:px-8 py-24">
+            <div className="relative w-full max-w-7xl mx-auto px-6 md:px-8 md:py-24" style={{ paddingTop: "clamp(5rem, 20dvh, 12rem)", paddingBottom: "clamp(4rem, 8dvh, 6rem)" }}>
 
                 {/* Header */}
                 <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-                    <p style={{ ...inter, fontSize: "0.65rem", letterSpacing: "0.35em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", fontWeight: 500, marginBottom: "0.75rem" }}>
-                        What I&apos;ve built
-                    </p>
                     <h1 style={{ ...inter, fontSize: "clamp(2rem,5vw,3.5rem)", fontWeight: 300, lineHeight: 1, letterSpacing: "-0.02em", color: "#ede9df", margin: 0 }}>
                         Projects
                     </h1>

@@ -44,19 +44,25 @@ export default function Home() {
     }, []);
 
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) setActive(entry.target.id);
-                });
-            },
-            { threshold: 0.3 }
-        );
-        NAV_SECTIONS.forEach(s => {
-            const el = document.getElementById(s.id);
-            if (el) observer.observe(el);
-        });
-        return () => observer.disconnect();
+        const fn = () => {
+            // Find whichever section's centre is closest to the viewport centre.
+            // Works reliably on mobile where sections are taller than 100dvh.
+            const viewMid = window.scrollY + window.innerHeight / 2;
+            let best = NAV_SECTIONS[0].id;
+            let bestDist = Infinity;
+            NAV_SECTIONS.forEach(s => {
+                const el = document.getElementById(s.id);
+                if (!el) return;
+                const rect = el.getBoundingClientRect();
+                const elMid = window.scrollY + rect.top + rect.height / 2;
+                const dist = Math.abs(viewMid - elMid);
+                if (dist < bestDist) { bestDist = dist; best = s.id; }
+            });
+            setActive(best);
+        };
+        window.addEventListener("scroll", fn, { passive: true });
+        fn();
+        return () => window.removeEventListener("scroll", fn);
     }, []);
 
     const scrollTo = (id: string) => {
@@ -80,9 +86,9 @@ export default function Home() {
         }
     }, [solved]);
 
-    // Dim the cube on content sections (projects, skills, about)
-    const isMiddleSection = activeSection === "projects" || activeSection === "skills" || activeSection === "about";
-    const cubeOpacity = isMiddleSection ? 0.18 : 1;
+    // Dim the cube as soon as the user starts scrolling (works on mobile immediately).
+    // Restore to full when back at hero (sp ≈ 0) or when the cube is solved.
+    const cubeOpacity = solved ? 1 : sp < 0.015 ? 1 : 0.18;
 
     return (
         <div className="relative bg-[#0e0e16]">

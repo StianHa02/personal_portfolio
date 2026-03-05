@@ -18,7 +18,7 @@ const links = [
 export default function Footer() {
     return (
         <div className="relative w-full flex flex-col items-start justify-end"
-             style={{ height: "100%", paddingBottom: "10rem", paddingLeft: "clamp(2rem, 6vw, 9rem)", paddingRight: "4rem" }}>
+             style={{ height: "100%", paddingBottom: "clamp(3rem, 10vh, 10rem)", paddingLeft: "clamp(2rem, 6vw, 9rem)", paddingRight: "clamp(2rem, 6vw, 4rem)" }}>
             <div className={`flex flex-col items-start gap-8 max-w-2xl ${cormorant.className}`}>
 
                 <p className="text-[0.7rem] tracking-[0.4em] uppercase text-white/70 font-light">
@@ -33,7 +33,7 @@ export default function Footer() {
                     Open to internships, freelance projects, and interesting collaborations.
                 </p>
 
-                <div className="flex items-center gap-10 mt-4">
+                <div className="flex flex-wrap items-center gap-x-8 gap-y-5 mt-4">
                     {links.map(({ label, href, icon: Icon }) => (
                         <a
                             key={label}
