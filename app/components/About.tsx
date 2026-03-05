@@ -107,7 +107,7 @@ export default function About() {
 
     return (
         <div className="relative w-full min-h-screen flex items-center justify-center">
-            <div className="relative w-full max-w-7xl mx-auto px-6 md:px-8 md:py-24" style={{ paddingTop: "clamp(5rem, 20dvh, 12rem)", paddingBottom: "clamp(4rem, 8dvh, 6rem)" }}>
+            <div className="relative w-full max-w-7xl mx-auto md:py-24" style={{ paddingTop: "clamp(5rem, 20dvh, 12rem)", paddingBottom: "clamp(4rem, 8dvh, 6rem)", paddingLeft: "clamp(1.5rem, 5vw, 2rem)", paddingRight: "clamp(1.5rem, 5vw, 2rem)" }}>
 
                 {/* Header — 5rem gap to match Projects */}
                 <div style={{ textAlign: "center", marginBottom: "5rem" }}>
