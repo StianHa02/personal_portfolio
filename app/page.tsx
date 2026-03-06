@@ -17,9 +17,6 @@ const NAV_SECTIONS = [
     { id: "footer",   label: "Contact"  },
 ];
 
-// How many px from the absolute bottom counts as "fully scrolled".
-// Needs to be generous because fast fling scrolling can overshoot by 50-100px
-// before the browser fires the final scroll event.
 const SNAP_THRESHOLD = 120;
 
 export default function Home() {

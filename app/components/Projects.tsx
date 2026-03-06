@@ -18,7 +18,7 @@ interface Project {
 const projects: Project[] = [
     {
         title: "Personal Portfolio Website V1",
-        description: "Modern and interactive portfolio website featuring animated grid backgrounds, bento layouts, toast notifications, and smooth transitions. Built with Next.js, TypeScript and deployed on Vercel.",
+        description: "First portfolio application built with Next.js and deployed on Vercel.",
         techStack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel", "Aceternity UI"],
         category: "frontend",
         githubUrl: "https://github.com/StianHa02/personal_website",
@@ -27,8 +27,8 @@ const projects: Project[] = [
     },
     {
         title: "Personal Portfolio Website V2",
-        description: "Modern and interactive portfolio website featuring animated grid backgrounds, bento layouts, toast notifications, and smooth transitions. Built with Next.js, TypeScript and deployed on Vercel.",
-        techStack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel", "Aceternity UI"],
+        description: " My updated portfolio website showcasing projects, skills, and web development work.",
+        techStack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel"],
         category: "frontend",
         githubUrl: "https://github.com/StianHa02/personal_portfolio",
         demoUrl: "https://stianha.com",
@@ -36,7 +36,7 @@ const projects: Project[] = [
     },
     {
         title: "Bergen Klatreklubb Route Database",
-        description: "Maintaining and improving the digital route database for Bergen Klatreklubb through UI refinements, bug fixes, and feature updates, ensuring stable performance and responsive design.",
+        description: "Improving the digital route database for Bergen Klatreklubb through UI updates, bug fixes, and feature improvements.",
         techStack: ["Next.js", "React", "Tailwind CSS", "Supabase", "Linear", "React Aria"],
         category: "fullstack",
         demoUrl: "https://ute.bergenklatreklubb.no/",
@@ -44,8 +44,8 @@ const projects: Project[] = [
     },
     {
         title: "Face Blur Privacy Tool",
-        description: "Web application for automatic face blurring in videos using OpenCV. Built with Next.js for the frontend and a Python (FastAPI) backend for video processing and face detection.",
-        techStack: ["Python", "FastAPI", "OpenCV", "Next.js", "Computer Vision"],
+        description: "Face-blurring web app using OpenCV with a Next.js frontend and FastAPI backend.",
+        techStack: ["Python", "FastAPI", "OpenCV", "Next.js", "AWS EC2"],
         category: "fullstack",
         githubUrl: "https://github.com/StianHa02/BlurThatGuyProject",
         demoUrl: "https://blurthatguy.no",
