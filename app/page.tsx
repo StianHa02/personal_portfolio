@@ -17,7 +17,7 @@ const NAV_SECTIONS = [
     { id: "footer",   label: "Contact"  },
 ];
 
-const SNAP_THRESHOLD = 120;
+const SNAP_THRESHOLD = 20;
 
 export default function Home() {
     const [sp, setSp]                = useState(0);
@@ -63,12 +63,8 @@ export default function Home() {
     }, []);
 
     const scrollTo = (id: string) => {
-        if (id === "footer") {
-            const max = document.documentElement.scrollHeight - window.innerHeight;
-            window.scrollTo({ top: max, behavior: "smooth" });
-        } else {
-            document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-        }
+        const el = document.getElementById(id);
+        if (el) window.scrollTo({ top: el.offsetTop, behavior: "smooth" });
     };
 
     const solved = sp >= 0.97;
@@ -82,7 +78,7 @@ export default function Home() {
         hasSnapped.current = true;
         const max = document.documentElement.scrollHeight - window.innerHeight;
         if (window.scrollY < max) {
-            window.scrollTo({ top: max, behavior: "instant" });
+            window.scrollTo({ top: max, behavior: "smooth" });
         }
     }, [solved]);
 
