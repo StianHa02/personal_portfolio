@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Hero from "./components/Hero";
 import About from "./components/About";
 import Projects from "./components/Projects";
@@ -72,11 +72,14 @@ export default function Home() {
     };
 
     const solved = sp >= 0.97;
+    const hasSnapped = useRef(false);
 
-    // Once solved, snap scroll position to the true bottom so no leftover
-    // scroll distance remains after the snap threshold kicked in early.
+    // Once solved, snap scroll position to the true bottom exactly once,
+    // so no leftover scroll distance remains after the snap threshold kicked in early.
+    // Using a ref prevents this from re-firing and hijacking subsequent navigation.
     useEffect(() => {
-        if (!solved) return;
+        if (!solved || hasSnapped.current) return;
+        hasSnapped.current = true;
         const max = document.documentElement.scrollHeight - window.innerHeight;
         if (window.scrollY < max) {
             window.scrollTo({ top: max, behavior: "instant" });
