@@ -286,7 +286,7 @@ export default function Projects() {
     const filtered = filter === "all" ? projects : projects.filter(p => p.category === filter);
 
     return (
-        <div className="relative w-full min-h-screen flex items-center justify-center">
+        <div className="relative w-full min-h-screen flex items-start justify-center">
             <div className="relative w-full max-w-7xl mx-auto md:py-24" style={{ paddingTop: "clamp(5rem, 20dvh, 12rem)", paddingBottom: "clamp(4rem, 8dvh, 6rem)", paddingLeft: "clamp(1.5rem, 5vw, 2rem)", paddingRight: "clamp(1.5rem, 5vw, 2rem)" }}>
 
                 {/* Header */}
@@ -342,6 +342,7 @@ export default function Projects() {
                     gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
                     gap: "1.5rem",
                     alignItems: "start",
+                    minHeight: "calc(2 * 430px + 1.5rem)",
                 }}>
                     {filtered.map(project => (
                         <ProjectCard key={project.title} project={project} />

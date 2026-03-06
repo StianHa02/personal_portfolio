@@ -92,12 +92,12 @@ export default function Home() {
 
     return (
         <div className="relative bg-[#0e0e16]">
-            <CubeRenderer sp={Math.min(sp, 1)} opacity={cubeOpacity} />
+            <CubeRenderer sp={sp} opacity={cubeOpacity} logoSrc="/favicon.ico" />
 
             <RightDotNav sections={NAV_SECTIONS} activeSection={activeSection} solved={solved} onNavigate={scrollTo} />
 
             <main className="relative z-10">
-                <section id="hero" className="w-full" style={{ minHeight: "100dvh" }}>
+                <section id="hero" className="w-full" style={{ minHeight: "100svh" }}>
                     <div
                         className="absolute top-8 left-1/2 -translate-x-1/2 transition-all duration-700 z-20"
                         style={{ opacity: solved ? 1 : 1 }}
@@ -125,7 +125,7 @@ export default function Home() {
                     id="footer"
                     className="relative w-full transition-all duration-1000 ease-out overflow-hidden"
                     style={{
-                        height: "100dvh",
+                        height: "100svh",
                         opacity:       solved ? 1 : 0,
                         pointerEvents: solved ? "auto" : "none",
                         transform:     solved ? "translateY(0px)" : "translateY(48px)",
