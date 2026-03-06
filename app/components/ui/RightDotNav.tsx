@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 
 interface NavSection { id: string; label: string }
 
@@ -12,17 +12,25 @@ interface RightDotNavProps {
 }
 
 export default function RightDotNav({ sections, activeSection, solved, onNavigate }: RightDotNavProps) {
+    const [navHovered, setNavHovered] = useState(false);
+
     return (
-        <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 hidden md:flex flex-col items-center gap-6">
+        <div
+            className="fixed right-6 top-1/2 -translate-y-1/2 z-50 hidden md:flex flex-col items-center gap-6"
+            onMouseEnter={() => setNavHovered(true)}
+            onMouseLeave={() => setNavHovered(false)}
+        >
             <div className="absolute top-0 bottom-0 w-px bg-white/10" />
             {sections.map(section => {
                 const isActive = activeSection === section.id;
                 const isContact = section.id === "footer";
+                const showLabel = isActive || navHovered;
+
                 return (
                     <button
                         key={section.id}
                         onClick={() => onNavigate(section.id)}
-                        className="relative z-10 cursor-pointer group flex items-center justify-center"
+                        className="relative z-10 cursor-pointer flex items-center justify-center"
                         aria-label={section.label}
                     >
                         <div
@@ -38,8 +46,13 @@ export default function RightDotNav({ sections, activeSection, solved, onNavigat
                         />
 
                         <span
-                            className={`pointer-events-none absolute right-7 top-1/2 -translate-y-1/2 text-[0.6rem] tracking-[0.2em] uppercase whitespace-nowrap transition-opacity duration-300 ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
-                            style={{ fontFamily: "var(--font-inter), sans-serif", color: isActive ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.7)", fontWeight: isActive ? 500 : 400 }}
+                            className="pointer-events-none absolute right-7 top-1/2 -translate-y-1/2 text-[0.6rem] tracking-[0.2em] uppercase whitespace-nowrap transition-opacity duration-300"
+                            style={{
+                                fontFamily: "var(--font-inter), sans-serif",
+                                color: isActive ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.7)",
+                                fontWeight: isActive ? 500 : 400,
+                                opacity: showLabel ? 1 : 0,
+                            }}
                         >
                             {section.label}
                         </span>
@@ -49,4 +62,3 @@ export default function RightDotNav({ sections, activeSection, solved, onNavigat
         </div>
     );
 }
-
