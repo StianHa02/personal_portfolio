@@ -1,4 +1,6 @@
 import { Cormorant_Garamond } from "next/font/google";
+import { FaMapLocationDot } from "react-icons/fa6";
+
 
 const cormorant = Cormorant_Garamond({
     subsets: ["latin"],
@@ -19,7 +21,7 @@ export default function Hero() {
             <div className={`flex flex-col items-start gap-4 md:gap-6 w-full max-w-lg ${cormorant.className}`}>
 
                 <p className="text-[0.65rem] md:text-[0.75rem] tracking-[0.5em] uppercase text-white/80 font-light">
-                    Data Science Student &amp; aspiring Full-Stack Developer
+                    Data Science Student &amp;  <br /> aspiring Full-Stack Developer
                 </p>
 
                 <h1 className="text-[clamp(3rem,14vw,8.5rem)] font-light leading-[0.9] tracking-[-0.03em] text-white">
@@ -27,7 +29,10 @@ export default function Hero() {
                 </h1>
 
                 <p className="text-base md:text-lg font-light text-white/85 max-w-md leading-relaxed tracking-wide mt-2">
-                    Showcasing my projects in modern web development.
+                    <span className="inline-flex items-center gap-2 whitespace-nowrap">
+                        <FaMapLocationDot aria-hidden="true" />
+                        <span>Bergen, Norway</span>
+                    </span>
                 </p>
 
             </div>

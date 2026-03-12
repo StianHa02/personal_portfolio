@@ -22,7 +22,7 @@ export function BentoBox({ title, children, className = "", accent = false }: Be
         >
             <div className="relative flex flex-col gap-6" style={{ padding: "2rem 2.25rem 2.5rem" }}>
                 {title && (
-                    <p
+                    <div
                         className="text-[0.6rem] tracking-[0.4em] uppercase font-medium"
                         style={{
                             fontFamily: "var(--font-inter), sans-serif",
@@ -31,7 +31,7 @@ export function BentoBox({ title, children, className = "", accent = false }: Be
                         }}
                     >
                         {title}
-                    </p>
+                    </div>
                 )}
                 <div className="w-full">
                     {children}

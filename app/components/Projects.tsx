@@ -292,7 +292,7 @@ export default function Projects() {
                 {/* Header */}
                 <div style={{ textAlign: "center", marginBottom: "2rem" }}>
                     <h1 style={{ ...inter, fontSize: "clamp(2rem,5vw,3.5rem)", fontWeight: 300, lineHeight: 1, letterSpacing: "-0.02em", color: "#ede9df", margin: 0 }}>
-                        Projects
+                        Projects and freelance work
                     </h1>
                 </div>
 
@@ -341,8 +341,7 @@ export default function Projects() {
                     display: "grid",
                     gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
                     gap: "1.5rem",
-                    alignItems: "start",
-                    minHeight: "calc(2 * 430px + 1.5rem)",
+                    alignItems: "stretch",
                 }}>
                     {filtered.map(project => (
                         <ProjectCard key={project.title} project={project} />
