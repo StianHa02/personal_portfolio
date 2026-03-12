@@ -35,7 +35,7 @@ const projects: Project[] = [
         imageUrl: "/images/projects/portfoliov2.png",
     },
     {
-        title: "Bergen Klatreklubb Route Database",
+        title: "Bergen Klatreklubb Route Database (Freelance)",
         description: "Improving the digital route database for Bergen Klatreklubb through UI updates, bug fixes, and feature improvements.",
         techStack: ["Next.js", "React", "Tailwind CSS", "Supabase", "Linear", "React Aria"],
         category: "fullstack",

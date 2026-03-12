@@ -53,6 +53,7 @@ const focusStyle: React.CSSProperties = {
 export default function About() {
     const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
     const [focused, setFocused] = useState<string | null>(null);
+    const [avatarSrc, setAvatarSrc] = useState<string>("/images/avatar.jpg");
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -105,58 +106,74 @@ export default function About() {
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
 
                     {/* About Me — 2 cols */}
-                    <BentoBox
-                        className="lg:col-span-2"
-                        title={
-                            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                                <div
-                                    style={{
-                                        width: 64, height: 64, borderRadius: "50%",
-                                        overflow: "hidden", flexShrink: 0,
-                                        border: "2px solid rgba(255,255,255,0.15)",
-                                        background: "rgba(255,255,255,0.05)",
-                                        cursor: "pointer",
-                                        transition: "border-color 0.2s",
-                                    }}
-                                    onMouseEnter={e => {
-                                        const img = e.currentTarget.querySelector("img") as HTMLImageElement;
-                                        if (img) img.src = "/images/avatar2.jpg";
-                                        e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)";
-                                    }}
-                                    onMouseLeave={e => {
-                                        const img = e.currentTarget.querySelector("img") as HTMLImageElement;
-                                        if (img) img.src = "/images/avatar.jpg";
-                                        e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
-                                    }}
-                                >
-                                    <Image
-                                        src="/images/avatar.jpg"
-                                        alt="Stian"
-                                        width={64}
-                                        height={64}
-                                        style={{ width: "100%", height: "100%", objectFit: "cover", transition: "opacity 0.2s" }}
-                                    />
-                                </div>
-                                <span style={{ ...inter, fontSize: "1.35rem", fontWeight: 500, letterSpacing: "-0.02em", color: "rgba(237,233,223,0.95)", textTransform: "none" }}>
-                                    Hey, I&apos;m Stian
-                                </span>
+                    <BentoBox className="lg:col-span-2 hover:!translate-y-0">
+                        {/* Responsive: stacks on mobile, side-by-side on md+ */}
+                        <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-center md:items-stretch">
+                            {/* Round avatar — fills height on desktop, fixed size on mobile */}
+                            <div
+                                className="shrink-0 rounded-full overflow-hidden border-2 self-center"
+                                style={{
+                                    width: "clamp(80px, 18vw, 160px)",
+                                    height: "clamp(80px, 18vw, 160px)",
+                                    borderColor: "rgba(255,255,255,0.15)",
+                                    cursor: "pointer",
+                                    transition: "border-color 0.2s, box-shadow 0.2s",
+                                }}
+                                onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
+                                    setAvatarSrc("/images/avatar2.jpg");
+                                    const el = e.currentTarget as HTMLDivElement;
+                                    el.style.borderColor = "rgba(255,255,255,0.4)";
+                                    el.style.boxShadow = "0 0 20px rgba(255,255,255,0.1)";
+                                }}
+                                onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
+                                    setAvatarSrc("/images/avatar.jpg");
+                                    const el = e.currentTarget as HTMLDivElement;
+                                    el.style.borderColor = "rgba(255,255,255,0.15)";
+                                    el.style.boxShadow = "none";
+                                }}
+                            >
+                                <Image
+                                    key={avatarSrc}
+                                    src={avatarSrc}
+                                    alt="Stian"
+                                    width={160}
+                                    height={160}
+                                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }}
+                                />
                             </div>
-                        }
-                    >
-                        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", ...inter }}>
-                            <p style={{ fontSize: "0.9rem", lineHeight: 1.65, color: "rgba(255,255,255,0.6)", margin: 0 }}>
-                                A developer who loves turning ideas into working applications.
-                            </p>
-                            <p style={{ fontSize: "0.9rem", lineHeight: 1.65, color: "rgba(255,255,255,0.55)", margin: 0 }}>
-                                I build full-stack apps with{" "}
-                                <span style={{ display: "inline-flex", alignItems: "center", padding: "0.1rem 0.5rem", borderRadius: "0.375rem", fontSize: "0.8rem", color: "rgba(237,233,223,0.75)", background: "rgba(237,233,223,0.05)", border: "1px solid rgba(237,233,223,0.12)" }}>
-                                    Next.js
+
+                            {/* Text — centered on mobile, left-aligned and vertically centered on desktop */}
+                            <div className="flex flex-col justify-center gap-1.5 text-center md:text-left" style={{ ...inter }}>
+                                <style>{`
+                                    @keyframes wave {
+                                        0%   { transform: rotate(0deg);   }
+                                        15%  { transform: rotate(18deg);  }
+                                        30%  { transform: rotate(-10deg); }
+                                        45%  { transform: rotate(16deg);  }
+                                        60%  { transform: rotate(-6deg);  }
+                                        75%  { transform: rotate(10deg);  }
+                                        100% { transform: rotate(0deg);   }
+                                    }
+                                    .wave-emoji { display: inline-block; transform-origin: 70% 70%; }
+                                    .wave-trigger:hover .wave-emoji { animation: wave 0.9s ease; }
+                                `}</style>
+                                <span className="wave-trigger" style={{ fontSize: "1.9rem", fontWeight: 600, letterSpacing: "-0.02em", color: "rgba(237,233,223,0.95)", lineHeight: 1.1, marginBottom: "0.5rem", display: "block" }}>
+                                    Hey, I&apos;m Stian <span className="wave-emoji">👋</span>
                                 </span>
-                                , crafting interfaces on the front and working with Node.js and PostgreSQL on the back.
-                            </p>
-                            <p style={{ fontSize: "0.9rem", lineHeight: 1.65, color: "rgba(255,255,255,0.5)", margin: 0 }}>
-                                Currently taking a master&apos;s degree in Data Science at UiB and looking to collaborate on projects that make a real impact.
-                            </p>
+                                <p style={{ fontSize: "0.9rem", lineHeight: 1.65, color: "rgba(255,255,255,0.6)", margin: 0 }}>
+                                    A developer who loves turning ideas into working applications.
+                                </p>
+                                <p style={{ fontSize: "0.9rem", lineHeight: 1.65, color: "rgba(255,255,255,0.55)", margin: 0 }}>
+                                    I build full-stack apps with{" "}
+                                    <span style={{ display: "inline-flex", alignItems: "center", padding: "0.1rem 0.5rem", borderRadius: "0.375rem", fontSize: "0.8rem", color: "rgba(237,233,223,0.75)", background: "rgba(237,233,223,0.05)", border: "1px solid rgba(237,233,223,0.12)" }}>
+                                        Next.js
+                                    </span>
+                                    , crafting interfaces on the front and working with Node.js and PostgreSQL on the back.
+                                </p>
+                                <p style={{ fontSize: "0.9rem", lineHeight: 1.65, color: "rgba(255,255,255,0.5)", margin: 0 }}>
+                                    Currently taking a master&apos;s degree in Data Science at UiB and looking to collaborate on projects that make a real impact.
+                                </p>
+                            </div>
                         </div>
                     </BentoBox>
 
@@ -177,9 +194,8 @@ export default function About() {
                                 </p>
                             </div>
                             <p style={{ fontSize: "0.85rem", lineHeight: 1.65, color: "rgba(255,255,255,0.5)", margin: 0 }}>
-                                Integrated master&apos;s covering machine learning, mathematics, statistics,
-                                software development, and data visualization — including industry internship
-                                and master&apos;s thesis.
+                                Integrated Master’s (Sivilingeniør) specializing in medical data science.
+                                Focusing on bridging the gap between data science and healthcare through machine learning and statistical modeling of clinical data.
                             </p>
                         </div>
                     </BentoBox>
@@ -207,7 +223,7 @@ export default function About() {
                             </div>
                             <Field label="Message">
                                 <textarea
-                                    name="message" placeholder="Tell me about your project or idea..." rows={5} required
+                                    name="message" placeholder="Tell me about your project or idea..." rows={3} required
                                     style={{ ...inputStyle, resize: "none", ...(focused === "message" ? focusStyle : {}) }}
                                     onFocus={() => setFocused("message")}
                                     onBlur={() => setFocused(null)}

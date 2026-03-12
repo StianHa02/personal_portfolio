@@ -14,7 +14,7 @@ const NAV_SECTIONS = [
     { id: "projects", label: "Projects" },
     { id: "skills",   label: "Skills"   },
     { id: "about",    label: "About"    },
-    { id: "footer",   label: "Contact"  },
+    { id: "footer",   label: "Connect"  },
 ];
 
 const SNAP_THRESHOLD = 20;
