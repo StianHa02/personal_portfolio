@@ -178,7 +178,7 @@ export default function About() {
                     </BentoBox>
 
                     {/* Academic Journey — 1 col */}
-                    <BentoBox title="Academic Journey">
+                    <BentoBox title="Academic Journey" className="hover:!translate-y-0">
                         <div style={{ ...inter, width: "100%", display: "flex", flexDirection: "column", gap: "1rem" }}>
                             <div>
                                 <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "0.25rem" }}>
@@ -201,7 +201,7 @@ export default function About() {
                     </BentoBox>
 
                     {/* Contact Form — full 3 cols */}
-                    <BentoBox title="Contact Me" className="lg:col-span-3">
+                    <BentoBox title="Contact Me" className="lg:col-span-3 hover:!translate-y-0">
                         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
                             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
                                 <Field label="Name">
