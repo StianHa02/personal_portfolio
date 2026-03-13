@@ -26,7 +26,7 @@ export default function Footer() {
                 </h1>
 
                 <p className="text-lg font-light text-white/80 max-w-sm leading-relaxed tracking-wide">
-                    Open to internships, freelance projects, and interesting collaborations.
+                    Open to internships, freelance projects, and job opportunities.
                 </p>
 
                 <div className="flex flex-wrap items-center gap-x-8 gap-y-5 mt-4">
