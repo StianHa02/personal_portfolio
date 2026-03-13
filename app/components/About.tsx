@@ -161,14 +161,14 @@ export default function About() {
                                     Hey, I&apos;m Stian <span className="wave-emoji">👋</span>
                                 </span>
                                 <p style={{ fontSize: "0.9rem", lineHeight: 1.65, color: "rgba(255,255,255,0.6)", margin: 0 }}>
-                                    A developer who loves turning ideas into working applications.
+                                    A student and developer who loves turning ideas into polished applications.
                                 </p>
                                 <p style={{ fontSize: "0.9rem", lineHeight: 1.65, color: "rgba(255,255,255,0.55)", margin: 0 }}>
                                     I build full-stack apps with{" "}
                                     <span style={{ display: "inline-flex", alignItems: "center", padding: "0.1rem 0.5rem", borderRadius: "0.375rem", fontSize: "0.8rem", color: "rgba(237,233,223,0.75)", background: "rgba(237,233,223,0.05)", border: "1px solid rgba(237,233,223,0.12)" }}>
                                         Next.js
                                     </span>
-                                    , crafting interfaces on the front and working with Node.js and PostgreSQL on the back.
+                                    , designing interfaces on the front and working with Node.js and PostgreSQL on the back.
                                 </p>
                                 <p style={{ fontSize: "0.9rem", lineHeight: 1.65, color: "rgba(255,255,255,0.5)", margin: 0 }}>
                                     Currently taking a master&apos;s degree in Data Science at UiB and looking to collaborate on projects that make a real impact.
