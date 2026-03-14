@@ -140,6 +140,14 @@ export default function About() {
                                     height={160}
                                     style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }}
                                 />
+                                <Image
+                                    src="/images/avatar2.jpg"
+                                    alt=""
+                                    width={160}
+                                    height={160}
+                                    style={{ display: "none" }}
+                                    priority
+                                />
                             </div>
 
                             {/* Text — centered on mobile, left-aligned and vertically centered on desktop */}
