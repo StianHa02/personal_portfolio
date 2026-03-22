@@ -55,7 +55,7 @@ export default function Home() {
     useEffect(() => {
         const fn = () => {
             // Find whichever section's centre is closest to the viewport centre.
-            // Works reliably on mobile where sections are taller than 100dvh.
+            // Works reliably on mobile where sections are taller than 100svh.
             const viewMid = window.scrollY + window.innerHeight / 2;
             let best = NAV_SECTIONS[0].id;
             let bestDist = Infinity;
@@ -134,19 +134,19 @@ export default function Home() {
             </div>
 
             <main className="relative z-10">
-                <section id="hero" className="w-full" style={{ minHeight: "100dvh" }}>
+                <section id="hero" className="w-full" style={{ minHeight: "100svh" }}>
                     <Hero />
                 </section>
 
-                <section id="projects" className="w-full flex items-center justify-center" style={{ minHeight: "100dvh" }}>
+                <section id="projects" className="w-full flex items-center justify-center" style={{ minHeight: "100svh" }}>
                     <Projects />
                 </section>
 
-                <section id="skills" className="w-full flex items-center justify-center" style={{ minHeight: "100dvh" }}>
+                <section id="skills" className="w-full flex items-center justify-center" style={{ minHeight: "100svh" }}>
                     <Skills />
                 </section>
 
-                <section id="about" className="w-full flex items-center justify-center" style={{ minHeight: "100dvh" }}>
+                <section id="about" className="w-full flex items-center justify-center" style={{ minHeight: "100svh" }}>
                     <About />
                 </section>
 
@@ -154,7 +154,7 @@ export default function Home() {
                     id="footer"
                     className="relative w-full transition-all duration-1000 ease-out overflow-hidden"
                     style={{
-                        height: "100dvh",
+                        height: "100svh",
                         opacity:       solved ? 1 : 0,
                         pointerEvents: solved ? "auto" : "none",
                     }}
