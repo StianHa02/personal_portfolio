@@ -20,15 +20,18 @@ export default function Hero() {
         >
             <div className={`flex flex-col items-start gap-4 md:gap-6 w-full max-w-lg ${cormorant.className}`}>
 
-                <p className="text-[0.65rem] md:text-[0.75rem] tracking-[0.5em] uppercase text-white/80 font-light">
+                <p className="text-[0.65rem] md:text-[0.75rem] tracking-[0.5em] uppercase text-white/90 font-normal"
+                   style={{ textShadow: "0 1px 8px rgba(0,0,0,0.5)" }}>
                     Data Science Student &amp;  <br /> aspiring Full-Stack Developer
                 </p>
 
-                <h1 className="text-[clamp(3rem,14vw,8.5rem)] font-light leading-[0.9] tracking-[-0.03em] text-white">
+                <h1 className="text-[clamp(3rem,14vw,8.5rem)] font-semibold leading-[0.9] tracking-[-0.03em] text-white"
+                    style={{ textShadow: "0 2px 20px rgba(0,0,0,0.4)" }}>
                     Stian Gia<br />Huy Ha
                 </h1>
 
-                <p className="text-base md:text-lg font-light text-white/85 max-w-md leading-relaxed tracking-wide mt-2">
+                <p className="text-base md:text-lg font-normal text-white/90 max-w-md leading-relaxed tracking-wide mt-2"
+                   style={{ textShadow: "0 1px 8px rgba(0,0,0,0.5)" }}>
                     <span className="inline-flex items-center gap-2 whitespace-nowrap">
                         <FaMapLocationDot aria-hidden="true" />
                         <span>Bergen, Norway</span>

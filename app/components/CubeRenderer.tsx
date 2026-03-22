@@ -223,9 +223,9 @@ function drawScene(
     const pieces = KF[ki];
 
     const isMobile = W < 768;
-    const sc = isMobile ? W*0.22 : Math.min(W,H2)*0.16;
-    const cx = W/2;
-    const cy = isMobile ? H2*0.42 : H2/2;
+    const sc = isMobile ? W*0.22 : Math.min(W,H2)*0.14;
+    const cx = isMobile ? W/2 : W * 0.55;
+    const cy = isMobile ? H2*0.42 : H2 * 0.45;
     const cornerR = sc * 0.06;
 
     const quads: Quad[] = [];

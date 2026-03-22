@@ -25,19 +25,31 @@ export default function Home() {
 
     useEffect(() => {
         const fn = () => {
-            const max = document.documentElement.scrollHeight - window.innerHeight;
+            const footerEl = document.getElementById("footer");
+            if (!footerEl) return;
+
+            const footerTop = footerEl.offsetTop;
+            const viewHeight = window.innerHeight;
+            
+            // max is the scroll distance needed to Reach the top of the footer
+            const max = footerTop; 
             if (max <= 0) { setSp(0); return; }
 
             const raw = window.scrollY / max;
 
-            // Snap to exactly 1 when within SNAP_THRESHOLD px of the bottom,
-            // so fast scrolling always triggers the solved state.
-            const atBottom = window.scrollY >= max - SNAP_THRESHOLD;
-            setSp(atBottom ? 1 : Math.min(Math.max(raw, 0), 1));
+            // Snap to exactly 1 when within SNAP_THRESHOLD px of the footer's top,
+            // or when we've scrolled into the footer's territory.
+            const reachedFooter = window.scrollY >= Math.max(0, max - SNAP_THRESHOLD);
+            setSp(reachedFooter ? 1 : Math.min(Math.max(raw, 0), 1));
         };
         window.addEventListener("scroll", fn, { passive: true });
         fn();
-        return () => window.removeEventListener("scroll", fn);
+        // Use a small delay to ensure elements are rendered and offsetTop is correct
+        const timeout = setTimeout(fn, 100);
+        return () => {
+            window.removeEventListener("scroll", fn);
+            clearTimeout(timeout);
+        };
     }, []);
 
     useEffect(() => {
@@ -67,18 +79,18 @@ export default function Home() {
         if (el) window.scrollTo({ top: el.offsetTop, behavior: "smooth" });
     };
 
-    const solved = sp >= 0.97;
+    const solved = sp >= 1;
     const hasSnapped = useRef(false);
 
-    // Once solved, snap scroll position to the true bottom exactly once,
+    // Once solved, snap scroll position exactly once to the top of the footer,
     // so no leftover scroll distance remains after the snap threshold kicked in early.
     // Using a ref prevents this from re-firing and hijacking subsequent navigation.
     useEffect(() => {
         if (!solved || hasSnapped.current) return;
         hasSnapped.current = true;
-        const max = document.documentElement.scrollHeight - window.innerHeight;
-        if (window.scrollY < max) {
-            window.scrollTo({ top: max, behavior: "smooth" });
+        const footerEl = document.getElementById("footer");
+        if (footerEl) {
+            window.scrollTo({ top: footerEl.offsetTop, behavior: "smooth" });
         }
     }, [solved]);
 
@@ -125,7 +137,6 @@ export default function Home() {
                         height: "100dvh",
                         opacity:       solved ? 1 : 0,
                         pointerEvents: solved ? "auto" : "none",
-                        transform:     solved ? "translateY(0px)" : "translateY(48px)",
                     }}
                 >
                     <div
@@ -133,9 +144,9 @@ export default function Home() {
                         style={{ opacity: solved ? 1 : 0 }}
                     >
                         <div className="flex flex-col items-center gap-2">
-                            <span className="text-xl animate-bounce" style={{ filter: "drop-shadow(0 0 8px rgba(252,212,53,0.8))" }}>
-                                ✨
-                            </span>
+                            <svg className="animate-bounce" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: "drop-shadow(0 0 8px rgba(252,212,53,0.8))" }}>
+                                <path d="M12 2L14.09 8.26L20 9.27L15.55 13.97L16.91 20L12 16.9L7.09 20L8.45 13.97L4 9.27L9.91 8.26L12 2Z" fill="#fcd435" />
+                            </svg>
                             <span className="text-[0.6rem] tracking-[0.45em] uppercase font-bold text-[#fcd435]"
                                   style={{ textShadow: "0 0 15px rgba(252,212,53,0.5)" }}>
                                 Cube Solved

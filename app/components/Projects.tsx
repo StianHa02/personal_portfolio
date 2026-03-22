@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence, LayoutGroup } from "motion/react";
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 
 const inter = { fontFamily: "var(--font-inter), sans-serif" };
@@ -72,6 +73,7 @@ function ProjectCard({ project }: { project: Project }) {
 
     return (
         <div
+            data-project-card
             style={{
                 backgroundColor: "#0b0b12",
                 border: "1px solid rgba(255,255,255,0.08)",
@@ -80,6 +82,7 @@ function ProjectCard({ project }: { project: Project }) {
                 overflow: "hidden",
                 display: "flex",
                 flexDirection: "column",
+                height: "100%",
                 transition: "transform 0.3s ease, box-shadow 0.3s ease",
             }}
             onMouseEnter={e => {
@@ -92,7 +95,7 @@ function ProjectCard({ project }: { project: Project }) {
             }}
         >
             {/* Image — edge to edge */}
-            <div style={{ width: "100%", height: "200px", position: "relative", flexShrink: 0, background: "rgba(255,255,255,0.04)" }}>
+            <div style={{ width: "100%", height: "200px", position: "relative", flexShrink: 0, overflow: "hidden", background: "rgba(255,255,255,0.04)" }}>
                 {project.imageUrl && !isComingSoon ? (
                     <img
                         src={project.imageUrl}
@@ -284,10 +287,21 @@ function ProjectCard({ project }: { project: Project }) {
 export default function Projects() {
     const [filter, setFilter] = useState<"all" | "frontend" | "fullstack" | "personal">("all");
     const filtered = filter === "all" ? projects : projects.filter(p => p.category === filter);
+    const gridRef = useRef<HTMLDivElement>(null);
+    const [cardHeight, setCardHeight] = useState<number>(0);
+
+    // Measure tallest card once on first render (when "all" is shown)
+    useEffect(() => {
+        if (!gridRef.current || cardHeight > 0) return;
+        const cards = gridRef.current.querySelectorAll<HTMLElement>("[data-project-card]");
+        let max = 0;
+        cards.forEach(c => { if (c.offsetHeight > max) max = c.offsetHeight; });
+        if (max > 0) setCardHeight(max);
+    }, [cardHeight]);
 
     return (
         <div className="relative w-full min-h-screen flex items-start justify-center">
-            <div className="relative w-full max-w-7xl mx-auto md:py-24" style={{ paddingTop: "clamp(5rem, 20dvh, 12rem)", paddingBottom: "clamp(4rem, 8dvh, 6rem)", paddingLeft: "clamp(1.5rem, 5vw, 2rem)", paddingRight: "clamp(1.5rem, 5vw, 2rem)" }}>
+            <div className="relative w-full max-w-7xl mx-auto md:py-24" style={{ paddingTop: "clamp(2rem, 5dvh, 3.5rem)", paddingBottom: "clamp(4rem, 8dvh, 6rem)", paddingLeft: "clamp(1.5rem, 5vw, 2rem)", paddingRight: "clamp(1.5rem, 5vw, 2rem)" }}>
 
                 {/* Header */}
                 <div style={{ textAlign: "center", marginBottom: "2rem" }}>
@@ -298,54 +312,85 @@ export default function Projects() {
 
                 {/* Filter */}
                 <div style={{ display: "flex", justifyContent: "center", marginBottom: "3rem" }}>
-                    <div style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "0.375rem",
-                        padding: "0.375rem",
-                        background: "rgba(255,255,255,0.04)",
-                        border: "1px solid rgba(255,255,255,0.08)",
-                        borderRadius: "0.875rem",
-                    }}>
-                        {filterButtons.map(btn => {
-                            const isActive = filter === btn.value;
-                            return (
-                                <button
-                                    key={btn.value}
-                                    onClick={() => setFilter(btn.value as typeof filter)}
-                                    style={{
-                                        ...inter,
-                                        padding: "0.5rem 1.5rem",
-                                        borderRadius: "0.625rem",
-                                        fontSize: "0.72rem",
-                                        fontWeight: 600,
-                                        letterSpacing: "0.08em",
-                                        textTransform: "uppercase",
-                                        cursor: "pointer",
-                                        border: "none",
-                                        transition: "all 0.25s ease",
-                                        background: isActive ? "rgba(255,255,255,0.1)" : "transparent",
-                                        color: isActive ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.35)",
-                                        boxShadow: isActive ? "0 0 12px rgba(255,255,255,0.06)" : "none",
-                                    }}
-                                >
-                                    {btn.label}
-                                </button>
-                            );
-                        })}
-                    </div>
+                    <LayoutGroup>
+                        <div style={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "0.375rem",
+                            padding: "0.375rem",
+                            background: "rgba(255,255,255,0.04)",
+                            border: "1px solid rgba(255,255,255,0.08)",
+                            borderRadius: "0.875rem",
+                            position: "relative",
+                        }}>
+                            {filterButtons.map(btn => {
+                                const isActive = filter === btn.value;
+                                return (
+                                    <button
+                                        key={btn.value}
+                                        onClick={() => setFilter(btn.value as typeof filter)}
+                                        style={{
+                                            ...inter,
+                                            padding: "0.5rem 1.5rem",
+                                            borderRadius: "0.625rem",
+                                            fontSize: "0.72rem",
+                                            fontWeight: 600,
+                                            letterSpacing: "0.08em",
+                                            textTransform: "uppercase",
+                                            cursor: "pointer",
+                                            border: "none",
+                                            background: "transparent",
+                                            color: isActive ? "rgba(147,197,253,0.95)" : "rgba(255,255,255,0.35)",
+                                            position: "relative",
+                                            zIndex: 1,
+                                        }}
+                                    >
+                                        {isActive && (
+                                            <motion.div
+                                                layoutId="filter-indicator"
+                                                style={{
+                                                    position: "absolute",
+                                                    inset: 0,
+                                                    borderRadius: 10,
+                                                    background: "rgba(59,130,246,0.18)",
+                                                    boxShadow: "0 0 12px rgba(59,130,246,0.15)",
+                                                    border: "1px solid rgba(59,130,246,0.3)",
+                                                    zIndex: -1,
+                                                }}
+                                                transition={{ type: "spring", stiffness: 500, damping: 35, borderRadius: { duration: 0 } }}
+                                            />
+                                        )}
+                                        {btn.label}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </LayoutGroup>
                 </div>
 
                 {/* Cards grid */}
-                <div style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-                    gap: "1.5rem",
-                    alignItems: "stretch",
-                }}>
-                    {filtered.map(project => (
-                        <ProjectCard key={project.title} project={project} />
-                    ))}
+                <div
+                    ref={gridRef}
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+                        gap: "1.5rem",
+                    }}
+                >
+                    <AnimatePresence mode="popLayout">
+                        {filtered.map(project => (
+                            <motion.div
+                                key={project.title}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                                style={{ height: cardHeight > 0 ? cardHeight : "auto" }}
+                            >
+                                <ProjectCard project={project} />
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
                 </div>
 
             </div>

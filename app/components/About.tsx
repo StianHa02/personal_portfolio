@@ -91,7 +91,7 @@ export default function About() {
             <div
                 className="relative w-full max-w-7xl mx-auto"
                 style={{
-                    paddingTop: "clamp(5rem, 20dvh, 12rem)",
+                    paddingTop: "clamp(2rem, 5dvh, 3.5rem)",
                     paddingBottom: "clamp(4rem, 8dvh, 6rem)",
                     paddingLeft: "clamp(1.5rem, 5vw, 2rem)",
                     paddingRight: "clamp(1.5rem, 5vw, 2rem)",
