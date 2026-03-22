@@ -172,8 +172,8 @@ export default function About() {
                             </div>
 
                             {/* Social links */}
-                            <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "1rem" }}>
-                                <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-5 gap-y-3">
+                            <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "1.25rem", flex: 1, display: "flex", alignItems: "center" }}>
+                                <div className="grid grid-cols-2 gap-3 w-full">
                                     {[
                                         { label: "GitHub",   href: "https://github.com/StianHa02",          icon: FaGithub   },
                                         { label: "LinkedIn", href: "https://www.linkedin.com/in/stian-gia-huy-ha/", icon: FaLinkedin },
@@ -185,21 +185,33 @@ export default function About() {
                                             href={href}
                                             target={href.startsWith("mailto") ? undefined : "_blank"}
                                             rel="noopener noreferrer"
-                                            className="flex items-center gap-2 cursor-pointer"
+                                            className="flex items-center justify-center gap-2.5 cursor-pointer"
                                             style={{
                                                 ...inter,
-                                                fontSize: "0.72rem",
-                                                letterSpacing: "0.15em",
+                                                fontSize: "0.78rem",
+                                                letterSpacing: "0.12em",
                                                 textTransform: "uppercase",
                                                 fontWeight: 500,
                                                 color: "rgba(255,255,255,0.45)",
                                                 textDecoration: "none",
-                                                transition: "color 0.2s",
+                                                transition: "color 0.2s, background 0.2s, border-color 0.2s",
+                                                padding: "0.7rem 1rem",
+                                                borderRadius: "0.5rem",
+                                                background: "rgba(255,255,255,0.03)",
+                                                border: "1px solid rgba(255,255,255,0.06)",
                                             }}
-                                            onMouseEnter={e => { e.currentTarget.style.color = "rgba(255,255,255,0.85)"; }}
-                                            onMouseLeave={e => { e.currentTarget.style.color = "rgba(255,255,255,0.45)"; }}
+                                            onMouseEnter={e => {
+                                                e.currentTarget.style.color = "rgba(255,255,255,0.85)";
+                                                e.currentTarget.style.background = "rgba(255,255,255,0.07)";
+                                                e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
+                                            }}
+                                            onMouseLeave={e => {
+                                                e.currentTarget.style.color = "rgba(255,255,255,0.45)";
+                                                e.currentTarget.style.background = "rgba(255,255,255,0.03)";
+                                                e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)";
+                                            }}
                                         >
-                                            <Icon style={{ fontSize: "0.85rem" }} />
+                                            <Icon style={{ fontSize: "1rem" }} />
                                             {label}
                                         </a>
                                     ))}
@@ -215,17 +227,27 @@ export default function About() {
                         <BentoBox title="Academic Journey" className="hover:!translate-y-0">
                             <div style={{ ...inter, width: "100%", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                                 <div>
-                                    <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "0.25rem" }}>
-                                        <h3 style={{ fontSize: "0.95rem", fontWeight: 500, color: "rgba(237,233,223,0.9)", margin: 0 }}>
-                                            M.Sc. Data Science
-                                        </h3>
-                                        <span style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 500, color: "rgba(255,255,255,0.35)", flexShrink: 0, marginLeft: "0.75rem" }}>
-                                            2023 — Now
-                                        </span>
-                                    </div>
+                                    <h3 style={{ fontSize: "0.95rem", fontWeight: 500, color: "rgba(237,233,223,0.9)", margin: 0, marginBottom: "0.25rem" }}>
+                                        M.Sc. Data Science
+                                    </h3>
                                     <p style={{ fontSize: "0.78rem", fontWeight: 500, color: "rgba(255,255,255,0.4)", margin: 0 }}>
                                         University of Bergen (UiB)
                                     </p>
+                                </div>
+                                {/* Progress bar */}
+                                <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+                                    <div style={{ position: "relative", width: "100%", height: 4, borderRadius: 9999, background: "rgba(100,160,255,0.08)" }}>
+                                        <div style={{
+                                            width: `${Math.min(Math.max(((new Date().getFullYear() - 2023) / (2028 - 2023)) * 100, 0), 100)}%`,
+                                            height: "100%",
+                                            borderRadius: 9999,
+                                            background: "linear-gradient(90deg, rgba(80,140,255,0.25), rgba(100,170,255,0.5))",
+                                        }} />
+                                    </div>
+                                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                                        <span style={{ fontSize: "0.6rem", letterSpacing: "0.12em", fontWeight: 500, color: "rgba(100,160,255,0.5)" }}>2023</span>
+                                        <span style={{ fontSize: "0.6rem", letterSpacing: "0.12em", fontWeight: 500, color: "rgba(100,160,255,0.25)" }}>2028</span>
+                                    </div>
                                 </div>
                                 <p style={{ fontSize: "0.82rem", lineHeight: 1.6, color: "rgba(255,255,255,0.5)", margin: 0 }}>
                                     Integrated Master&apos;s (Sivilingeniør) specializing in medical data science.

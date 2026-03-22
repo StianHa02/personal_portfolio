@@ -361,9 +361,7 @@ export default function CubeRenderer({
         c.style.height = vh + "px";
         const ctx = c.getContext("2d");
         if (!ctx) return;
-        if (typeof ctx.resetTransform === "function") ctx.resetTransform();
-        if (typeof ctx.setTransform === "function") ctx.setTransform(dpr,0,0,dpr,0,0);
-        else ctx.scale(dpr,dpr);
+        ctx.setTransform(dpr,0,0,dpr,0,0);
         ctxRef.current = ctx;
         lastTs.current = null;
     },[]);
