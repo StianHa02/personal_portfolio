@@ -91,7 +91,7 @@ export default function About() {
                     <BentoBox className="hover:!translate-y-0">
                         <div className="flex flex-col gap-6">
                             {/* Avatar + name */}
-                            <div className="flex items-center gap-6">
+                            <div className="flex flex-col items-center md:flex-row md:items-center gap-4 md:gap-6">
                                 <div
                                     className="shrink-0 rounded-full overflow-hidden border-2"
                                     style={{
@@ -131,7 +131,7 @@ export default function About() {
                                         priority
                                     />
                                 </div>
-                                <div style={{ ...inter }}>
+                                <div className="text-center md:text-left" style={{ ...inter }}>
                                     <style>{`
                                         @keyframes wave {
                                             0%   { transform: rotate(0deg);   }
@@ -155,7 +155,7 @@ export default function About() {
                             </div>
 
                             {/* Bio */}
-                            <div className="flex flex-col gap-2" style={{ ...inter }}>
+                            <div className="flex flex-col gap-2 text-center md:text-left" style={{ ...inter }}>
                                 <p style={{ fontSize: "0.85rem", lineHeight: 1.65, color: "rgba(255,255,255,0.6)", margin: 0 }}>
                                     A student and developer who loves turning ideas into polished applications.
                                 </p>
@@ -173,7 +173,7 @@ export default function About() {
 
                             {/* Social links */}
                             <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "1rem" }}>
-                                <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+                                <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-5 gap-y-3">
                                     {[
                                         { label: "GitHub",   href: "https://github.com/StianHa02",          icon: FaGithub   },
                                         { label: "LinkedIn", href: "https://www.linkedin.com/in/stian-gia-huy-ha/", icon: FaLinkedin },

@@ -97,10 +97,11 @@ export default function Home() {
     // Dim the cube as soon as the user starts scrolling (works on mobile immediately).
     // Restore to full when back at hero (sp ≈ 0) or when the cube is solved.
     const cubeOpacity = solved ? 1 : sp < 0.015 ? 1 : 0.18;
+    const cubeInteractive = activeSection === "hero" || (solved && activeSection === "footer");
 
     return (
         <div className="relative bg-[#0e0e16]">
-            <CubeRenderer sp={sp} opacity={cubeOpacity} logoSrc="/favicon.ico" />
+            <CubeRenderer sp={sp} opacity={cubeOpacity} logoSrc="/favicon.ico" interactionEnabled={cubeInteractive} />
 
 
             <RightDotNav
@@ -112,7 +113,7 @@ export default function Home() {
 
             {/* Scroll indicator — fixed to bottom of viewport, fades out on scroll */}
             <div
-                className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2"
+                className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 hidden md:flex flex-col items-center gap-2"
                 style={{
                     opacity: sp < 0.015 ? 1 : 0,
                     transition: "opacity 0.4s ease",

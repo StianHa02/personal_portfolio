@@ -306,11 +306,12 @@ export default function CubeRenderer({
                                          sp,
                                          opacity = 1,
                                          logoSrc,
+                                         interactionEnabled = false,
                                      }: {
     sp: number;
     opacity?: number;
-    /** Optional URL/path to the logo image to render on the center white sticker */
     logoSrc?: string;
+    interactionEnabled?: boolean;
 }) {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -320,10 +321,25 @@ export default function CubeRenderer({
     const spRef = useRef<number>(sp);
     const logoImgRef = useRef<HTMLImageElement | null>(null);
 
+    // Mouse drag interaction refs (all refs to avoid re-renders)
+    const interactionEnabledRef = useRef(false);
+    const draggingRef = useRef(false);
+    const dragStartXRef = useRef(0);
+    const dragStartYRef = useRef(0);
+    const mouseOffsetXRef = useRef(0);
+    const mouseOffsetYRef = useRef(0);
+    const smoothOffsetXRef = useRef(0);
+    const smoothOffsetYRef = useRef(0);
+
     // Update spRef when sp changes
     useEffect(() => {
         spRef.current = sp;
     }, [sp]);
+
+    // Sync interaction prop to ref
+    useEffect(() => {
+        interactionEnabledRef.current = interactionEnabled;
+    }, [interactionEnabled]);
 
     // Load logo image
     useEffect(() => {
@@ -357,11 +373,26 @@ export default function CubeRenderer({
         const dt = (ts - lastTs.current) / 1000;
         lastTs.current = ts;
         ryRef.current += dt * 0.22;
+
+        // Smooth drag offset blending — follow target when dragging, snap back when released
+        if (draggingRef.current && interactionEnabledRef.current) {
+            const f = 1 - Math.exp(-8.0 * dt);
+            smoothOffsetYRef.current += (mouseOffsetYRef.current - smoothOffsetYRef.current) * f;
+            smoothOffsetXRef.current += (mouseOffsetXRef.current - smoothOffsetXRef.current) * f;
+        } else {
+            const f = 1 - Math.exp(-4.0 * dt);
+            smoothOffsetYRef.current += (0 - smoothOffsetYRef.current) * f;
+            smoothOffsetXRef.current += (0 - smoothOffsetXRef.current) * f;
+        }
+
         const c = canvasRef.current;
         const ctx = ctxRef.current;
         if (c && ctx) {
             const dpr = window.devicePixelRatio || 1;
-            drawScene(ctx, c.width / dpr, c.height / dpr, spRef.current, ryRef.current, -0.38, logoImgRef.current);
+            drawScene(ctx, c.width / dpr, c.height / dpr, spRef.current,
+                ryRef.current + smoothOffsetYRef.current,
+                -0.38 + smoothOffsetXRef.current,
+                logoImgRef.current);
         }
         // eslint-disable-next-line react-hooks/immutability
         rafRef.current = requestAnimationFrame(loop);
@@ -369,12 +400,39 @@ export default function CubeRenderer({
 
     useEffect(()=>{
         resize();
+        const MAX_OFFSET = 0.6;
+
+        const handleMouseDown = (e: MouseEvent) => {
+            if (!interactionEnabledRef.current) return;
+            draggingRef.current = true;
+            dragStartXRef.current = e.clientX;
+            dragStartYRef.current = e.clientY;
+        };
+        const handleMouseMove = (e: MouseEvent) => {
+            if (!draggingRef.current || !interactionEnabledRef.current) return;
+            const dx = e.clientX - dragStartXRef.current;
+            const dy = e.clientY - dragStartYRef.current;
+            mouseOffsetYRef.current = -(dx / window.innerWidth) * MAX_OFFSET * 4;
+            mouseOffsetXRef.current = (dy / window.innerHeight) * MAX_OFFSET * 4;
+        };
+        const handleMouseUp = () => {
+            draggingRef.current = false;
+            mouseOffsetXRef.current = 0;
+            mouseOffsetYRef.current = 0;
+        };
+
         window.addEventListener("resize", resize);
         window.visualViewport?.addEventListener("resize", resize);
+        window.addEventListener("mousedown", handleMouseDown);
+        window.addEventListener("mousemove", handleMouseMove);
+        window.addEventListener("mouseup", handleMouseUp);
         rafRef.current = requestAnimationFrame(loop);
         return ()=>{
             window.removeEventListener("resize", resize);
             window.visualViewport?.removeEventListener("resize", resize);
+            window.removeEventListener("mousedown", handleMouseDown);
+            window.removeEventListener("mousemove", handleMouseMove);
+            window.removeEventListener("mouseup", handleMouseUp);
             if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
             rafRef.current = null;
             ctxRef.current = null;
