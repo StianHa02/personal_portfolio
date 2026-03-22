@@ -14,7 +14,7 @@ const NAV_SECTIONS = [
     { id: "projects", label: "Projects" },
     { id: "skills",   label: "Skills"   },
     { id: "about",    label: "About"    },
-    { id: "footer",   label: "Connect"  },
+    { id: "footer",   label: "Finale"   },
 ];
 
 const SNAP_THRESHOLD = 20;
@@ -103,18 +103,37 @@ export default function Home() {
             <CubeRenderer sp={sp} opacity={cubeOpacity} logoSrc="/favicon.ico" />
 
 
-            <RightDotNav sections={NAV_SECTIONS} activeSection={activeSection} solved={solved} onNavigate={scrollTo} />
+            <RightDotNav
+                sections={NAV_SECTIONS.map(s => s.id === "footer" ? { ...s, label: solved ? "Solved!" : s.label } : s)}
+                activeSection={activeSection}
+                solved={solved}
+                onNavigate={scrollTo}
+            />
+
+            {/* Scroll indicator — fixed to bottom of viewport, fades out on scroll */}
+            <div
+                className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2"
+                style={{
+                    opacity: sp < 0.015 ? 1 : 0,
+                    transition: "opacity 0.4s ease",
+                    pointerEvents: "none",
+                }}
+            >
+                <span className="text-[0.7rem] tracking-[0.35em] uppercase font-semibold text-[#fcd435]"
+                      style={{ textShadow: "0 0 14px rgba(252,212,53,0.5)" }}>
+                    Scroll to solve
+                </span>
+                <svg
+                    className="animate-bounce"
+                    width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    style={{ filter: "drop-shadow(0 0 6px rgba(252,212,53,0.6))" }}
+                >
+                    <path d="M7 10l5 5 5-5" stroke="#fcd435" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+            </div>
 
             <main className="relative z-10">
                 <section id="hero" className="w-full" style={{ minHeight: "100dvh" }}>
-                    <div
-                        className="absolute top-8 left-1/2 -translate-x-1/2 transition-all duration-700 z-20 text-center"
-                        style={{ opacity: solved ? 1 : 1 }}
-                    >
-                        <span className="text-[0.6rem] tracking-[0.45em] uppercase font-bold text-[#fcd435] ">
-                            Scroll down to solve the cube
-                        </span>
-                    </div>
                     <Hero />
                 </section>
 
