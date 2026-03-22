@@ -29,9 +29,7 @@ export default function Home() {
             if (!footerEl) return;
 
             const footerTop = footerEl.offsetTop;
-            const viewHeight = window.innerHeight;
-            
-            // max is the scroll distance needed to Reach the top of the footer
+// max is the scroll distance needed to Reach the top of the footer
             const max = footerTop; 
             if (max <= 0) { setSp(0); return; }
 

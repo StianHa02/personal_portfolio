@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import { motion, AnimatePresence, LayoutGroup } from "motion/react";
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 
@@ -296,6 +296,7 @@ export default function Projects() {
         const cards = gridRef.current.querySelectorAll<HTMLElement>("[data-project-card]");
         let max = 0;
         cards.forEach(c => { if (c.offsetHeight > max) max = c.offsetHeight; });
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         if (max > 0) setCardHeight(max);
     }, [cardHeight]);
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { BentoBox, Toast } from "./ui";
 import { FaPaperPlane, FaGithub, FaLinkedin, FaEnvelope, FaCube } from "react-icons/fa";
 import Image from "next/image";
