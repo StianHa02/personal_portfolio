@@ -12,7 +12,7 @@ export default function Hero() {
             className="relative w-full flex items-end md:items-end justify-start select-none"
             style={{
                 minHeight: "100lvh",
-                paddingBottom: "clamp(3rem, 8vh, 10rem)",
+                paddingBottom: "clamp(6rem, 15vh, 10rem)",
                 paddingLeft: "clamp(1.5rem, 6vw, 9rem)",
                 paddingRight: "clamp(1.5rem, 4vw, 4rem)",
             }}
