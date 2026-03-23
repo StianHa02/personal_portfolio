@@ -18,6 +18,7 @@ const ACTIVE_SIZE = 13;
 
 export default function RightDotNav({ sections, activeSection, onNavigate }: RightDotNavProps) {
     const [hovered, setHovered] = useState(false);
+
     const activeIndex = sections.findIndex(s => s.id === activeSection);
 
     const targetY = activeIndex * ROW_HEIGHT;
@@ -28,7 +29,7 @@ export default function RightDotNav({ sections, activeSection, onNavigate }: Rig
 
     useEffect(() => {
         if (prevIndex.current !== activeIndex) {
-            springScale.set(0.4);
+            springScale.set(0.6); // slight "pop" when switching
             prevIndex.current = activeIndex;
         }
         springY.set(targetY);
@@ -41,9 +42,6 @@ export default function RightDotNav({ sections, activeSection, onNavigate }: Rig
             }
         });
     }, [springY, targetY, springScale]);
-
-    const activeColor = "#ffffff";
-    const activeGlow = "0 0 6px rgba(255,255,255,0.4)";
 
     const totalHeight = (sections.length - 1) * ROW_HEIGHT;
 
@@ -69,58 +67,71 @@ export default function RightDotNav({ sections, activeSection, onNavigate }: Rig
                 }}
             />
 
-            {/* Dot rows — each row is ROW_HEIGHT, dot + label centered within */}
+            {/* Dots */}
             <div className="relative flex flex-col items-center">
-                {sections.map((section, i) => (
-                    <button
-                        key={section.id}
-                        onClick={() => onNavigate(section.id)}
-                        className="relative cursor-pointer flex items-center justify-center"
-                        style={{ width: 24, height: ROW_HEIGHT }}
-                        aria-label={section.label}
-                    >
-                        <div
-                            className="rounded-full"
-                            style={{
-                                width: DOT_SIZE,
-                                height: DOT_SIZE,
-                                background: "rgba(255,255,255,0.2)",
-                            }}
-                        />
+                {sections.map((section, i) => {
+                    const isActive = activeIndex === i;
 
-                        <span
-                            className="pointer-events-none absolute top-1/2 text-[0.6rem] tracking-[0.2em] uppercase whitespace-nowrap"
-                            style={{
-                                right: 28,
-                                fontFamily: "var(--font-inter), sans-serif",
-                                color: activeIndex === i ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.7)",
-                                fontWeight: activeIndex === i ? 500 : 400,
-                                opacity: hovered || activeIndex === i ? 1 : 0,
-                                transform: `translateY(-50%) translateX(${hovered || activeIndex === i ? 0 : 4}px)`,
-                                transition: "opacity 0.15s, transform 0.15s",
-                            }}
+                    return (
+                        <button
+                            key={section.id}
+                            onClick={() => onNavigate(section.id)}
+                            className="relative cursor-pointer flex items-center justify-center px-2"
+                            style={{ width: 32, height: ROW_HEIGHT }} // 👈 bigger hitbox
+                            aria-label={section.label}
                         >
-                            {section.label}
-                        </span>
-                    </button>
-                ))}
-            </div>
+                            <motion.div
+                                className="rounded-full"
+                                animate={{
+                                    scale: isActive ? ACTIVE_SIZE / DOT_SIZE : 1,
+                                    background: isActive
+                                        ? "#ffffff"
+                                        : "rgba(255,255,255,0.2)",
+                                    boxShadow: isActive
+                                        ? "0 0 8px rgba(255,255,255,0.5)"
+                                        : "0 0 0px rgba(255,255,255,0)",
+                                }}
+                                whileHover={{
+                                    scale: ACTIVE_SIZE / DOT_SIZE,
+                                    background: isActive
+                                        ? "#ffffff"
+                                        : "rgba(255,255,255,0.35)", // 👈 subtle brighten
+                                    boxShadow: isActive
+                                        ? "0 0 10px rgba(255,255,255,0.6)"
+                                        : "0 0 0px rgba(255,255,255,0)",
+                                }}
+                                transition={{
+                                    type: "spring",
+                                    stiffness: 500,
+                                    damping: 25,
+                                }}
+                                style={{
+                                    width: DOT_SIZE,
+                                    height: DOT_SIZE,
+                                }}
+                            />
 
-            {/* Floating active dot */}
-            <motion.div
-                className="absolute rounded-full pointer-events-none"
-                style={{
-                    width: ACTIVE_SIZE,
-                    height: ACTIVE_SIZE,
-                    left: "50%",
-                    marginLeft: -ACTIVE_SIZE / 2,
-                    top: (ROW_HEIGHT - ACTIVE_SIZE) / 2,
-                    y: springY,
-                    scale: springScale,
-                    background: activeColor,
-                    boxShadow: activeGlow,
-                }}
-            />
+                            {/* Label */}
+                            <span
+                                className="pointer-events-none absolute top-1/2 text-[0.6rem] tracking-[0.2em] uppercase whitespace-nowrap"
+                                style={{
+                                    right: 32,
+                                    fontFamily: "var(--font-inter), sans-serif",
+                                    color: isActive
+                                        ? "rgba(255,255,255,0.9)"
+                                        : "rgba(255,255,255,0.7)",
+                                    fontWeight: isActive ? 500 : 400,
+                                    opacity: hovered || isActive ? 1 : 0,
+                                    transform: `translateY(-50%) translateX(${hovered || isActive ? 0 : 6}px)`,
+                                    transition: "opacity 0.2s, transform 0.2s",
+                                }}
+                            >
+                                {section.label}
+                            </span>
+                        </button>
+                    );
+                })}
+            </div>
         </motion.div>
     );
 }

@@ -35,7 +35,7 @@ const focusStyle: React.CSSProperties = {
 export default function About() {
     const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
     const [focused, setFocused] = useState<string | null>(null);
-    const [avatarSrc, setAvatarSrc] = useState<string>("/images/avatar.jpg");
+    const [isHovered, setIsHovered] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -93,42 +93,55 @@ export default function About() {
                             {/* Avatar + name */}
                             <div className="flex flex-col items-center md:flex-row md:items-center gap-4 md:gap-6">
                                 <div
-                                    className="shrink-0 rounded-full overflow-hidden border-2"
+                                    className="relative shrink-0 rounded-full overflow-hidden border-2"
                                     style={{
                                         width: 160,
                                         height: 160,
-                                        borderColor: "rgba(255,255,255,0.15)",
+                                        borderColor: isHovered ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.15)",
+                                        boxShadow: isHovered ? "0 0 20px rgba(255,255,255,0.1)" : "none",
                                         cursor: "pointer",
                                         transition: "border-color 0.2s, box-shadow 0.2s",
                                     }}
-                                    onMouseEnter={(e: React.MouseEvent<HTMLDivElement>) => {
-                                        setAvatarSrc("/images/avatar2.jpg");
-                                        const el = e.currentTarget as HTMLDivElement;
-                                        el.style.borderColor = "rgba(255,255,255,0.4)";
-                                        el.style.boxShadow = "0 0 20px rgba(255,255,255,0.1)";
-                                    }}
-                                    onMouseLeave={(e: React.MouseEvent<HTMLDivElement>) => {
-                                        setAvatarSrc("/images/avatar.jpg");
-                                        const el = e.currentTarget as HTMLDivElement;
-                                        el.style.borderColor = "rgba(255,255,255,0.15)";
-                                        el.style.boxShadow = "none";
-                                    }}
+                                    onMouseEnter={() => setIsHovered(true)}
+                                    onMouseLeave={() => setIsHovered(false)}
                                 >
+                                    {/* Default Avatar */}
                                     <Image
-                                        key={avatarSrc}
-                                        src={avatarSrc}
+                                        src="/images/avatar.jpg"
                                         alt="Stian"
                                         width={160}
                                         height={160}
-                                        style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }}
+                                        priority
+                                        style={{
+                                            position: "absolute",
+                                            top: 0,
+                                            left: 0,
+                                            width: "100%",
+                                            height: "100%",
+                                            objectFit: "cover",
+                                            objectPosition: "center top",
+                                            opacity: isHovered ? 0 : 1,
+                                            transition: "opacity 0.2s ease-in-out",
+                                        }}
                                     />
+                                    {/* Hover Avatar */}
                                     <Image
                                         src="/images/avatar2.jpg"
-                                        alt=""
+                                        alt="Stian Hover"
                                         width={160}
                                         height={160}
-                                        style={{ display: "none" }}
                                         priority
+                                        style={{
+                                            position: "absolute",
+                                            top: 0,
+                                            left: 0,
+                                            width: "100%",
+                                            height: "100%",
+                                            objectFit: "cover",
+                                            objectPosition: "center top",
+                                            opacity: isHovered ? 1 : 0,
+                                            transition: "opacity 0.2s ease-in-out",
+                                        }}
                                     />
                                 </div>
                                 <div className="text-center md:text-left" style={{ ...inter }}>
