@@ -223,9 +223,9 @@ function drawScene(
     const pieces = KF[ki];
 
     const isMobile = W < 768;
-    const sc = isMobile ? W*0.17 : Math.min(W,H2)*0.14;
-    const cx = isMobile ? W/2 : W * 0.55;
-    const cy = isMobile ? H2*0.42 : H2 / 2;
+    const sc = isMobile ? W*0.19 : Math.min(W,H2)*0.16;
+    const cx = W / 2;
+    const cy = H2 / 2;
     const cornerR = sc * 0.06;
 
     const quads: Quad[] = [];
@@ -245,13 +245,13 @@ function drawScene(
 
             let n: Vec3 = [...N6[fi]] as Vec3;
             if (moving) n = rot(n, mv.axis, la);
-            n = rx(n, autoRX); n = ry(n, autoRY);
+            n = ry(n, autoRY); n = rx(n, autoRX);
             if (n[2] >= 0) continue;
 
             const fullVerts: Vec3[] = FACE_VERTS_FULL[fi].map(([ox,oy,oz]) => {
                 let v: Vec3 = [pos[0] + ox, pos[1] + oy, pos[2] + oz];
                 if (moving) v = rot(v, mv.axis, la);
-                v = rx(v, autoRX); v = ry(v, autoRY);
+                v = ry(v, autoRY); v = rx(v, autoRX);
                 return v;
             });
             const fullZ = fullVerts.reduce((s, v) => s + v[2], 0) / 4;
@@ -262,7 +262,7 @@ function drawScene(
                 const stickerVerts: Vec3[] = FACE_VERTS_STICKER[fi].map(([ox,oy,oz]) => {
                     let v: Vec3 = [pos[0] + ox, pos[1] + oy, pos[2] + oz];
                     if (moving) v = rot(v, mv.axis, la);
-                    v = rx(v, autoRX); v = ry(v, autoRY);
+                    v = ry(v, autoRY); v = rx(v, autoRX);
                     return v;
                 });
                 const stickerZ = stickerVerts.reduce((s, v) => s + v[2], 0) / 4;
@@ -352,9 +352,9 @@ export default function CubeRenderer({
 
     const resize = useCallback(()=>{
         const c = canvasRef.current; if(!c) return;
-        const dpr = window.devicePixelRatio || 1;
-        const vw = window.visualViewport?.width ?? window.innerWidth;
-        const vh = window.visualViewport?.height ?? window.innerHeight;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
         c.width = Math.floor(vw * dpr);
         c.height = Math.floor(vh * dpr);
         c.style.width = vw + "px";
@@ -386,7 +386,7 @@ export default function CubeRenderer({
         const c = canvasRef.current;
         const ctx = ctxRef.current;
         if (c && ctx) {
-            const dpr = window.devicePixelRatio || 1;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
             drawScene(ctx, c.width / dpr, c.height / dpr, spRef.current,
                 ryRef.current + smoothOffsetYRef.current,
                 -0.38 + smoothOffsetXRef.current,
@@ -411,7 +411,7 @@ export default function CubeRenderer({
             const dx = e.clientX - dragStartXRef.current;
             const dy = e.clientY - dragStartYRef.current;
             mouseOffsetYRef.current = -(dx / window.innerWidth) * MAX_OFFSET * 4;
-            mouseOffsetXRef.current = (dy / window.innerHeight) * MAX_OFFSET * 4;
+            mouseOffsetXRef.current = -(dy / window.innerHeight) * MAX_OFFSET * 4;
         };
         const handleMouseUp = () => {
             draggingRef.current = false;
@@ -420,14 +420,12 @@ export default function CubeRenderer({
         };
 
         window.addEventListener("resize", resize);
-        window.visualViewport?.addEventListener("resize", resize);
         window.addEventListener("mousedown", handleMouseDown);
         window.addEventListener("mousemove", handleMouseMove);
         window.addEventListener("mouseup", handleMouseUp);
         rafRef.current = requestAnimationFrame(loop);
         return ()=>{
             window.removeEventListener("resize", resize);
-            window.visualViewport?.removeEventListener("resize", resize);
             window.removeEventListener("mousedown", handleMouseDown);
             window.removeEventListener("mousemove", handleMouseMove);
             window.removeEventListener("mouseup", handleMouseUp);

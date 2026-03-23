@@ -333,6 +333,7 @@ export default function Projects() {
                                         style={{
                                             ...inter,
                                             padding: "0.5rem 1.5rem",
+                                            minWidth: "6.5rem",
                                             borderRadius: "0.625rem",
                                             fontSize: "0.72rem",
                                             fontWeight: 600,
@@ -353,9 +354,9 @@ export default function Projects() {
                                                     position: "absolute",
                                                     inset: 0,
                                                     borderRadius: 10,
-                                                    background: "rgba(59,130,246,0.18)",
-                                                    boxShadow: "0 0 12px rgba(59,130,246,0.15)",
-                                                    border: "1px solid rgba(59,130,246,0.3)",
+                                                    background: "rgba(59,130,246,0.32)",
+                                                    boxShadow: "0 0 12px rgba(59,130,246,0.25)",
+                                                    border: "1px solid rgba(59,130,246,0.5)",
                                                     zIndex: -1,
                                                 }}
                                                 transition={{ type: "spring", stiffness: 500, damping: 35, borderRadius: { duration: 0 } }}

@@ -9,9 +9,9 @@ const playfair = Playfair_Display({
 export default function Hero() {
     return (
         <div
-            className="relative w-full flex items-end md:items-end justify-start"
+            className="relative w-full flex items-end md:items-end justify-start select-none"
             style={{
-                minHeight: "100svh",
+                minHeight: "100lvh",
                 paddingBottom: "clamp(3rem, 8vh, 10rem)",
                 paddingLeft: "clamp(1.5rem, 6vw, 9rem)",
                 paddingRight: "clamp(1.5rem, 4vw, 4rem)",

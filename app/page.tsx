@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Hero from "./components/Hero";
 import About from "./components/About";
 import Projects from "./components/Projects";
@@ -17,8 +17,6 @@ const NAV_SECTIONS = [
     { id: "footer",   label: "Finale"   },
 ];
 
-const SNAP_THRESHOLD = 20;
-
 export default function Home() {
     const [sp, setSp]                = useState(0);
     const [activeSection, setActive] = useState("hero");
@@ -29,20 +27,15 @@ export default function Home() {
             if (!footerEl) return;
 
             const footerTop = footerEl.offsetTop;
-// max is the scroll distance needed to Reach the top of the footer
-            const max = footerTop; 
-            if (max <= 0) { setSp(0); return; }
+            if (footerTop <= 0) { setSp(0); return; }
 
-            const raw = window.scrollY / max;
-
-            // Snap to exactly 1 when within SNAP_THRESHOLD px of the footer's top,
-            // or when we've scrolled into the footer's territory.
-            const reachedFooter = window.scrollY >= Math.max(0, max - SNAP_THRESHOLD);
-            setSp(reachedFooter ? 1 : Math.min(Math.max(raw, 0), 1));
+            // Use the smaller of footerTop and max possible scroll so sp can always reach 1
+            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const raw = window.scrollY / Math.min(footerTop, Math.max(maxScroll, 1));
+            setSp(Math.min(Math.max(raw, 0), 1));
         };
         window.addEventListener("scroll", fn, { passive: true });
         fn();
-        // Use a small delay to ensure elements are rendered and offsetTop is correct
         const timeout = setTimeout(fn, 100);
         return () => {
             window.removeEventListener("scroll", fn);
@@ -78,19 +71,6 @@ export default function Home() {
     };
 
     const solved = sp >= 1;
-    const hasSnapped = useRef(false);
-
-    // Once solved, snap scroll position exactly once to the top of the footer,
-    // so no leftover scroll distance remains after the snap threshold kicked in early.
-    // Using a ref prevents this from re-firing and hijacking subsequent navigation.
-    useEffect(() => {
-        if (!solved || hasSnapped.current) return;
-        hasSnapped.current = true;
-        const footerEl = document.getElementById("footer");
-        if (footerEl) {
-            window.scrollTo({ top: footerEl.offsetTop, behavior: "smooth" });
-        }
-    }, [solved]);
 
     // Dim the cube as soon as the user starts scrolling (works on mobile immediately).
     // Restore to full when back at hero (sp ≈ 0) or when the cube is solved.
@@ -132,19 +112,19 @@ export default function Home() {
             </div>
 
             <main className="relative z-10">
-                <section id="hero" className="w-full" style={{ minHeight: "100svh" }}>
+                <section id="hero" className="w-full" style={{ minHeight: "100lvh" }}>
                     <Hero />
                 </section>
 
-                <section id="projects" className="w-full flex items-center justify-center" style={{ minHeight: "100svh" }}>
+                <section id="projects" className="w-full flex items-center justify-center" style={{ minHeight: "100lvh" }}>
                     <Projects />
                 </section>
 
-                <section id="skills" className="w-full flex items-center justify-center" style={{ minHeight: "100svh" }}>
+                <section id="skills" className="w-full flex items-center justify-center" style={{ minHeight: "100lvh" }}>
                     <Skills />
                 </section>
 
-                <section id="about" className="w-full flex items-center justify-center" style={{ minHeight: "100svh" }}>
+                <section id="about" className="w-full flex items-center justify-center" style={{ minHeight: "100lvh" }}>
                     <About />
                 </section>
 
@@ -152,7 +132,7 @@ export default function Home() {
                     id="footer"
                     className="relative w-full transition-all duration-1000 ease-out overflow-hidden"
                     style={{
-                        height: "100svh",
+                        height: "100lvh",
                         opacity:       solved ? 1 : 0,
                         pointerEvents: solved ? "auto" : "none",
                     }}
