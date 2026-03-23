@@ -92,19 +92,18 @@ export default function About() {
                         <div className="flex flex-col gap-6">
                             {/* Avatar + name */}
                             <div className="flex flex-col items-center md:flex-row md:items-center gap-4 md:gap-6">
-                                <div
-                                    className="relative shrink-0 rounded-full overflow-hidden border-2"
-                                    style={{
-                                        width: 160,
-                                        height: 160,
-                                        borderColor: isHovered ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.15)",
-                                        boxShadow: isHovered ? "0 0 20px rgba(255,255,255,0.1)" : "none",
-                                        cursor: "pointer",
-                                        transition: "border-color 0.2s, box-shadow 0.2s",
-                                    }}
-                                    onMouseEnter={() => setIsHovered(true)}
-                                    onMouseLeave={() => setIsHovered(false)}
-                                >
+                                    <div
+                                        className="relative shrink-0 rounded-full overflow-hidden border-2"
+                                        style={{
+                                            width: 160,
+                                            height: 160,
+                                            borderColor: "rgba(255,255,255,0.15)",
+                                            cursor: "pointer",
+                                            transition: "border-color 0.2s",
+                                        }}
+                                        onMouseEnter={() => setIsHovered(true)}
+                                        onMouseLeave={() => setIsHovered(false)}
+                                    >
                                     {/* Default Avatar */}
                                     <Image
                                         src="/images/avatar.jpg"
