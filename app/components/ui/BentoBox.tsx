@@ -9,8 +9,7 @@ interface BentoBoxProps {
     accent?: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function BentoBox({ title, children, className = "", accent = false }: BentoBoxProps) {
+export function BentoBox({ title, children, className = ""}: BentoBoxProps) {
     return (
         <div
             className={`group relative rounded-2xl overflow-hidden transition-all duration-300 ease-out hover:-translate-y-1 ${className}`}

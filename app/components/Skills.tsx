@@ -4,8 +4,8 @@ import { useState } from "react";
 import {
     SiHtml5, SiCss, SiReact, SiNextdotjs, SiTypescript,
     SiTailwindcss, SiJavascript, SiNodedotjs, SiPython,
-    SiFlask, SiFastapi, SiSupabase, SiPostgresql,
-    SiGit, SiGithub, SiNpm, SiVercel, SiJetbrains,
+    SiFastapi, SiSupabase, SiPostgresql,
+    SiGit, SiGithub, SiVercel, SiJetbrains,
     SiDocker, SiNumpy, SiPandas,
     SiJupyter, SiScikitlearn, SiPytorch,
 } from "react-icons/si";

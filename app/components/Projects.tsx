@@ -1,8 +1,9 @@
 "use client";
 
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import { motion, AnimatePresence, LayoutGroup } from "motion/react";
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import Image from "next/image";
 
 const inter = { fontFamily: "var(--font-inter), sans-serif" };
 
@@ -97,10 +98,11 @@ function ProjectCard({ project }: { project: Project }) {
             {/* Image — edge to edge */}
             <div style={{ width: "100%", height: "200px", position: "relative", flexShrink: 0, overflow: "hidden", background: "rgba(255,255,255,0.04)" }}>
                 {project.imageUrl && !isComingSoon ? (
-                    <img
+                    <Image
                         src={project.imageUrl}
                         alt={project.title}
-                        style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.8, display: "block" }}
+                        fill
+                        style={{ objectFit: "cover", opacity: 0.8 }}
                     />
                 ) : (
                     <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>

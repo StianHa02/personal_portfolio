@@ -16,7 +16,7 @@ const ROW_HEIGHT = 32;
 const DOT_SIZE = 8;
 const ACTIVE_SIZE = 13;
 
-export default function RightDotNav({ sections, activeSection, solved, onNavigate }: RightDotNavProps) {
+export default function RightDotNav({ sections, activeSection, onNavigate }: RightDotNavProps) {
     const [hovered, setHovered] = useState(false);
     const activeIndex = sections.findIndex(s => s.id === activeSection);
 

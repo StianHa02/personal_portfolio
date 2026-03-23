@@ -88,7 +88,7 @@ export default function About() {
                 <div className="grid md:grid-cols-2 gap-4 md:gap-5">
 
                     {/* Left — About Me card */}
-                    <BentoBox className="hover:!translate-y-0">
+                    <BentoBox className="hover:translate-y-0!">
                         <div className="flex flex-col gap-6">
                             {/* Avatar + name */}
                             <div className="flex flex-col items-center md:flex-row md:items-center gap-4 md:gap-6">
@@ -224,7 +224,7 @@ export default function About() {
                     <div className="flex flex-col gap-4 md:gap-5">
 
                         {/* Academic Journey */}
-                        <BentoBox title="Academic Journey" className="hover:!translate-y-0">
+                        <BentoBox title="Academic Journey" className="hover:translate-y-0!">
                             <div style={{ ...inter, width: "100%", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                                 <div>
                                     <h3 style={{ fontSize: "0.95rem", fontWeight: 500, color: "rgba(237,233,223,0.9)", margin: 0, marginBottom: "0.25rem" }}>
@@ -257,7 +257,7 @@ export default function About() {
                         </BentoBox>
 
                         {/* Contact — compact */}
-                        <BentoBox title="Contact Me" className="hover:!translate-y-0">
+                        <BentoBox title="Contact Me" className="hover:translate-y-0!">
                             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.625rem" }}>
                                     <input
