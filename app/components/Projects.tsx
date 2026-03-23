@@ -371,29 +371,35 @@ export default function Projects() {
                 </div>
 
                 {/* Cards grid */}
-                <div
-                    ref={gridRef}
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-                        gap: "1.5rem",
-                    }}
-                >
-                    <AnimatePresence mode="popLayout">
-                        {filtered.map(project => (
-                            <motion.div
-                                key={project.title}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.2 }}
-                                style={{ height: cardHeight > 0 ? cardHeight : "auto" }}
-                            >
-                                <ProjectCard project={project} />
-                            </motion.div>
-                        ))}
-                    </AnimatePresence>
-                </div>
+                <LayoutGroup>
+                    <div
+                        ref={gridRef}
+                        style={{
+                            display: "grid",
+                            gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
+                            gap: "1.5rem",
+                        }}
+                    >
+                        <AnimatePresence mode="popLayout">
+                            {filtered.map(project => (
+                                <motion.div
+                                    key={project.title}
+                                    layout
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{
+                                        opacity: { duration: 0.4 },
+                                        layout: { type: "spring", stiffness: 400, damping: 30 },
+                                    }}
+                                    style={{ height: cardHeight > 0 ? cardHeight : "auto" }}
+                                >
+                                    <ProjectCard project={project} />
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
+                    </div>
+                </LayoutGroup>
 
             </div>
         </div>
