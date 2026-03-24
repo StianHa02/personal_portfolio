@@ -316,8 +316,8 @@ export default function Projects() {
                 {/* Filter */}
                 <div style={{ display: "flex", justifyContent: "center", marginBottom: "3rem" }}>
                     <LayoutGroup>
-                        <div style={{
-                            display: "inline-flex",
+                        <div className="w-full sm:w-auto" style={{
+                            display: "flex",
                             alignItems: "center",
                             gap: "0.375rem",
                             padding: "0.375rem",
@@ -332,14 +332,15 @@ export default function Projects() {
                                     <button
                                         key={btn.value}
                                         onClick={() => setFilter(btn.value as typeof filter)}
+                                        className="flex-1 sm:flex-none"
                                         style={{
                                             ...inter,
-                                            padding: "0.5rem 1.5rem",
-                                            minWidth: "6.5rem",
+                                            padding: "0.5rem 0.75rem",
+                                            minWidth: 0,
                                             borderRadius: "0.625rem",
-                                            fontSize: "0.72rem",
+                                            fontSize: "0.65rem",
                                             fontWeight: 600,
-                                            letterSpacing: "0.08em",
+                                            letterSpacing: "0.05em",
                                             textTransform: "uppercase",
                                             cursor: "pointer",
                                             border: "none",
@@ -347,6 +348,7 @@ export default function Projects() {
                                             color: isActive ? "rgba(147,197,253,0.95)" : "rgba(255,255,255,0.35)",
                                             position: "relative",
                                             zIndex: 1,
+                                            whiteSpace: "nowrap",
                                         }}
                                     >
                                         {isActive && (

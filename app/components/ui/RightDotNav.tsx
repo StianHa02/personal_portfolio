@@ -18,6 +18,7 @@ const ACTIVE_SIZE = 13;
 
 export default function RightDotNav({ sections, activeSection, onNavigate }: RightDotNavProps) {
     const [hovered, setHovered] = useState(false);
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
     const activeIndex = sections.findIndex(s => s.id === activeSection);
 
@@ -76,28 +77,29 @@ export default function RightDotNav({ sections, activeSection, onNavigate }: Rig
                         <button
                             key={section.id}
                             onClick={() => onNavigate(section.id)}
+                            onMouseEnter={() => setHoveredIndex(i)}
+                            onMouseLeave={() => setHoveredIndex(null)}
                             className="relative cursor-pointer flex items-center justify-center px-2"
-                            style={{ width: 32, height: ROW_HEIGHT }} // 👈 bigger hitbox
+                            style={{ width: 32, height: ROW_HEIGHT }}
                             aria-label={section.label}
                         >
                             <motion.div
                                 className="rounded-full"
                                 animate={{
-                                    scale: isActive ? ACTIVE_SIZE / DOT_SIZE : 1,
+                                    scale: isActive
+                                        ? ACTIVE_SIZE / DOT_SIZE
+                                        : hoveredIndex === i
+                                        ? (ROW_HEIGHT / 2) / DOT_SIZE
+                                        : 1,
                                     background: isActive
                                         ? "#ffffff"
-                                        : "rgba(255,255,255,0.2)",
+                                        : hoveredIndex === i
+                                        ? "rgba(255,255,255,0.7)"
+                                        : "#ffffff",
                                     boxShadow: isActive
                                         ? "0 0 8px rgba(255,255,255,0.5)"
-                                        : "0 0 0px rgba(255,255,255,0)",
-                                }}
-                                whileHover={{
-                                    scale: ACTIVE_SIZE / DOT_SIZE,
-                                    background: isActive
-                                        ? "#ffffff"
-                                        : "rgba(255,255,255,0.35)", // 👈 subtle brighten
-                                    boxShadow: isActive
-                                        ? "0 0 10px rgba(255,255,255,0.6)"
+                                        : hoveredIndex === i
+                                        ? "0 0 6px rgba(255,255,255,0.15)"
                                         : "0 0 0px rgba(255,255,255,0)",
                                 }}
                                 transition={{

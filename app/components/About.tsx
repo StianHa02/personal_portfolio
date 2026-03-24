@@ -271,7 +271,7 @@ export default function About() {
                         {/* Contact — compact */}
                         <BentoBox title="Contact Me" className="hover:translate-y-0!">
                             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.625rem" }}>
+                                <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "0.625rem" }}>
                                     <input
                                         type="text" name="name" placeholder="Name" required
                                         style={{ ...inputStyle, ...(focused === "name" ? focusStyle : {}) }}
