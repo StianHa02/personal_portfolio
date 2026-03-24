@@ -86,16 +86,12 @@ export default function RightDotNav({ sections, activeSection, onNavigate }: Rig
                             <motion.div
                                 className="rounded-full"
                                 animate={{
-                                    scale: isActive
+                                    scale: hoveredIndex === i
+                                        ? (ACTIVE_SIZE + 8) / DOT_SIZE
+                                        : isActive
                                         ? ACTIVE_SIZE / DOT_SIZE
-                                        : hoveredIndex === i
-                                        ? (ROW_HEIGHT / 2) / DOT_SIZE
                                         : 1,
-                                    background: isActive
-                                        ? "#ffffff"
-                                        : hoveredIndex === i
-                                        ? "rgba(255,255,255,0.7)"
-                                        : "#ffffff",
+                                    background: isActive ? "#ffffff" : "#555555",
                                     boxShadow: isActive
                                         ? "0 0 8px rgba(255,255,255,0.5)"
                                         : hoveredIndex === i
