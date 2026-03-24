@@ -8,7 +8,7 @@ type Axis = 'X'|'Y'|'Z';
 
 const FACE_COLORS: Record<FaceKey, string> = {
     R: "#FF2A2A", O: "#FF6A00", W: "#FFFFFF",
-    Y: "#FFF200", G: "#00C853E6", B: "#0052cc"
+    Y: "#FFF200", G: "#1FD400", B: "#0052cc"
 };
 const DARK = "#0e0e16";
 
