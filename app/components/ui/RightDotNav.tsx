@@ -63,13 +63,12 @@ export default function RightDotNav({ sections, activeSection, onNavigate }: Rig
                     width: 1,
                     top: ROW_HEIGHT / 2 + DOT_SIZE / 2,
                     height: totalHeight - DOT_SIZE,
-                    left: "50%",
-                    transform: "translateX(-50%)",
+                    right: 15,
                 }}
             />
 
             {/* Dots */}
-            <div className="relative flex flex-col items-center">
+            <div className="relative flex flex-col items-end">
                 {sections.map((section, i) => {
                     const isActive = activeIndex === i;
 
@@ -79,15 +78,32 @@ export default function RightDotNav({ sections, activeSection, onNavigate }: Rig
                             onClick={() => onNavigate(section.id)}
                             onMouseEnter={() => setHoveredIndex(i)}
                             onMouseLeave={() => setHoveredIndex(null)}
-                            className="relative cursor-pointer flex items-center justify-center px-2"
-                            style={{ width: 32, height: ROW_HEIGHT }}
+                            className="flex items-center gap-2"
+                            style={{ height: ROW_HEIGHT, paddingRight: 12, cursor: isActive ? "default" : "pointer" }}
                             aria-label={section.label}
                         >
+                            {/* Label */}
+                            <span
+                                className="pointer-events-none text-[0.6rem] tracking-[0.2em] uppercase whitespace-nowrap"
+                                style={{
+                                    fontFamily: "var(--font-inter), sans-serif",
+                                    color: isActive
+                                        ? "rgba(255,255,255,0.9)"
+                                        : "rgba(255,255,255,0.7)",
+                                    fontWeight: isActive ? 500 : 400,
+                                    opacity: hovered || isActive ? 1 : 0,
+                                    transform: `translateX(${hovered || isActive ? 0 : 6}px)`,
+                                    transition: "opacity 0.2s, transform 0.2s",
+                                }}
+                            >
+                                {section.label}
+                            </span>
+
                             <motion.div
                                 className="rounded-full"
                                 animate={{
                                     scale: hoveredIndex === i
-                                        ? (ACTIVE_SIZE + 8) / DOT_SIZE
+                                        ? (ACTIVE_SIZE + 6) / DOT_SIZE
                                         : isActive
                                         ? ACTIVE_SIZE / DOT_SIZE
                                         : 1,
@@ -106,26 +122,9 @@ export default function RightDotNav({ sections, activeSection, onNavigate }: Rig
                                 style={{
                                     width: DOT_SIZE,
                                     height: DOT_SIZE,
+                                    flexShrink: 0,
                                 }}
                             />
-
-                            {/* Label */}
-                            <span
-                                className="pointer-events-none absolute top-1/2 text-[0.6rem] tracking-[0.2em] uppercase whitespace-nowrap"
-                                style={{
-                                    right: 32,
-                                    fontFamily: "var(--font-inter), sans-serif",
-                                    color: isActive
-                                        ? "rgba(255,255,255,0.9)"
-                                        : "rgba(255,255,255,0.7)",
-                                    fontWeight: isActive ? 500 : 400,
-                                    opacity: hovered || isActive ? 1 : 0,
-                                    transform: `translateY(-50%) translateX(${hovered || isActive ? 0 : 6}px)`,
-                                    transition: "opacity 0.2s, transform 0.2s",
-                                }}
-                            >
-                                {section.label}
-                            </span>
                         </button>
                     );
                 })}
