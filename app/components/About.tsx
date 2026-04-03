@@ -69,7 +69,7 @@ export default function About() {
     };
 
     return (
-        <div className="relative w-full min-h-screen flex items-center justify-center">
+        <div className="relative w-full min-h-screen flex items-start justify-center">
             <div
                 className="relative w-full max-w-6xl mx-auto"
                 style={{

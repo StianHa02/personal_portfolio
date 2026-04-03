@@ -307,14 +307,14 @@ export default function Projects() {
             <div className="relative w-full max-w-7xl mx-auto md:py-24" style={{ paddingTop: "clamp(2rem, 5dvh, 3.5rem)", paddingBottom: "clamp(4rem, 8dvh, 6rem)", paddingLeft: "clamp(1.5rem, 5vw, 2rem)", paddingRight: "clamp(1.5rem, 5vw, 2rem)" }}>
 
                 {/* Header */}
-                <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+                <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
                     <h1 style={{ ...inter, fontSize: "clamp(2rem,5vw,3.5rem)", fontWeight: 300, lineHeight: 1, letterSpacing: "-0.02em", color: "#ede9df", margin: 0 }}>
                         Projects and freelance work
                     </h1>
                 </div>
 
                 {/* Filter */}
-                <div style={{ display: "flex", justifyContent: "center", marginBottom: "3rem" }}>
+                <div style={{ display: "flex", justifyContent: "center", marginBottom: "2.5rem" }}>
                     <LayoutGroup>
                         <div style={{
                             display: "inline-flex",

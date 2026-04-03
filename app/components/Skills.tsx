@@ -71,9 +71,9 @@ const skillCategories: SkillCategory[] = [
 ];
 
 const levelConfig = {
-    Expert:     { color: "#6ee7b7" },
-    Proficient: { color: "#93c5fd" },
-    Learning:   { color: "#fbbf24" },
+    Expert:     { color: "#6ee7b7", filled: 3 },
+    Proficient: { color: "#93c5fd", filled: 2 },
+    Learning:   { color: "#fbbf24", filled: 1 },
 };
 
 function SkillCard({ skill }: { skill: Skill }) {
@@ -95,12 +95,6 @@ function SkillCard({ skill }: { skill: Skill }) {
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
         >
-            {/* Level dot */}
-            <span
-                className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full shrink-0"
-                style={{ background: lvl.color, boxShadow: `0 0 6px ${lvl.color}` }}
-            />
-
             {/* Icon */}
             <Icon
                 className="text-3xl shrink-0"
@@ -117,13 +111,29 @@ function SkillCard({ skill }: { skill: Skill }) {
             >
                 {skill.name}
             </span>
+
+            {/* 3-dot level indicator */}
+            <div className="flex items-center" style={{ gap: "4px" }}>
+                {[0, 1, 2].map(i => (
+                    <span
+                        key={i}
+                        style={{
+                            width: "5px",
+                            height: "5px",
+                            borderRadius: "50%",
+                            background: i < lvl.filled ? lvl.color : `${lvl.color}28`,
+                            boxShadow: i < lvl.filled ? `0 0 5px ${lvl.color}` : "none",
+                        }}
+                    />
+                ))}
+            </div>
         </div>
     );
 }
 
 export default function Skills() {
     return (
-        <div className="relative w-full min-h-screen flex items-center justify-center">
+        <div className="relative w-full min-h-screen flex items-start justify-center">
             <div
                 className="relative w-full max-w-5xl mx-auto"
                 style={{
@@ -134,7 +144,7 @@ export default function Skills() {
                 }}
             >
                 {/* Header */}
-                <div style={{ textAlign: "center", marginBottom: "4rem" }}>
+                <div style={{ textAlign: "center", marginBottom: "0" }}>
                     <h1
                         style={{
                             fontFamily: "var(--font-inter), sans-serif",
@@ -144,14 +154,51 @@ export default function Skills() {
                             letterSpacing: "-0.02em",
                             color: "#ede9df",
                             margin: 0,
+                            marginBottom: "1.25rem",
                         }}
                     >
                         Skills &amp; Technologies
                     </h1>
+
+                    {/* Legend */}
+                    <div className="flex items-center justify-between sm:justify-center sm:gap-8 w-full" style={{ marginBottom: "0" }}>
+                        {(["Expert", "Proficient", "Learning"] as const).map(level => (
+                            <div key={level} className="flex items-center gap-2">
+                                {/* 3-dot pattern in legend */}
+                                <div className="flex items-center" style={{ gap: "3px" }}>
+                                    {[0, 1, 2].map(i => (
+                                        <span
+                                            key={i}
+                                            style={{
+                                                width: "5px",
+                                                height: "5px",
+                                                borderRadius: "50%",
+                                                background: i < levelConfig[level].filled ? levelConfig[level].color : `${levelConfig[level].color}28`,
+                                                boxShadow: i < levelConfig[level].filled ? `0 0 5px ${levelConfig[level].color}` : "none",
+                                                display: "inline-block",
+                                            }}
+                                        />
+                                    ))}
+                                </div>
+                                <span
+                                    style={{
+                                        fontFamily: "var(--font-inter), sans-serif",
+                                        fontSize: "0.65rem",
+                                        letterSpacing: "0.15em",
+                                        textTransform: "uppercase",
+                                        fontWeight: 500,
+                                        color: levelConfig[level].color,
+                                    }}
+                                >
+                                    {level}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Categories */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem", marginTop: "1.25rem" }}>
                     {skillCategories.map((cat, ci) => (
                         <div key={ci}>
                             <p
@@ -162,7 +209,7 @@ export default function Skills() {
                                     textTransform: "uppercase",
                                     fontWeight: 500,
                                     color: "rgba(255,255,255,0.3)",
-                                    marginBottom: "0.875rem",
+                                    marginBottom: "0.5rem",
                                 }}
                             >
                                 {cat.title}
@@ -177,36 +224,7 @@ export default function Skills() {
                     ))}
                 </div>
 
-                {/* Legend */}
-                <div className="flex items-center justify-center gap-8" style={{ marginTop: "3rem" }}>
-                    {(["Expert", "Proficient", "Learning"] as const).map(level => (
-                        <div key={level} className="flex items-center gap-2">
-                            <span
-                                style={{
-                                    width: "7px",
-                                    height: "7px",
-                                    borderRadius: "50%",
-                                    background: levelConfig[level].color,
-                                    boxShadow: `0 0 6px ${levelConfig[level].color}`,
-                                    display: "inline-block",
-                                    flexShrink: 0,
-                                }}
-                            />
-                            <span
-                                style={{
-                                    fontFamily: "var(--font-inter), sans-serif",
-                                    fontSize: "0.65rem",
-                                    letterSpacing: "0.15em",
-                                    textTransform: "uppercase",
-                                    fontWeight: 500,
-                                    color: levelConfig[level].color,
-                                }}
-                            >
-                                {level}
-                            </span>
-                        </div>
-                    ))}
-                </div>
+
             </div>
         </div>
     );
