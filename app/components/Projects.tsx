@@ -53,6 +53,16 @@ const projects: Project[] = [
         demoUrl: "https://blurthatguy.no",
         imageUrl: "/images/projects/blurthatguy.png",
     },
+    {
+        title: "VENUE (WEBCOM Hackerathon 2026)",
+        description: "A web app for finding people to join activities, based on their interests and availability.",
+        techStack: ["TypeScript", "Supabase", "Next.js"],
+        category: "fullstack",
+        githubUrl: "https://github.com/jonasjus/webathon",
+        demoUrl: "https://hjms-webathon.vercel.app/",
+        imageUrl: "/images/projects/venue.png",
+    },
+
 
 ];
 
