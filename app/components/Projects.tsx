@@ -54,7 +54,7 @@ const projects: Project[] = [
         imageUrl: "/images/projects/blurthatguy.png",
     },
     {
-        title: "VENUE (WEBCOM Hackathon 2026)",
+        title: "VENUE (WEBCOM Hackathon 2026 WINNER)",
         description: "A web app for finding people to join activities, based on their interests and availability.",
         techStack: ["TypeScript", "Supabase", "Next.js"],
         category: "fullstack",
