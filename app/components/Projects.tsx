@@ -5,8 +5,6 @@ import { motion, AnimatePresence, LayoutGroup } from "motion/react";
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 import Image from "next/image";
 
-const inter = { fontFamily: "var(--font-inter), sans-serif" };
-
 interface Project {
     title: string;
     description: string;
@@ -37,7 +35,7 @@ const projects: Project[] = [
         imageUrl: "/images/projects/portfoliov2.png",
     },
     {
-        title: "Bergen Klatreklubb Route Database (Freelance)",
+        title: "Bergen Klatreklubb Route Database \n (Freelance)",
         description: "Improving the digital route database for Bergen Klatreklubb through UI updates, bug fixes, and feature improvements.",
         techStack: ["Next.js", "React", "Tailwind CSS", "Supabase", "Linear", "React Aria"],
         category: "fullstack",
@@ -45,16 +43,15 @@ const projects: Project[] = [
         imageUrl: "/images/projects/bergenklatreklubb.png",
     },
     {
-        title: "Face Blur Privacy Tool",
+        title: "Face Blur Privacy Tool \n (Coding Challenge by Fonn Group)",
         description: "Face-blurring web app using OpenCV with a Next.js frontend and FastAPI backend.",
         techStack: ["Python", "FastAPI", "OpenCV", "Next.js", "AWS EC2"],
         category: "fullstack",
         githubUrl: "https://github.com/StianHa02/BlurThatGuyProject",
-        demoUrl: "https://blurthatguy.no",
         imageUrl: "/images/projects/blurthatguy.png",
     },
     {
-        title: "VENUE (WEBCOM Hackathon 2026 WINNER)",
+        title: "VENUE \n (WEBCOM Hackathon 2026 WINNER)",
         description: "A web app for finding people to join activities, based on their interests and availability.",
         techStack: ["TypeScript", "Supabase", "Next.js"],
         category: "fullstack",
@@ -85,166 +82,72 @@ function ProjectCard({ project }: { project: Project }) {
     return (
         <div
             data-project-card
-            style={{
-                backgroundColor: "#0b0b12",
-                border: "1px solid rgba(255,255,255,0.08)",
-                boxShadow: "0 10px 40px rgba(0,0,0,0.4)",
-                borderRadius: "1rem",
-                overflow: "hidden",
-                display: "flex",
-                flexDirection: "column",
-                height: "100%",
-                transition: "transform 0.3s ease, box-shadow 0.3s ease",
-            }}
-            onMouseEnter={e => {
-                (e.currentTarget as HTMLDivElement).style.transform = "translateY(-4px)";
-                (e.currentTarget as HTMLDivElement).style.boxShadow = "0 20px 60px rgba(0,0,0,0.55)";
-            }}
-            onMouseLeave={e => {
-                (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
-                (e.currentTarget as HTMLDivElement).style.boxShadow = "0 10px 40px rgba(0,0,0,0.4)";
-            }}
+            className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0b0b12] shadow-[0_10px_40px_rgba(0,0,0,0.4)] transition-[transform,box-shadow] duration-300 ease-[ease] hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.55)]"
         >
             {/* Image — edge to edge */}
-            <div style={{ width: "100%", height: "200px", position: "relative", flexShrink: 0, overflow: "hidden", background: "rgba(255,255,255,0.04)" }}>
+            <div className="relative w-full h-[200px] shrink-0 overflow-hidden bg-white/[0.04]">
                 {project.imageUrl && !isComingSoon ? (
                     <Image
                         src={project.imageUrl}
                         alt={project.title}
                         fill
-                        style={{ objectFit: "cover", opacity: 0.8 }}
+                        className="object-cover opacity-80"
                     />
                 ) : (
-                    <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <span style={{ ...inter, fontSize: "0.6rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(255,255,255,0.2)", fontWeight: 700 }}>
+                    <div className="flex w-full h-full items-center justify-center">
+                        <span className="text-[0.6rem] tracking-[0.3em] uppercase text-white/20 font-bold [font-family:var(--font-inter),sans-serif]">
                             {isComingSoon ? "In Development" : "No Preview"}
                         </span>
                     </div>
                 )}
                 {/* Gradient bleed into card body */}
-                <div style={{
-                    position: "absolute", bottom: 0, left: 0, right: 0, height: "64px",
-                    background: "linear-gradient(to bottom, transparent, #0b0b12)",
-                    pointerEvents: "none",
-                }} />
+                <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 [background:linear-gradient(to_bottom,transparent,#0b0b12)]" />
             </div>
 
             {/* Card body */}
-            <div style={{ padding: "1.5rem 1.75rem 1.75rem", display: "flex", flexDirection: "column", flexGrow: 1, gap: "0.875rem" }}>
+            <div className="flex grow flex-col gap-3.5 pt-6 px-7 pb-7">
 
                 {/* Title + category badge */}
-                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "0.75rem" }}>
-                    <h3 style={{
-                        ...inter,
-                        fontSize: "1rem",
-                        fontWeight: 600,
-                        color: "rgba(237,233,223,0.92)",
-                        lineHeight: 1.35,
-                        letterSpacing: "-0.01em",
-                        flex: 1,
-                        margin: 0,
-                    }}>
+                <div className="flex items-start justify-between gap-3">
+                    <h3 className="flex-1 text-base font-semibold text-[rgba(237,233,223,0.92)] leading-[1.35] tracking-[-0.01em] [font-family:var(--font-inter),sans-serif]">
                         {project.title}
                     </h3>
-                    <span style={{
-                        ...inter,
-                        fontSize: "0.58rem",
-                        fontWeight: 600,
-                        letterSpacing: "0.2em",
-                        textTransform: "uppercase",
-                        padding: "0.28rem 0.6rem",
-                        borderRadius: "0.4rem",
-                        whiteSpace: "nowrap",
-                        flexShrink: 0,
+                    <span className="shrink-0 whitespace-nowrap rounded-[0.4rem] border py-[0.28rem] px-[0.6rem] text-[0.58rem] font-semibold tracking-[0.2em] uppercase [font-family:var(--font-inter),sans-serif]" style={{
                         color: cat.color,
                         background: cat.bg,
-                        border: `1px solid ${cat.border}`,
+                        borderColor: cat.border,
                     }}>
                         {project.category}
                     </span>
                 </div>
 
                 {/* Description */}
-                <p style={{
-                    ...inter,
-                    fontSize: "0.85rem",
-                    lineHeight: 1.65,
-                    color: "rgba(255,255,255,0.42)",
-                    margin: 0,
-                    display: "-webkit-box",
-                    WebkitLineClamp: 3,
-                    WebkitBoxOrient: "vertical",
-                    overflow: "hidden",
-                }}>
+                <p className="overflow-hidden text-[0.85rem] leading-[1.65] text-white/[0.42] [display:-webkit-box] [-webkit-line-clamp:3] [-webkit-box-orient:vertical] [font-family:var(--font-inter),sans-serif]">
                     {project.description}
                 </p>
 
                 {/* Tech stack */}
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
+                <div className="flex flex-wrap gap-[0.4rem]">
                     {project.techStack.map((tech, i) => (
-                        <span key={i} style={{
-                            ...inter,
-                            fontSize: "0.65rem",
-                            fontWeight: 500,
-                            letterSpacing: "0.04em",
-                            padding: "0.28rem 0.65rem",
-                            borderRadius: "0.4rem",
-                            color: "rgba(255,255,255,0.38)",
-                            background: "rgba(255,255,255,0.04)",
-                            border: "1px solid rgba(255,255,255,0.08)",
-                        }}>
+                        <span key={i} className="rounded-[0.4rem] border border-white/[0.08] bg-white/[0.04] py-[0.28rem] px-[0.65rem] text-[0.65rem] font-medium tracking-[0.04em] text-white/[0.38] [font-family:var(--font-inter),sans-serif]">
                             {tech}
                         </span>
                     ))}
                 </div>
 
                 {/* Push buttons to bottom */}
-                <div style={{ flexGrow: 1 }} />
+                <div className="grow" />
 
                 {/* Buttons */}
-                <div style={{
-                    display: "flex",
-                    gap: "0.625rem",
-                    paddingTop: "1.125rem",
-                    borderTop: "1px solid rgba(255,255,255,0.07)",
-                }}>
+                <div className="flex gap-2.5 pt-[1.125rem] border-t border-white/[0.07]">
                     {project.demoUrl && !isComingSoon && (
                         <a
                             href={project.demoUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            style={{
-                                ...inter,
-                                flex: 1,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                gap: "0.5rem",
-                                padding: "0.625rem 1rem",
-                                borderRadius: "0.5rem",
-                                fontSize: "0.72rem",
-                                fontWeight: 600,
-                                letterSpacing: "0.1em",
-                                textTransform: "uppercase",
-                                textDecoration: "none",
-                                color: "rgba(147,197,253,0.9)",
-                                background: "rgba(59,130,246,0.1)",
-                                border: "1px solid rgba(59,130,246,0.22)",
-                                transition: "background 0.2s, border-color 0.2s, color 0.2s",
-                                cursor: "pointer",
-                            }}
-                            onMouseEnter={e => {
-                                const el = e.currentTarget as HTMLAnchorElement;
-                                el.style.background = "rgba(59,130,246,0.18)";
-                                el.style.borderColor = "rgba(59,130,246,0.4)";
-                            }}
-                            onMouseLeave={e => {
-                                const el = e.currentTarget as HTMLAnchorElement;
-                                el.style.background = "rgba(59,130,246,0.1)";
-                                el.style.borderColor = "rgba(59,130,246,0.22)";
-                            }}
+                            className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[rgba(59,130,246,0.22)] bg-[rgba(59,130,246,0.1)] py-2.5 px-4 text-[0.72rem] font-semibold tracking-[0.1em] uppercase no-underline text-[rgba(147,197,253,0.9)] transition-[background,border-color,color] duration-200 hover:border-[rgba(59,130,246,0.4)] hover:bg-[rgba(59,130,246,0.18)] [font-family:var(--font-inter),sans-serif]"
                         >
-                            <FaExternalLinkAlt style={{ fontSize: "0.6rem", flexShrink: 0 }} />
+                            <FaExternalLinkAlt className="shrink-0 text-[0.6rem]" />
                             Live Demo
                         </a>
                     )}
@@ -253,40 +156,9 @@ function ProjectCard({ project }: { project: Project }) {
                             href={project.githubUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            style={{
-                                ...inter,
-                                flex: 1,
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                gap: "0.5rem",
-                                padding: "0.625rem 1rem",
-                                borderRadius: "0.5rem",
-                                fontSize: "0.72rem",
-                                fontWeight: 600,
-                                letterSpacing: "0.1em",
-                                textTransform: "uppercase",
-                                textDecoration: "none",
-                                color: "rgba(255,255,255,0.6)",
-                                background: "rgba(255,255,255,0.05)",
-                                border: "1px solid rgba(255,255,255,0.1)",
-                                transition: "background 0.2s, border-color 0.2s, color 0.2s",
-                                cursor: "pointer",
-                            }}
-                            onMouseEnter={e => {
-                                const el = e.currentTarget as HTMLAnchorElement;
-                                el.style.background = "rgba(255,255,255,0.09)";
-                                el.style.borderColor = "rgba(255,255,255,0.2)";
-                                el.style.color = "rgba(255,255,255,0.9)";
-                            }}
-                            onMouseLeave={e => {
-                                const el = e.currentTarget as HTMLAnchorElement;
-                                el.style.background = "rgba(255,255,255,0.05)";
-                                el.style.borderColor = "rgba(255,255,255,0.1)";
-                                el.style.color = "rgba(255,255,255,0.6)";
-                            }}
+                            className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/[0.05] py-2.5 px-4 text-[0.72rem] font-semibold tracking-[0.1em] uppercase no-underline text-white/60 transition-[background,border-color,color] duration-200 hover:border-white/20 hover:bg-white/[0.09] hover:text-white/90 [font-family:var(--font-inter),sans-serif]"
                         >
-                            <FaGithub style={{ fontSize: "0.8rem", flexShrink: 0 }} />
+                            <FaGithub className="shrink-0 text-[0.8rem]" />
                             Source
                         </a>
                     )}
@@ -314,63 +186,32 @@ export default function Projects() {
 
     return (
         <div className="relative w-full min-h-screen flex items-start justify-center">
-            <div className="relative w-full max-w-7xl mx-auto md:py-24" style={{ paddingTop: "clamp(2rem, 5dvh, 3.5rem)", paddingBottom: "clamp(4rem, 8dvh, 6rem)", paddingLeft: "clamp(1.5rem, 5vw, 2rem)", paddingRight: "clamp(1.5rem, 5vw, 2rem)" }}>
+            <div className="relative w-full max-w-7xl mx-auto pt-[clamp(2rem,5dvh,3.5rem)] pb-[clamp(4rem,8dvh,6rem)] px-[clamp(1.5rem,5vw,2rem)]">
 
                 {/* Header */}
-                <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-                    <h1 style={{ ...inter, fontSize: "clamp(2rem,5vw,3.5rem)", fontWeight: 300, lineHeight: 1, letterSpacing: "-0.02em", color: "#ede9df", margin: 0 }}>
+                <div className="text-center mb-10">
+                    <h1 className="text-[clamp(2rem,5vw,3.5rem)] font-light leading-none tracking-[-0.02em] text-[#ede9df] [font-family:var(--font-inter),sans-serif]">
                         Projects and freelance work
                     </h1>
                 </div>
 
                 {/* Filter */}
-                <div style={{ display: "flex", justifyContent: "center", marginBottom: "2.5rem" }}>
+                <div className="flex justify-center mb-10">
                     <LayoutGroup>
-                        <div style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: "0.375rem",
-                            padding: "0.375rem",
-                            background: "rgba(255,255,255,0.04)",
-                            border: "1px solid rgba(255,255,255,0.08)",
-                            borderRadius: "0.875rem",
-                            position: "relative",
-                        }}>
+                        <div className="relative inline-flex items-center gap-1.5 rounded-[0.875rem] border border-white/[0.08] bg-white/[0.04] p-1.5">
                             {filterButtons.map(btn => {
                                 const isActive = filter === btn.value;
                                 return (
                                     <button
                                         key={btn.value}
                                         onClick={() => setFilter(btn.value as typeof filter)}
-                                        style={{
-                                            ...inter,
-                                            padding: "0.5rem 1.5rem",
-                                            minWidth: "6.5rem",
-                                            borderRadius: "0.625rem",
-                                            fontSize: "0.72rem",
-                                            fontWeight: 600,
-                                            letterSpacing: "0.08em",
-                                            textTransform: "uppercase",
-                                            cursor: "pointer",
-                                            border: "none",
-                                            background: "transparent",
-                                            color: isActive ? "rgba(147,197,253,0.95)" : "rgba(255,255,255,0.35)",
-                                            position: "relative",
-                                            zIndex: 1,
-                                        }}
+                                        className="relative z-[1] min-w-[6.5rem] cursor-pointer rounded-[0.625rem] border-0 bg-transparent py-2 px-6 text-[0.72rem] font-semibold tracking-[0.08em] uppercase [font-family:var(--font-inter),sans-serif]"
+                                        style={{ color: isActive ? "rgba(147,197,253,0.95)" : "rgba(255,255,255,0.35)" }}
                                     >
                                         {isActive && (
                                             <motion.div
                                                 layoutId="filter-indicator"
-                                                style={{
-                                                    position: "absolute",
-                                                    inset: 0,
-                                                    borderRadius: 10,
-                                                    background: "rgba(59,130,246,0.32)",
-                                                    boxShadow: "0 0 12px rgba(59,130,246,0.25)",
-                                                    border: "1px solid rgba(59,130,246,0.5)",
-                                                    zIndex: -1,
-                                                }}
+                                                className="absolute inset-0 z-[-1] rounded-[10px] border border-[rgba(59,130,246,0.5)] bg-[rgba(59,130,246,0.32)] shadow-[0_0_12px_rgba(59,130,246,0.25)]"
                                                 transition={{ type: "spring", stiffness: 500, damping: 35, borderRadius: { duration: 0 } }}
                                             />
                                         )}
@@ -386,11 +227,7 @@ export default function Projects() {
                 <LayoutGroup>
                     <div
                         ref={gridRef}
-                        style={{
-                            display: "grid",
-                            gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-                            gap: "1.5rem",
-                        }}
+                        className="grid gap-6 [grid-template-columns:repeat(auto-fill,minmax(320px,1fr))]"
                     >
                         <AnimatePresence mode="popLayout">
                             {filtered.map(project => (

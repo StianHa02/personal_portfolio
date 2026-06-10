@@ -78,29 +78,26 @@ export default function RightDotNav({ sections, activeSection, onNavigate }: Rig
                             onClick={() => onNavigate(section.id)}
                             onMouseEnter={() => setHoveredIndex(i)}
                             onMouseLeave={() => setHoveredIndex(null)}
-                            className="flex items-center gap-2"
-                            style={{ height: ROW_HEIGHT, paddingRight: 12, cursor: isActive ? "default" : "pointer" }}
+                            className={`flex h-8 items-center gap-2 pr-3 ${isActive ? "cursor-default" : "cursor-pointer"}`}
                             aria-label={section.label}
                         >
                             {/* Label */}
                             <span
-                                className="pointer-events-none text-[0.6rem] tracking-[0.2em] uppercase whitespace-nowrap"
+                                className="pointer-events-none text-[0.6rem] tracking-[0.2em] uppercase whitespace-nowrap transition-[opacity,transform] duration-200 [font-family:var(--font-inter),sans-serif]"
                                 style={{
-                                    fontFamily: "var(--font-inter), sans-serif",
                                     color: isActive
                                         ? "rgba(255,255,255,0.9)"
                                         : "rgba(255,255,255,0.7)",
                                     fontWeight: isActive ? 500 : 400,
                                     opacity: hovered || isActive ? 1 : 0,
                                     transform: `translateX(${hovered || isActive ? 0 : 6}px)`,
-                                    transition: "opacity 0.2s, transform 0.2s",
                                 }}
                             >
                                 {section.label}
                             </span>
 
                             <motion.div
-                                className="rounded-full"
+                                className="w-2 h-2 shrink-0 rounded-full"
                                 animate={{
                                     scale: hoveredIndex === i
                                         ? (ACTIVE_SIZE + 6) / DOT_SIZE
@@ -118,11 +115,6 @@ export default function RightDotNav({ sections, activeSection, onNavigate }: Rig
                                     type: "spring",
                                     stiffness: 500,
                                     damping: 25,
-                                }}
-                                style={{
-                                    width: DOT_SIZE,
-                                    height: DOT_SIZE,
-                                    flexShrink: 0,
                                 }}
                             />
                         </button>

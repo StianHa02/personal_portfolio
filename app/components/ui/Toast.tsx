@@ -29,65 +29,26 @@ export default function Toast({
 
     return (
         <div
+            className="fixed bottom-10 right-10 z-50 flex min-w-[340px] items-center gap-5 rounded-2xl border border-l-[3px] border-white/[0.09] bg-[#0f0f18] py-5 px-7 [font-family:var(--font-inter),sans-serif] [animation:slide-up_0.3s_cubic-bezier(0.16,1,0.3,1)]"
             style={{
-                position: "fixed",
-                bottom: "2.5rem",
-                right: "2.5rem",
-                zIndex: 50,
-                display: "flex",
-                alignItems: "center",
-                gap: "1.25rem",
-                padding: "1.25rem 1.75rem",
-                minWidth: "340px",
-                background: "#0f0f18",
-                border: `1px solid rgba(255,255,255,0.09)`,
-                borderLeft: `3px solid ${accent.bar}`,
-                borderRadius: "1rem",
+                borderLeftColor: accent.bar,
                 boxShadow: `0 24px 60px rgba(0,0,0,0.6), 0 0 40px ${accent.glow}`,
-                fontFamily: "var(--font-inter), sans-serif",
-                animation: "slideUp 0.3s cubic-bezier(0.16,1,0.3,1)",
             }}
         >
-            <style>{`
-                @keyframes slideUp {
-                    from { opacity: 0; transform: translateY(16px); }
-                    to   { opacity: 1; transform: translateY(0);    }
-                }
-            `}</style>
-
             {/* Accent icon */}
-            <span style={{ fontSize: "1rem", color: accent.bar, flexShrink: 0, lineHeight: 1 }}>
+            <span className="text-base shrink-0 leading-none" style={{ color: accent.bar }}>
                 {accent.icon}
             </span>
 
             {/* Message */}
-            <span style={{
-                fontSize: "0.9rem",
-                fontWeight: 400,
-                letterSpacing: "0.01em",
-                color: "rgba(255,255,255,0.82)",
-                flex: 1,
-                lineHeight: 1.5,
-            }}>
+            <span className="flex-1 text-[0.9rem] font-normal tracking-[0.01em] leading-[1.5] text-white/[0.82]">
                 {message}
             </span>
 
             {/* Close */}
             <button
                 onClick={onClose}
-                style={{
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    color: "rgba(255,255,255,0.25)",
-                    fontSize: "0.75rem",
-                    lineHeight: 1,
-                    padding: "0.25rem",
-                    flexShrink: 0,
-                    transition: "color 0.2s",
-                }}
-                onMouseEnter={e => (e.currentTarget.style.color = "rgba(255,255,255,0.6)")}
-                onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.25)")}
+                className="shrink-0 cursor-pointer border-0 bg-transparent p-1 text-xs leading-none text-white/25 transition-colors duration-200 hover:text-white/60"
             >
                 ✕
             </button>

@@ -438,11 +438,8 @@ export default function CubeRenderer({
     return (
         <canvas
             ref={canvasRef}
-            style={{
-                position: 'fixed', top: 0, left: 0, zIndex: 0,
-                display: 'block', opacity,
-                transition: 'opacity 0.6s ease',
-            }}
+            className="fixed top-0 left-0 z-0 block transition-opacity duration-[600ms] ease-[ease]"
+            style={{ opacity }}
         />
     );
 }

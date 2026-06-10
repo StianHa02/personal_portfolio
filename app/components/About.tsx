@@ -7,34 +7,10 @@ import Image from "next/image";
 
 type ToastType = "success" | "error" | "info";
 
-const inter = { fontFamily: "var(--font-inter), sans-serif" };
-
-const inputStyle: React.CSSProperties = {
-    fontFamily: "var(--font-inter), sans-serif",
-    width: "100%",
-    padding: "0.65rem 0.875rem",
-    fontSize: "0.8rem",
-    fontWeight: 400,
-    letterSpacing: "0.01em",
-    color: "rgba(255,255,255,0.75)",
-    background: "rgba(255,255,255,0.03)",
-    borderWidth: "1px",
-    borderStyle: "solid",
-    borderColor: "rgba(255,255,255,0.08)",
-    borderRadius: "0.5rem",
-    outline: "none",
-    transition: "border-color 0.2s, background 0.2s",
-    boxSizing: "border-box",
-};
-
-const focusStyle: React.CSSProperties = {
-    borderColor: "rgba(255,255,255,0.22)",
-    background: "rgba(255,255,255,0.055)",
-};
+const inputClassName = "w-full box-border rounded-lg border border-white/[0.08] bg-white/[0.03] py-[0.65rem] px-[0.875rem] text-[0.8rem] font-normal tracking-[0.01em] text-white/75 outline-none transition-[border-color,background] duration-200 focus:border-white/[0.22] focus:bg-white/[0.055] [font-family:var(--font-inter),sans-serif]";
 
 export default function About() {
     const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
-    const [focused, setFocused] = useState<string | null>(null);
     const [isHovered, setIsHovered] = useState(false);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -70,17 +46,9 @@ export default function About() {
 
     return (
         <div className="relative w-full min-h-screen flex items-start justify-center">
-            <div
-                className="relative w-full max-w-6xl mx-auto"
-                style={{
-                    paddingTop: "clamp(2rem, 5dvh, 3.5rem)",
-                    paddingBottom: "clamp(4rem, 8dvh, 6rem)",
-                    paddingLeft: "clamp(1.5rem, 5vw, 2rem)",
-                    paddingRight: "clamp(1.5rem, 5vw, 2rem)",
-                }}
-            >
-                <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-                    <h1 style={{ ...inter, fontSize: "clamp(2rem,5vw,3.5rem)", fontWeight: 300, lineHeight: 1, letterSpacing: "-0.02em", color: "#ede9df", margin: 0 }}>
+            <div className="relative w-full max-w-6xl mx-auto pt-[clamp(2rem,5dvh,3.5rem)] pb-[clamp(4rem,8dvh,6rem)] px-[clamp(1.5rem,5vw,2rem)]">
+                <div className="text-center mb-10">
+                    <h1 className="text-[clamp(2rem,5vw,3.5rem)] font-light leading-none tracking-[-0.02em] text-[#ede9df] [font-family:var(--font-inter),sans-serif]">
                         About Me
                     </h1>
                 </div>
@@ -93,14 +61,8 @@ export default function About() {
                             {/* Avatar + name */}
                             <div className="flex flex-col items-center md:flex-row md:items-center gap-4 md:gap-6">
                                     <div
-                                        className="relative shrink-0 rounded-full overflow-hidden border-2"
-                                        style={{
-                                            width: 160,
-                                            height: 160,
-                                            borderColor: "rgba(255,255,255,0.15)",
-                                            cursor: "pointer",
-                                            transition: "border-color 0.2s",
-                                        }}
+                                        data-avatar
+                                        className="relative w-40 h-40 shrink-0 cursor-pointer rounded-full overflow-hidden border-2 border-white/15 transition-colors duration-200"
                                         onMouseEnter={() => setIsHovered(true)}
                                         onMouseLeave={() => setIsHovered(false)}
                                     >
@@ -111,17 +73,8 @@ export default function About() {
                                         width={160}
                                         height={160}
                                         priority
-                                        style={{
-                                            position: "absolute",
-                                            top: 0,
-                                            left: 0,
-                                            width: "100%",
-                                            height: "100%",
-                                            objectFit: "cover",
-                                            objectPosition: "center top",
-                                            opacity: isHovered ? 0 : 1,
-                                            transition: "opacity 0.2s ease-in-out",
-                                        }}
+                                        className="absolute top-0 left-0 w-full h-full object-cover object-top transition-opacity duration-200 ease-in-out"
+                                        style={{ opacity: isHovered ? 0 : 1 }}
                                     />
                                     {/* Hover Avatar */}
                                     <Image
@@ -130,61 +83,39 @@ export default function About() {
                                         width={160}
                                         height={160}
                                         priority
-                                        style={{
-                                            position: "absolute",
-                                            top: 0,
-                                            left: 0,
-                                            width: "100%",
-                                            height: "100%",
-                                            objectFit: "cover",
-                                            objectPosition: "center top",
-                                            opacity: isHovered ? 1 : 0,
-                                            transition: "opacity 0.2s ease-in-out",
-                                        }}
+                                        className="absolute top-0 left-0 w-full h-full object-cover object-top transition-opacity duration-200 ease-in-out"
+                                        style={{ opacity: isHovered ? 1 : 0 }}
                                     />
                                 </div>
-                                <div className="text-center md:text-left" style={{ ...inter }}>
-                                    <style>{`
-                                        @keyframes wave {
-                                            0%   { transform: rotate(0deg);   }
-                                            15%  { transform: rotate(18deg);  }
-                                            30%  { transform: rotate(-10deg); }
-                                            45%  { transform: rotate(16deg);  }
-                                            60%  { transform: rotate(-6deg);  }
-                                            75%  { transform: rotate(10deg);  }
-                                            100% { transform: rotate(0deg);   }
-                                        }
-                                        .wave-emoji { display: inline-block; transform-origin: 70% 70%; }
-                                        .wave-trigger:hover .wave-emoji { animation: wave 0.9s ease; }
-                                    `}</style>
-                                    <span className="wave-trigger" style={{ fontSize: "2.25rem", fontWeight: 600, letterSpacing: "-0.02em", color: "rgba(237,233,223,0.95)", lineHeight: 1.15, display: "block" }}>
-                                        Hey, I&apos;m Stian <span className="wave-emoji">👋</span>
+                                <div className="text-center md:text-left [font-family:var(--font-inter),sans-serif]">
+                                    <span className="group block text-4xl font-semibold tracking-[-0.02em] text-[rgba(237,233,223,0.95)] leading-[1.15]">
+                                        Hey, I&apos;m Stian <span className="inline-block origin-[70%_70%] group-hover:[animation:wave_0.9s_ease]">👋</span>
                                     </span>
-                                    <p style={{ fontSize: "1rem", color: "rgba(255,255,255,0.4)", margin: "0.5rem 0 0" }}>
+                                    <p className="mt-2 text-base text-white/40">
                                         Student &amp; Developer · Bergen, Norway
                                     </p>
                                 </div>
                             </div>
 
                             {/* Bio */}
-                            <div className="flex flex-col gap-2 text-center md:text-left" style={{ ...inter }}>
-                                <p style={{ fontSize: "0.85rem", lineHeight: 1.65, color: "rgba(255,255,255,0.6)", margin: 0 }}>
+                            <div className="flex flex-col gap-2 text-center md:text-left [font-family:var(--font-inter),sans-serif]">
+                                <p className="text-[0.85rem] leading-[1.65] text-white/60">
                                     A student and developer who loves turning ideas into applications.
                                 </p>
-                                <p style={{ fontSize: "0.85rem", lineHeight: 1.65, color: "rgba(255,255,255,0.55)", margin: 0 }}>
+                                <p className="text-[0.85rem] leading-[1.65] text-white/[0.55]">
                                     I build full-stack apps with{" "}
-                                    <span style={{ display: "inline-flex", alignItems: "center", padding: "0.1rem 0.45rem", borderRadius: "0.35rem", fontSize: "0.78rem", color: "rgba(237,233,223,0.75)", background: "rgba(237,233,223,0.05)", border: "1px solid rgba(237,233,223,0.12)" }}>
+                                    <span className="inline-flex items-center rounded-[0.35rem] border border-[rgba(237,233,223,0.12)] bg-[rgba(237,233,223,0.05)] py-[0.1rem] px-[0.45rem] text-[0.78rem] text-[rgba(237,233,223,0.75)]">
                                         Next.js
                                     </span>
                                     , designing interfaces on the front and working with Supabase on the back.
                                 </p>
-                                <p style={{ fontSize: "0.85rem", lineHeight: 1.65, color: "rgba(255,255,255,0.5)", margin: 0 }}>
+                                <p className="text-[0.85rem] leading-[1.65] text-white/50">
                                     Currently taking a master&apos;s degree in Data Science at UiB and looking to collaborate on projects that make a real impact.
                                 </p>
                             </div>
 
                             {/* Social links */}
-                            <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "1.25rem", flex: 1, display: "flex", alignItems: "center" }}>
+                            <div className="flex flex-1 items-center border-t border-white/[0.06] pt-5">
                                 <div className="grid grid-cols-2 gap-3 w-full">
                                     {[
                                         { label: "GitHub",   href: "https://github.com/StianHa02",          icon: FaGithub   },
@@ -197,33 +128,9 @@ export default function About() {
                                             href={href}
                                             target={href.startsWith("mailto") ? undefined : "_blank"}
                                             rel="noopener noreferrer"
-                                            className="flex items-center justify-center gap-2.5 cursor-pointer"
-                                            style={{
-                                                ...inter,
-                                                fontSize: "0.78rem",
-                                                letterSpacing: "0.12em",
-                                                textTransform: "uppercase",
-                                                fontWeight: 500,
-                                                color: "rgba(255,255,255,0.45)",
-                                                textDecoration: "none",
-                                                transition: "color 0.2s, background 0.2s, border-color 0.2s",
-                                                padding: "0.7rem 1rem",
-                                                borderRadius: "0.5rem",
-                                                background: "rgba(255,255,255,0.03)",
-                                                border: "1px solid rgba(255,255,255,0.06)",
-                                            }}
-                                            onMouseEnter={e => {
-                                                e.currentTarget.style.color = "rgba(255,255,255,0.85)";
-                                                e.currentTarget.style.background = "rgba(255,255,255,0.07)";
-                                                e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)";
-                                            }}
-                                            onMouseLeave={e => {
-                                                e.currentTarget.style.color = "rgba(255,255,255,0.45)";
-                                                e.currentTarget.style.background = "rgba(255,255,255,0.03)";
-                                                e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)";
-                                            }}
+                                            className="flex cursor-pointer items-center justify-center gap-2.5 rounded-lg border border-white/[0.06] bg-white/[0.03] py-[0.7rem] px-4 text-[0.78rem] font-medium tracking-[0.12em] uppercase no-underline text-white/[0.45] transition-[color,background,border-color] duration-200 hover:border-[rgba(255,255,255,0.15)] hover:bg-[rgba(255,255,255,0.07)] hover:text-[rgba(255,255,255,0.85)] [font-family:var(--font-inter),sans-serif]"
                                         >
-                                            <Icon style={{ fontSize: "1rem" }} />
+                                            <Icon className="text-base" />
                                             {label}
                                         </a>
                                     ))}
@@ -237,31 +144,28 @@ export default function About() {
 
                         {/* Academic Journey */}
                         <BentoBox title="Academic Journey" className="hover:translate-y-0!">
-                            <div style={{ ...inter, width: "100%", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                            <div className="flex w-full flex-col gap-3 [font-family:var(--font-inter),sans-serif]">
                                 <div>
-                                    <h3 style={{ fontSize: "0.95rem", fontWeight: 500, color: "rgba(237,233,223,0.9)", margin: 0, marginBottom: "0.25rem" }}>
+                                    <h3 className="mb-1 text-[0.95rem] font-medium text-[rgba(237,233,223,0.9)]">
                                         M.Sc. Data Science
                                     </h3>
-                                    <p style={{ fontSize: "0.78rem", fontWeight: 500, color: "rgba(255,255,255,0.4)", margin: 0 }}>
+                                    <p className="text-[0.78rem] font-medium text-white/40">
                                         University of Bergen (UiB)
                                     </p>
                                 </div>
                                 {/* Progress bar */}
-                                <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                                    <div style={{ position: "relative", width: "100%", height: 4, borderRadius: 9999, background: "rgba(100,160,255,0.08)" }}>
-                                        <div style={{
+                                <div className="flex flex-col gap-[0.3rem]">
+                                    <div className="relative w-full h-1 rounded-full bg-[rgba(100,160,255,0.08)]">
+                                        <div className="h-full rounded-full [background:linear-gradient(90deg,rgba(80,140,255,0.25),rgba(100,170,255,0.5))]" style={{
                                             width: `${Math.min(Math.max(((new Date().getFullYear() - 2023) / (2028 - 2023)) * 100, 0), 100)}%`,
-                                            height: "100%",
-                                            borderRadius: 9999,
-                                            background: "linear-gradient(90deg, rgba(80,140,255,0.25), rgba(100,170,255,0.5))",
                                         }} />
                                     </div>
-                                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                                        <span style={{ fontSize: "0.6rem", letterSpacing: "0.12em", fontWeight: 500, color: "rgba(100,160,255,0.5)" }}>2023</span>
-                                        <span style={{ fontSize: "0.6rem", letterSpacing: "0.12em", fontWeight: 500, color: "rgba(100,160,255,0.25)" }}>2028</span>
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-[0.6rem] tracking-[0.12em] font-medium text-[rgba(100,160,255,0.5)]">2023</span>
+                                        <span className="text-[0.6rem] tracking-[0.12em] font-medium text-[rgba(100,160,255,0.25)]">2028</span>
                                     </div>
                                 </div>
-                                <p style={{ fontSize: "0.82rem", lineHeight: 1.6, color: "rgba(255,255,255,0.5)", margin: 0 }}>
+                                <p className="text-[0.82rem] leading-[1.6] text-white/50">
                                     Integrated Master&apos;s (Sivilingeniør) specializing in medical data science.
                                     Focusing on bridging the gap between data science and healthcare through machine learning and statistical modeling of clinical data.
                                 </p>
@@ -270,61 +174,30 @@ export default function About() {
 
                         {/* Contact — compact */}
                         <BentoBox title="Contact Me" className="hover:translate-y-0!">
-                            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                                <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "0.625rem" }}>
+                            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                                     <input
                                         type="text" name="name" placeholder="Name" required
-                                        style={{ ...inputStyle, ...(focused === "name" ? focusStyle : {}) }}
-                                        onFocus={() => setFocused("name")}
-                                        onBlur={() => setFocused(null)}
+                                        className={inputClassName}
                                     />
                                     <input
                                         type="email" name="email" placeholder="Email" required
-                                        style={{ ...inputStyle, ...(focused === "email" ? focusStyle : {}) }}
-                                        onFocus={() => setFocused("email")}
-                                        onBlur={() => setFocused(null)}
+                                        className={inputClassName}
                                     />
                                 </div>
                                 <textarea
                                     name="message" placeholder="Your message..." rows={2} required
-                                    style={{ ...inputStyle, resize: "none", ...(focused === "message" ? focusStyle : {}) }}
-                                    onFocus={() => setFocused("message")}
-                                    onBlur={() => setFocused(null)}
+                                    className={`${inputClassName} resize-none`}
                                 />
-                                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.75rem" }}>
-                                    <p style={{ ...inter, fontSize: "0.68rem", color: "rgba(255,255,255,0.2)", letterSpacing: "0.02em", margin: 0 }}>
+                                <div className="flex items-center justify-between gap-3">
+                                    <p className="text-[0.68rem] tracking-[0.02em] text-white/20 [font-family:var(--font-inter),sans-serif]">
                                         I&apos;ll get back to you within 24 hours.
                                     </p>
                                     <button
                                         type="submit"
-                                        style={{
-                                            ...inter,
-                                            display: "flex", alignItems: "center", gap: "0.5rem",
-                                            padding: "0.55rem 1.25rem",
-                                            borderRadius: "0.5rem",
-                                            fontSize: "0.68rem", fontWeight: 600,
-                                            letterSpacing: "0.1em", textTransform: "uppercase",
-                                            cursor: "pointer",
-                                            border: "1px solid rgba(255,255,255,0.12)",
-                                            background: "rgba(255,255,255,0.05)",
-                                            color: "rgba(255,255,255,0.65)",
-                                            transition: "all 0.2s ease",
-                                            flexShrink: 0,
-                                        }}
-                                        onMouseEnter={e => {
-                                            const el = e.currentTarget;
-                                            el.style.background = "rgba(255,255,255,0.1)";
-                                            el.style.borderColor = "rgba(255,255,255,0.25)";
-                                            el.style.color = "rgba(255,255,255,0.9)";
-                                        }}
-                                        onMouseLeave={e => {
-                                            const el = e.currentTarget;
-                                            el.style.background = "rgba(255,255,255,0.05)";
-                                            el.style.borderColor = "rgba(255,255,255,0.12)";
-                                            el.style.color = "rgba(255,255,255,0.65)";
-                                        }}
+                                        className="flex shrink-0 cursor-pointer items-center gap-2 rounded-lg border border-white/12 bg-white/[0.05] py-[0.55rem] px-5 text-[0.68rem] font-semibold tracking-[0.1em] uppercase text-white/65 transition-all duration-200 ease-[ease] hover:border-white/25 hover:bg-white/10 hover:text-white/90 [font-family:var(--font-inter),sans-serif]"
                                     >
-                                        <FaPaperPlane style={{ fontSize: "0.6rem" }} />
+                                        <FaPaperPlane className="text-[0.6rem]" />
                                         Send
                                     </button>
                                 </div>

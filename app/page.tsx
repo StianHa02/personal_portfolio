@@ -91,48 +91,43 @@ export default function Home() {
 
             {/* Scroll indicator — fixed to bottom of viewport, fades out on scroll */}
             <div
-                className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 hidden md:flex flex-col items-center gap-2"
+                className="fixed bottom-8 left-1/2 z-50 hidden -translate-x-1/2 flex-col items-center gap-2 pointer-events-none transition-opacity duration-[400ms] ease-[ease] md:flex"
                 style={{
                     opacity: sp < 0.015 ? 1 : 0,
-                    transition: "opacity 0.4s ease",
-                    pointerEvents: "none",
                 }}
             >
-                <span className="text-[0.7rem] tracking-[0.35em] uppercase font-semibold text-[#fcd435]"
-                      style={{ textShadow: "0 0 14px rgba(252,212,53,0.5)" }}>
+                <span className="text-[0.7rem] tracking-[0.35em] uppercase font-semibold text-[#fcd435] [text-shadow:0_0_14px_rgba(252,212,53,0.5)]">
                     Scroll to solve
                 </span>
                 <svg
-                    className="animate-bounce"
+                    className="animate-bounce [filter:drop-shadow(0_0_6px_rgba(252,212,53,0.6))]"
                     width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    style={{ filter: "drop-shadow(0 0 6px rgba(252,212,53,0.6))" }}
                 >
                     <path d="M7 10l5 5 5-5" stroke="#fcd435" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
             </div>
 
             <main className="relative z-10">
-                <section id="hero" className="w-full" style={{ minHeight: "100lvh" }}>
+                <section id="hero" className="w-full min-h-[100lvh]">
                     <Hero />
                 </section>
 
-                <section id="projects" className="w-full flex items-center justify-center" style={{ minHeight: "100lvh" }}>
+                <section id="projects" className="w-full min-h-[100lvh] flex items-center justify-center">
                     <Projects />
                 </section>
 
-                <section id="skills" className="w-full flex items-center justify-center" style={{ minHeight: "100lvh" }}>
+                <section id="skills" className="w-full min-h-[100lvh] flex items-center justify-center">
                     <Skills />
                 </section>
 
-                <section id="about" className="w-full flex items-center justify-center" style={{ minHeight: "100lvh" }}>
+                <section id="about" className="w-full min-h-[100lvh] flex items-center justify-center">
                     <About />
                 </section>
 
                 <section
                     id="footer"
-                    className="relative w-full transition-all duration-1000 ease-out overflow-hidden"
+                    className="relative w-full h-[100lvh] transition-all duration-1000 ease-out overflow-hidden"
                     style={{
-                        height: "100lvh",
                         opacity:       solved ? 1 : 0,
                         pointerEvents: solved ? "auto" : "none",
                     }}
@@ -142,11 +137,10 @@ export default function Home() {
                         style={{ opacity: solved ? 1 : 0 }}
                     >
                         <div className="flex flex-col items-center gap-2">
-                            <svg className="animate-bounce" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: "drop-shadow(0 0 8px rgba(252,212,53,0.8))" }}>
+                            <svg className="animate-bounce [filter:drop-shadow(0_0_8px_rgba(252,212,53,0.8))]" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M12 2L14.09 8.26L20 9.27L15.55 13.97L16.91 20L12 16.9L7.09 20L8.45 13.97L4 9.27L9.91 8.26L12 2Z" fill="#fcd435" />
                             </svg>
-                            <span className="text-[0.6rem] tracking-[0.45em] uppercase font-bold text-[#fcd435]"
-                                  style={{ textShadow: "0 0 15px rgba(252,212,53,0.5)" }}>
+                            <span className="text-[0.6rem] tracking-[0.45em] uppercase font-bold text-[#fcd435] [text-shadow:0_0_15px_rgba(252,212,53,0.5)]">
                                 Cube Solved
                             </span>
                         </div>

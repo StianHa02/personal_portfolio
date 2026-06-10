@@ -83,11 +83,9 @@ function SkillCard({ skill }: { skill: Skill }) {
 
     return (
         <div
-            className="relative flex flex-col items-center justify-center gap-2.5 rounded-2xl cursor-default transition-all duration-200 select-none"
+            data-skill-card
+            className="relative flex min-w-[88px] flex-[1_1_88px] flex-col items-center justify-center gap-2.5 rounded-2xl pt-5 px-3 pb-4 cursor-default transition-all duration-200 select-none"
             style={{
-                padding: "1.25rem 0.75rem 1rem",
-                minWidth: "88px",
-                flex: "1 1 88px",
                 background: hovered ? lvl.color : `${lvl.color}50`,
                 border: `1px solid ${lvl.color}bb`,
                 transform: hovered ? "translateY(-3px)" : "translateY(0)",
@@ -113,14 +111,12 @@ function SkillCard({ skill }: { skill: Skill }) {
             </span>
 
             {/* 3-dot level indicator */}
-            <div className="flex items-center" style={{ gap: "4px" }}>
+            <div className="flex items-center gap-1">
                 {[0, 1, 2].map(i => (
                     <span
                         key={i}
+                        className="w-[5px] h-[5px] rounded-full"
                         style={{
-                            width: "5px",
-                            height: "5px",
-                            borderRadius: "50%",
                             background: i < lvl.filled ? lvl.color : `${lvl.color}28`,
                             boxShadow: i < lvl.filled ? `0 0 5px ${lvl.color}` : "none",
                         }}
@@ -135,58 +131,36 @@ export default function Skills() {
     return (
         <div className="relative w-full min-h-screen flex items-start justify-center">
             <div
-                className="relative w-full max-w-5xl mx-auto"
-                style={{
-                    paddingTop: "clamp(2rem, 5dvh, 3.5rem)",
-                    paddingBottom: "clamp(4rem, 8dvh, 6rem)",
-                    paddingLeft: "clamp(1.5rem, 5vw, 2rem)",
-                    paddingRight: "clamp(1.5rem, 5vw, 2rem)",
-                }}
+                className="relative w-full max-w-5xl mx-auto pt-[clamp(2rem,5dvh,3.5rem)] pb-[clamp(4rem,8dvh,6rem)] px-[clamp(1.5rem,5vw,2rem)]"
             >
                 {/* Header */}
-                <div style={{ textAlign: "center", marginBottom: "0" }}>
+                <div className="text-center mb-0">
                     <h1
-                        style={{
-                            fontFamily: "var(--font-inter), sans-serif",
-                            fontSize: "clamp(2rem,5vw,3.5rem)",
-                            fontWeight: 300,
-                            lineHeight: 1,
-                            letterSpacing: "-0.02em",
-                            color: "#ede9df",
-                            margin: 0,
-                            marginBottom: "1.25rem",
-                        }}
+                        className="mb-5 text-[clamp(2rem,5vw,3.5rem)] font-light leading-none tracking-[-0.02em] text-[#ede9df] [font-family:var(--font-inter),sans-serif]"
                     >
                         Skills &amp; Technologies
                     </h1>
 
                     {/* Legend */}
-                    <div className="flex items-center justify-between sm:justify-center sm:gap-8 w-full" style={{ marginBottom: "0" }}>
+                    <div className="flex items-center justify-between sm:justify-center sm:gap-8 w-full mb-0">
                         {(["Expert", "Proficient", "Learning"] as const).map(level => (
                             <div key={level} className="flex items-center gap-2">
                                 {/* 3-dot pattern in legend */}
-                                <div className="flex items-center" style={{ gap: "3px" }}>
+                                <div className="flex items-center gap-[3px]">
                                     {[0, 1, 2].map(i => (
                                         <span
                                             key={i}
+                                            className="inline-block w-[5px] h-[5px] rounded-full"
                                             style={{
-                                                width: "5px",
-                                                height: "5px",
-                                                borderRadius: "50%",
                                                 background: i < levelConfig[level].filled ? levelConfig[level].color : `${levelConfig[level].color}28`,
                                                 boxShadow: i < levelConfig[level].filled ? `0 0 5px ${levelConfig[level].color}` : "none",
-                                                display: "inline-block",
                                             }}
                                         />
                                     ))}
                                 </div>
                                 <span
+                                    className="text-[0.65rem] tracking-[0.15em] uppercase font-medium [font-family:var(--font-inter),sans-serif]"
                                     style={{
-                                        fontFamily: "var(--font-inter), sans-serif",
-                                        fontSize: "0.65rem",
-                                        letterSpacing: "0.15em",
-                                        textTransform: "uppercase",
-                                        fontWeight: 500,
                                         color: levelConfig[level].color,
                                     }}
                                 >
@@ -198,24 +172,16 @@ export default function Skills() {
                 </div>
 
                 {/* Categories */}
-                <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem", marginTop: "1.25rem" }}>
+                <div className="flex flex-col gap-10 mt-5">
                     {skillCategories.map((cat, ci) => (
                         <div key={ci}>
                             <p
-                                style={{
-                                    fontFamily: "var(--font-inter), sans-serif",
-                                    fontSize: "0.6rem",
-                                    letterSpacing: "0.35em",
-                                    textTransform: "uppercase",
-                                    fontWeight: 500,
-                                    color: "rgba(255,255,255,0.3)",
-                                    marginBottom: "0.5rem",
-                                }}
+                                className="mb-2 text-[0.6rem] tracking-[0.35em] uppercase font-medium text-white/30 [font-family:var(--font-inter),sans-serif]"
                             >
                                 {cat.title}
                             </p>
 
-                            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.625rem" }}>
+                            <div className="flex flex-wrap gap-2.5">
                                 {cat.skills.map((skill, si) => (
                                     <SkillCard key={si} skill={skill} />
                                 ))}
