@@ -11,6 +11,7 @@ interface Project {
     techStack: string[];
     category: "frontend" | "fullstack" | "personal";
     demoUrl?: string;
+    demoLabel?: string;
     githubUrl?: string;
     imageUrl?: string;
 }
@@ -58,6 +59,15 @@ const projects: Project[] = [
         githubUrl: "https://github.com/jonasjus/webathon",
         demoUrl: "https://hjms-webathon.vercel.app/",
         imageUrl: "/images/projects/venue.png",
+    },
+    {
+        title: "Mimir \n (Summer Internship 2026)",
+        description: "Cloud-native media asset management platform for broadcasters. Worked on the Vue/TypeScript client and AWS services.",
+        techStack: ["Vue", "TypeScript", "AWS", "Docker", "GitHub CLI"],
+        category: "fullstack",
+        demoUrl: "https://onemimir.com",
+        demoLabel: "Website",
+        imageUrl: "/images/projects/mimir2.png",
     },
 
 
@@ -148,7 +158,7 @@ function ProjectCard({ project }: { project: Project }) {
                             className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[rgba(59,130,246,0.22)] bg-[rgba(59,130,246,0.1)] py-2.5 px-4 text-[0.72rem] font-semibold tracking-[0.1em] uppercase no-underline text-[rgba(147,197,253,0.9)] transition-[background,border-color,color] duration-200 hover:border-[rgba(59,130,246,0.4)] hover:bg-[rgba(59,130,246,0.18)] [font-family:var(--font-inter),sans-serif]"
                         >
                             <FaExternalLinkAlt className="shrink-0 text-[0.6rem]" />
-                            Live Demo
+                            {project.demoLabel ?? "Live Demo"}
                         </a>
                     )}
                     {project.githubUrl && (
