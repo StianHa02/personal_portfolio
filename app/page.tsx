@@ -76,10 +76,13 @@ export default function Home() {
     // Restore to full when back at hero (sp ≈ 0) or when the cube is solved.
     const cubeOpacity = solved ? 1 : sp < 0.015 ? 1 : 0.18;
     const cubeInteractive = activeSection === "hero" || (solved && activeSection === "footer");
+    // Layers can only be turned in the hero. In the footer the cube is the payoff —
+    // draggable to look at, but not re-scrambleable.
+    const cubeTurnable = activeSection === "hero";
 
     return (
         <div className="relative bg-[#0e0e16]">
-            <CubeRenderer sp={sp} opacity={cubeOpacity} logoSrc="/favicon.ico" interactionEnabled={cubeInteractive} />
+            <CubeRenderer sp={sp} opacity={cubeOpacity} logoSrc="/favicon.ico" interactionEnabled={cubeInteractive} turnsEnabled={cubeTurnable} />
 
 
             <RightDotNav

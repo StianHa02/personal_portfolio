@@ -29,7 +29,7 @@ const projects: Project[] = [
     {
         title: "Personal Portfolio Website V2",
         description: " My updated portfolio website showcasing projects, skills, and web development work.",
-        techStack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel"],
+        techStack: ["Next.js", "React", "TypeScript", "Three.js", "Tailwind CSS", "Vercel"],
         category: "frontend",
         githubUrl: "https://github.com/StianHa02/personal_portfolio",
         demoUrl: "https://stianha.com",
