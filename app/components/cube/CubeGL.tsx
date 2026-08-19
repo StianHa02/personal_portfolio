@@ -289,6 +289,9 @@ export default function CubeGL({
             const g = new THREE.Group();
             const body = new THREE.Mesh(bodyGeo, bodyMat);
             body.userData.pieceIndex = i;
+            // The cube is always fully in frame, so testing all 189 meshes against the
+            // frustum every frame can only ever answer "visible".
+            body.frustumCulled = false;
             g.add(body);
             pickables.push(body);
 
@@ -302,6 +305,7 @@ export default function CubeGL({
                     new THREE.Vector3(n[0], n[1], n[2]),
                 );
                 m.visible = false;
+                m.frustumCulled = false;
                 m.userData.pieceIndex = i;
                 g.add(m);
                 slots.push(m);
@@ -379,24 +383,41 @@ export default function CubeGL({
         let heldTwist = centreTwist(history);
         let playback: Playback = buildPlayback(held, simplify(invertSequence(history)));
 
+        /**
+         * Created on demand, never at mount. Loading the worker pulls in cube-solver,
+         * whose Kociemba pruning tables take about a second of solid CPU to build — on a
+         * phone, several. Nothing needs it until the user turns a layer by hand, and
+         * `onPointerDown` ignores every non-mouse pointer, so a touch device never
+         * reaches this at all.
+         */
         let worker: Worker | null = null;
+        let workerFailed = false;
         let requestId = 0;
-        try {
-            worker = new Worker(new URL("./solver.worker.ts", import.meta.url));
-            worker.onmessage = (e: MessageEvent<{ id: number; solution: string | null }>) => {
-                // Ignore stale replies — the user may have turned again since asking.
-                if (e.data.id !== requestId || !e.data.solution) return;
-                try {
-                    const next = simplify(parseMoves(e.data.solution));
-                    // Kociemba is near-optimal, not optimal: on a short scramble simply
-                    // undoing the moves can be shorter. Keep whichever is.
-                    if (next.length < playback.solution.length) {
-                        playback = buildPlayback(held, next);
-                        stickersDirty = true;
-                    }
-                } catch { /* keep the inverse-history playback */ }
-            };
-        } catch { /* no worker: inverse history is still correct */ }
+
+        function ensureWorker(): Worker | null {
+            if (worker || workerFailed) return worker;
+            try {
+                worker = new Worker(new URL("./solver.worker.ts", import.meta.url));
+                worker.onmessage = (e: MessageEvent<{ id: number; solution: string | null }>) => {
+                    // Ignore stale replies — the user may have turned again since asking.
+                    if (e.data.id !== requestId || !e.data.solution) return;
+                    try {
+                        const next = simplify(parseMoves(e.data.solution));
+                        // Kociemba is near-optimal, not optimal: on a short scramble simply
+                        // undoing the moves can be shorter. Keep whichever is.
+                        if (next.length < playback.solution.length) {
+                            playback = buildPlayback(held, next);
+                            stickersDirty = true;
+                        }
+                    } catch { /* keep the inverse-history playback */ }
+                };
+            } catch {
+                // No worker: inverse history is still correct, just not minimal.
+                worker = null;
+                workerFailed = true;
+            }
+            return worker;
+        }
 
         function rebuildPlayback() {
             // If the user has already solved it by hand there is nothing to play: scroll
@@ -414,11 +435,13 @@ export default function CubeGL({
             // Usable immediately; refined to the shorter solve when the worker answers.
             playback = buildPlayback(held, simplify(invertSequence(history)));
             stickersDirty = true;
-            if (worker) worker.postMessage({ id: ++requestId, scramble: formatMoves(history) });
+            ensureWorker()?.postMessage({ id: ++requestId, scramble: formatMoves(history) });
         }
 
-        // Ask for the optimal solve of the opening scramble too.
-        if (worker) worker.postMessage({ id: ++requestId, scramble: formatMoves(history) });
+        // The opening scramble is deliberately NOT sent to the solver. It is a fixed
+        // 20-move sequence, so inverting it gives a 20-move solve for free — and
+        // Kociemba's answer for it is 22, which the length check above would discard
+        // anyway. Paying for the solver on every page load bought nothing.
 
         let pieces: Piece[] = playback.keyframes[0];
         let mode: "scroll" | "manual" = "scroll";
@@ -480,30 +503,69 @@ export default function CubeGL({
             }
         }
 
+        /* ── Sizing state ── */
+        // The canvas is sized by CSS (`w-full h-[100lvh]`) rather than from
+        // `window.innerHeight`. On iOS Safari that value shrinks and grows as the URL bar
+        // hides and shows, and it fires `resize` each time — which used to re-centre the
+        // cube, recompute the fov and reallocate every render target mid-scroll, so the
+        // cube visibly slid up and down. `lvh` is the *large* viewport unit: it ignores
+        // the URL bar entirely, which is also what the page's own sections already use.
+        let viewW = 0;
+        let viewH = 0;
+        let viewDpr = 0;
+
         /* ── Post-processing ── */
-        const composer = new EffectComposer(renderer);
-        const renderPass = new RenderPass(scene, camera);
-        composer.addPass(renderPass);
-        // High threshold so only genuine highlights bloom — a lower one blows the whole
-        // white face out when the solve lands.
-        const bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.0, 0.7, 0.9);
-        composer.addPass(bloom);
-        composer.addPass(new OutputPass());
+        // Built on demand: bloom only runs in the last 10% of the scroll, but the
+        // composer allocates two full-screen render targets plus the bloom mip chain the
+        // moment it exists. Keeping that off the page-load path costs one branch a frame.
+        let composer: EffectComposer | null = null;
+        let bloom: UnrealBloomPass | null = null;
+
+        function ensureComposer(): UnrealBloomPass {
+            if (bloom) return bloom;
+            composer = new EffectComposer(renderer);
+            composer.addPass(new RenderPass(scene, camera));
+            // High threshold so only genuine highlights bloom — a lower one blows the whole
+            // white face out when the solve lands.
+            bloom = new UnrealBloomPass(new THREE.Vector2(1, 1), 0.0, 0.7, 0.9);
+            composer.addPass(bloom);
+            composer.addPass(new OutputPass());
+            composer.setPixelRatio(renderer.getPixelRatio());
+            composer.setSize(viewW, viewH);
+            bloom.setSize(viewW, viewH);
+            return bloom;
+        }
 
         /* ── Sizing ── */
         function resize() {
-            const w = window.innerWidth;
-            const h = window.innerHeight;
-            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            // `|| innerWidth` only guards the case where the canvas has not been laid out
+            // yet; in practice the CSS box is always measurable by the time this runs.
+            const w = canvas.clientWidth  || window.innerWidth;
+            const h = canvas.clientHeight || window.innerHeight;
+            // Phones report a 3x display, and this canvas covers the whole viewport, so
+            // its fragment cost is by far the largest GPU item on the page. At that
+            // physical density 1.5x is not distinguishable from 2x, but it is 44% of the
+            // pixels. Desktops keep the full 2x.
+            // `(pointer: coarse)` is only a quality heuristic here — the objection to it
+            // for input gating above does not apply, since the worst case is a
+            // stylus-equipped laptop rendering slightly softer.
+            const maxDpr = window.matchMedia("(pointer: coarse)").matches ? 1.5 : 2;
+            const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
+            // A URL-bar resize event changes none of these, so it becomes a no-op here.
+            // The dpr is part of the test so that dragging the window between a 1x and a
+            // 2x display still re-sizes the framebuffer.
+            if (w === viewW && h === viewH && dpr === viewDpr) return;
+            viewW = w;
+            viewH = h;
+            viewDpr = dpr;
 
             renderer.setPixelRatio(dpr);
             renderer.setSize(w, h, false);
-            composer.setPixelRatio(dpr);
-            composer.setSize(w, h);
-            bloom.setSize(w, h);
-
-            canvas.style.width = w + "px";
-            canvas.style.height = h + "px";
+            if (composer && bloom) {
+                composer.setPixelRatio(dpr);
+                composer.setSize(w, h);
+                bloom.setSize(w, h);
+            }
 
             // Reproduce the 2D renderer's framing exactly: it drew `sc` pixels per cube
             // unit through a pinhole at distance CAMERA_DISTANCE, so the visible half-height
@@ -521,8 +583,9 @@ export default function CubeGL({
         const ndc = new THREE.Vector2();
 
         function pick(clientX: number, clientY: number) {
-            ndc.x = (clientX / window.innerWidth) * 2 - 1;
-            ndc.y = -(clientY / window.innerHeight) * 2 + 1;
+            const r = canvas.getBoundingClientRect();
+            ndc.x = ((clientX - r.left) / r.width) * 2 - 1;
+            ndc.y = -((clientY - r.top) / r.height) * 2 + 1;
             raycaster.setFromCamera(ndc, camera);
             const hits = raycaster.intersectObjects(pickables, false);
             return hits.length ? hits[0] : null;
@@ -531,9 +594,10 @@ export default function CubeGL({
         /** Projects a cube-space point to screen pixels. */
         function toScreen(v: THREE.Vector3): THREE.Vector2 {
             const p = v.clone().applyMatrix4(cubeGroup.matrixWorld).project(camera);
+            const r = canvas.getBoundingClientRect();
             return new THREE.Vector2(
-                (p.x + 1) / 2 * window.innerWidth,
-                (1 - p.y) / 2 * window.innerHeight,
+                r.left + (p.x + 1) / 2 * r.width,
+                r.top + (1 - p.y) / 2 * r.height,
             );
         }
 
@@ -765,15 +829,22 @@ export default function CubeGL({
             qSpin.setFromAxisAngle(AXIS_VEC.Y, spin);
             cubeGroup.quaternion.copy(userQuat).multiply(qTilt).multiply(qSpin);
 
-            // Bloom only pays for itself as the cube lands on solved.
+            // Bloom only pays for itself as the cube lands on solved, so the composer is
+            // not even built until the first time the glow comes on.
             const solveGlow = Math.max(0, (spRef.current - 0.9) / 0.1);
-            bloom.strength = solveGlow * 0.28;
-            bloom.enabled = solveGlow > 0.01;
+            const wantsBloom = solveGlow > 0.01;
+            if (wantsBloom) {
+                const b = ensureComposer();
+                b.strength = solveGlow * 0.28;
+                b.enabled = true;
+            } else if (bloom) {
+                bloom.enabled = false;
+            }
 
             // Bloom is only on near the solve. The rest of the time, going through the
             // composer costs a full offscreen render plus a fullscreen blit for nothing,
             // so draw straight to the canvas instead.
-            if (bloom.enabled) composer.render();
+            if (wantsBloom && composer) composer.render();
             else renderer.render(scene, camera);
         }
 
@@ -813,7 +884,7 @@ export default function CubeGL({
             logoTex?.dispose();
             envRT.dispose();
             pmrem.dispose();
-            composer.dispose();
+            composer?.dispose();
             renderer.dispose();
         };
     }, [logoSrc]);
@@ -821,7 +892,7 @@ export default function CubeGL({
     return (
         <canvas
             ref={canvasRef}
-            className="fixed top-0 left-0 z-0 block transition-opacity duration-[600ms] ease-[ease]"
+            className="fixed top-0 left-0 z-0 block w-full h-[100lvh] transition-opacity duration-[600ms] ease-[ease]"
             style={{ opacity }}
         />
     );

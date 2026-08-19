@@ -23,7 +23,6 @@ const projects: Project[] = [
         techStack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel", "Aceternity UI"],
         category: "frontend",
         githubUrl: "https://github.com/StianHa02/personal_website",
-        demoUrl: "https://personal-website-mu-eight-95.vercel.app/",
         imageUrl: "/images/projects/portfolio.png",
     },
     {
@@ -101,6 +100,7 @@ function ProjectCard({ project }: { project: Project }) {
                         src={project.imageUrl}
                         alt={project.title}
                         fill
+                        sizes="(max-width: 640px) calc(100vw - 3rem), (max-width: 1280px) 50vw, 400px"
                         className="object-cover opacity-80"
                     />
                 ) : (
@@ -208,14 +208,14 @@ export default function Projects() {
                 {/* Filter */}
                 <div className="flex justify-center mb-10">
                     <LayoutGroup>
-                        <div className="relative inline-flex items-center gap-1.5 rounded-[0.875rem] border border-white/[0.08] bg-white/[0.04] p-1.5">
+                        <div className="relative flex w-full sm:inline-flex sm:w-auto items-center gap-1.5 rounded-[0.875rem] border border-white/[0.08] bg-white/[0.04] p-1.5">
                             {filterButtons.map(btn => {
                                 const isActive = filter === btn.value;
                                 return (
                                     <button
                                         key={btn.value}
                                         onClick={() => setFilter(btn.value as typeof filter)}
-                                        className="relative z-[1] min-w-[6.5rem] cursor-pointer rounded-[0.625rem] border-0 bg-transparent py-2 px-6 text-[0.72rem] font-semibold tracking-[0.08em] uppercase [font-family:var(--font-inter),sans-serif]"
+                                        className="relative z-[1] flex-1 min-w-0 sm:flex-none sm:min-w-[6.5rem] cursor-pointer rounded-[0.625rem] border-0 bg-transparent py-2 px-2 sm:px-6 text-[0.72rem] font-semibold tracking-[0.04em] sm:tracking-[0.08em] uppercase [font-family:var(--font-inter),sans-serif]"
                                         style={{ color: isActive ? "rgba(147,197,253,0.95)" : "rgba(255,255,255,0.35)" }}
                                     >
                                         {isActive && (
@@ -237,7 +237,7 @@ export default function Projects() {
                 <LayoutGroup>
                     <div
                         ref={gridRef}
-                        className="grid gap-6 [grid-template-columns:repeat(auto-fill,minmax(320px,1fr))]"
+                        className="grid gap-6 grid-cols-1 sm:[grid-template-columns:repeat(auto-fill,minmax(320px,1fr))]"
                     >
                         <AnimatePresence mode="popLayout">
                             {filtered.map(project => (

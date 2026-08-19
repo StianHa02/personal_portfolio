@@ -72,7 +72,6 @@ export default function About() {
                                         alt="Stian"
                                         width={160}
                                         height={160}
-                                        priority
                                         className="absolute top-0 left-0 w-full h-full object-cover object-top transition-opacity duration-200 ease-in-out"
                                         style={{ opacity: isHovered ? 0 : 1 }}
                                     />
@@ -82,7 +81,6 @@ export default function About() {
                                         alt="Stian Hover"
                                         width={160}
                                         height={160}
-                                        priority
                                         className="absolute top-0 left-0 w-full h-full object-cover object-top transition-opacity duration-200 ease-in-out"
                                         style={{ opacity: isHovered ? 1 : 0 }}
                                     />

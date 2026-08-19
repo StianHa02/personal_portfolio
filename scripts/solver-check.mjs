@@ -102,9 +102,19 @@ console.log("\nOpening scramble");
     check(S.isSolved(pb.keyframes[pb.keyframes.length - 1]),
         `Kociemba solves it in ${pb.moves.length} moves`);
 
-    const inv = S.buildPlayback(base, S.simplify(S.invertSequence(scramble)));
+    const invSol = S.simplify(S.invertSequence(scramble));
+    const inv = S.buildPlayback(base, invSol);
     check(S.isSolved(inv.keyframes[inv.keyframes.length - 1]),
         `inverse-history fallback also solves it (${inv.moves.length} moves)`);
+
+    // CubeGL deliberately does not run the solver for the opening scramble: it only
+    // swaps in a worker answer that is *shorter* than what it already has, and here the
+    // free inverse is shorter. Loading cube-solver on mount would cost about a second of
+    // table building — several on a phone — for a result that is thrown away.
+    check(sol.length >= invSol.length,
+        `solver adds nothing here (${sol.length} vs ${invSol.length}), so mount skips it`,
+        `Kociemba now beats the inverse (${sol.length} vs ${invSol.length}) — CubeGL should ` +
+        "solve the opening scramble again, or PB_SOLUTION should be precomputed");
 }
 
 /* ── Already-solved edge case ─────────────────────────────────────────── */

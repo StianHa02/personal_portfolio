@@ -22,7 +22,20 @@ export default function Home() {
     const [activeSection, setActive] = useState("hero");
 
     useEffect(() => {
-        const fn = () => {
+        // iOS Safari changes `innerHeight` as the URL bar collapses and expands. Reading
+        // it per scroll tick makes `maxScroll` — and so `sp` — jump while the bar moves,
+        // which the cube then animates. Hold the height still and only refresh it on a
+        // width change, i.e. a real rotation or window resize.
+        let viewportH = window.innerHeight;
+        let viewportW = window.innerWidth;
+        const onResize = () => {
+            if (window.innerWidth === viewportW) return;
+            viewportW = window.innerWidth;
+            viewportH = window.innerHeight;
+        };
+
+        let last = -1;
+        const measure = () => {
             const footerEl = document.getElementById("footer");
             if (!footerEl) return;
 
@@ -30,21 +43,39 @@ export default function Home() {
             if (footerTop <= 0) { setSp(0); return; }
 
             // Use the smaller of footerTop and max possible scroll so sp can always reach 1
-            const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+            const maxScroll = document.documentElement.scrollHeight - viewportH;
             const raw = window.scrollY / Math.min(footerTop, Math.max(maxScroll, 1));
-            setSp(Math.min(Math.max(raw, 0), 1));
+            const next = Math.min(Math.max(raw, 0), 1);
+            // Below this the cube's own frame loop ignores the change anyway, so a
+            // re-render of the whole page would buy nothing.
+            if (Math.abs(next - last) < 0.0005) return;
+            last = next;
+            setSp(next);
         };
+
+        // Coalesce to one measurement per frame — scroll fires far more often than that,
+        // and each uncoalesced call re-rendered the entire page tree.
+        let ticking = false;
+        const fn = () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => { ticking = false; measure(); });
+        };
+
         window.addEventListener("scroll", fn, { passive: true });
-        fn();
-        const timeout = setTimeout(fn, 100);
+        window.addEventListener("resize", onResize);
+        measure();
+        const timeout = setTimeout(measure, 100);
         return () => {
             window.removeEventListener("scroll", fn);
+            window.removeEventListener("resize", onResize);
             clearTimeout(timeout);
         };
     }, []);
 
     useEffect(() => {
-        const fn = () => {
+        let current = NAV_SECTIONS[0].id;
+        const measure = () => {
             // Find whichever section's centre is closest to the viewport centre.
             // Works reliably on mobile where sections are taller than 100svh.
             const viewMid = window.scrollY + window.innerHeight / 2;
@@ -58,10 +89,22 @@ export default function Home() {
                 const dist = Math.abs(viewMid - elMid);
                 if (dist < bestDist) { bestDist = dist; best = s.id; }
             });
+            // Only re-render when the section actually changes — this ran five
+            // getBoundingClientRect calls and a setState on every scroll event.
+            if (best === current) return;
+            current = best;
             setActive(best);
         };
+
+        let ticking = false;
+        const fn = () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => { ticking = false; measure(); });
+        };
+
         window.addEventListener("scroll", fn, { passive: true });
-        fn();
+        measure();
         return () => window.removeEventListener("scroll", fn);
     }, []);
 

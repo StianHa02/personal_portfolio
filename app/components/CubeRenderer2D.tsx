@@ -299,12 +299,19 @@ export default function CubeRenderer2D({
     const resize = useCallback(()=>{
         const c = canvasRef.current; if(!c) return;
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        const vw = window.innerWidth;
-        const vh = window.innerHeight;
-        c.width = Math.floor(vw * dpr);
-        c.height = Math.floor(vh * dpr);
-        c.style.width = vw + "px";
-        c.style.height = vh + "px";
+        // Measure the canvas' own CSS box (`w-full h-[100lvh]`) rather than
+        // `window.innerHeight`. iOS Safari shrinks and grows that value as the URL bar
+        // hides and shows and fires `resize` each time, which used to re-centre the cube
+        // mid-scroll. `lvh` ignores the URL bar, so those events change nothing here.
+        // `|| innerHeight` only guards the case where the canvas has not been laid out
+        // yet; in practice the CSS box is always measurable by the time this runs.
+        const vw = c.clientWidth  || window.innerWidth;
+        const vh = c.clientHeight || window.innerHeight;
+        const w = Math.floor(vw * dpr);
+        const h = Math.floor(vh * dpr);
+        if (c.width === w && c.height === h) return;
+        c.width = w;
+        c.height = h;
         const ctx = c.getContext("2d");
         if (!ctx) return;
         ctx.setTransform(dpr,0,0,dpr,0,0);
@@ -384,7 +391,7 @@ export default function CubeRenderer2D({
     return (
         <canvas
             ref={canvasRef}
-            className="fixed top-0 left-0 z-0 block transition-opacity duration-[600ms] ease-[ease]"
+            className="fixed top-0 left-0 z-0 block w-full h-[100lvh] transition-opacity duration-[600ms] ease-[ease]"
             style={{ opacity }}
         />
     );
