@@ -217,7 +217,7 @@ export default function Skills() {
                     {skillCategories.map((cat, ci) => (
                         <div key={ci}>
                             <p
-                                className="mb-2 text-[0.75rem] tracking-[0.35em] uppercase font-medium text-ink-faint"
+                                className="mb-1 text-[0.75rem] tracking-[0.35em] uppercase font-medium text-ink-faint"
                             >
                                 {cat.title}
                             </p>
