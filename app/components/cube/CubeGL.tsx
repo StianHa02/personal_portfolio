@@ -136,6 +136,7 @@ export default function CubeGL({
     logoSrc,
     interactionEnabled = false,
     turnsEnabled = false,
+    onUserSolve,
 }: {
     sp: number;
     opacity?: number;
@@ -145,15 +146,21 @@ export default function CubeGL({
     /** Whether layers may be turned. False in the footer, where the cube is solved
      *  and should stay that way; it can still be rotated to look at. */
     turnsEnabled?: boolean;
+    /** Fires when a hand turn lands the cube on solved. Scroll-driven solving does
+     *  not go through here — only turns the user made themselves. */
+    onUserSolve?: () => void;
 }) {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const spRef = useRef(sp);
     const interactionRef = useRef(interactionEnabled);
     const turnsRef = useRef(turnsEnabled);
+    // In a ref so an inline arrow from the parent can't tear down the whole scene.
+    const onUserSolveRef = useRef(onUserSolve);
 
     useEffect(() => { spRef.current = sp; }, [sp]);
     useEffect(() => { interactionRef.current = interactionEnabled; }, [interactionEnabled]);
     useEffect(() => { turnsRef.current = turnsEnabled; }, [turnsEnabled]);
+    useEffect(() => { onUserSolveRef.current = onUserSolve; }, [onUserSolve]);
 
     useEffect(() => {
         if (!canvasRef.current) return;
@@ -171,8 +178,9 @@ export default function CubeGL({
 
         /* ── Renderer ── */
         const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
-        // Transparent, so the page's own #0e0e16 shows through untouched. Clearing to
-        // DARK instead would send the background through tone mapping and lift it to grey.
+        // Transparent, so the page's own --color-page (#0e0e14) shows through untouched.
+        // Clearing to DARK instead would send the background through tone mapping and lift
+        // it to grey.
         renderer.setClearColor(0x000000, 0);
         // Neutral holds saturation far better than ACES, which is what kept the
         // brand colours looking washed out.
@@ -651,7 +659,11 @@ export default function CubeGL({
         function commitTurn(turn: Turn) {
             const snapped = Math.round(turn.angle / (Math.PI / 2)) * (Math.PI / 2);
             if (snapped === 0) return;
+            const wasSolved = isSolved(held);
             held = applyMove(held, turn.axis, turn.layer, snapped);
+            // Only on the transition into solved, so idle turns on an already-solved
+            // cube don't re-fire it.
+            if (!wasSolved && isSolved(held)) onUserSolveRef.current?.();
             const fm = moveToFaceMove(turn.axis, turn.layer, snapped);
             if (fm) { history.push(fm); heldTwist += centreTwist([fm]); }
             history = simplify(history);

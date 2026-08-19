@@ -9,7 +9,8 @@ export const FACE_COLORS: Record<FaceKey, string> = {
     R: "#FF2A2A", O: "#FF6A00", W: "#FFFFFF",
     Y: "#FFF200", G: "#1FD400", B: "#0052cc"
 };
-export const DARK = "#0e0e16";
+/** Matches --color-page in globals.css; used by the 2D fallback renderer. */
+export const DARK = "#0e0e14";
 
 export const rx = ([x,y,z]: Vec3, a: number): Vec3 => { const c=Math.cos(a),s=Math.sin(a); return [x,y*c-z*s,y*s+z*c]; };
 export const ry = ([x,y,z]: Vec3, a: number): Vec3 => { const c=Math.cos(a),s=Math.sin(a); return [x*c+z*s,y,-x*s+z*c]; };

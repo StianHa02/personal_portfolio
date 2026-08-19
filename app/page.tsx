@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Hero from "./components/Hero";
 import About from "./components/About";
 import Projects from "./components/Projects";
@@ -8,6 +8,7 @@ import Skills from "./components/Skills";
 import Footer from "./components/Footer";
 import CubeRenderer from "./components/CubeRenderer";
 import RightDotNav from "./components/ui/RightDotNav";
+import Confetti from "./components/ui/Confetti";
 
 const NAV_SECTIONS = [
     { id: "hero",     label: "Home"     },
@@ -20,6 +21,12 @@ const NAV_SECTIONS = [
 export default function Home() {
     const [sp, setSp]                = useState(0);
     const [activeSection, setActive] = useState("hero");
+    // Set when the user solves the cube by hand in the hero, as opposed to
+    // scrolling it solved. Drives the one-shot confetti and retires the cue.
+    const [handSolved, setHandSolved] = useState(false);
+    const [confetti, setConfetti]     = useState(false);
+    // At most one burst per page load, whichever way the cube got solved.
+    const celebrated                 = useRef(false);
 
     useEffect(() => {
         // iOS Safari changes `innerHeight` as the URL bar collapses and expands. Reading
@@ -51,6 +58,13 @@ export default function Home() {
             if (Math.abs(next - last) < 0.0005) return;
             last = next;
             setSp(next);
+            // Scrolling the cube solved earns the same payoff as solving it by hand.
+            // Fired here rather than from an effect on `solved`, so it stays an
+            // event-driven update instead of a cascading re-render.
+            if (next >= 1 && !celebrated.current) {
+                celebrated.current = true;
+                setConfetti(true);
+            }
         };
 
         // Coalesce to one measurement per frame — scroll fires far more often than that,
@@ -124,8 +138,22 @@ export default function Home() {
     const cubeTurnable = activeSection === "hero";
 
     return (
-        <div className="relative bg-[#0e0e16]">
-            <CubeRenderer sp={sp} opacity={cubeOpacity} logoSrc="/favicon.ico" interactionEnabled={cubeInteractive} turnsEnabled={cubeTurnable} />
+        <div className="relative bg-page">
+            <CubeRenderer
+                sp={sp}
+                opacity={cubeOpacity}
+                logoSrc="/favicon.ico"
+                interactionEnabled={cubeInteractive}
+                turnsEnabled={cubeTurnable}
+                onUserSolve={() => {
+                    setHandSolved(true);
+                    if (celebrated.current) return;
+                    celebrated.current = true;
+                    setConfetti(true);
+                }}
+            />
+
+            {confetti && <Confetti onDone={() => setConfetti(false)} />}
 
 
             <RightDotNav
@@ -139,17 +167,14 @@ export default function Home() {
             <div
                 className="fixed bottom-8 left-1/2 z-50 hidden -translate-x-1/2 flex-col items-center gap-2 pointer-events-none transition-opacity duration-[400ms] ease-[ease] md:flex"
                 style={{
-                    opacity: sp < 0.015 ? 1 : 0,
+                    opacity: handSolved ? 0 : sp < 0.015 ? 1 : 0,
                 }}
             >
-                <span className="text-[0.7rem] tracking-[0.35em] uppercase font-semibold text-[#fcd435] [text-shadow:0_0_14px_rgba(252,212,53,0.5)]">
+                <span className="text-[0.75rem] tracking-[0.35em] uppercase font-medium text-ink-dim">
                     Scroll to solve
                 </span>
-                <svg
-                    className="animate-bounce [filter:drop-shadow(0_0_6px_rgba(252,212,53,0.6))]"
-                    width="20" height="20" viewBox="0 0 24 24" fill="none"
-                >
-                    <path d="M7 10l5 5 5-5" stroke="#fcd435" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M7 10l5 5 5-5" stroke="currentColor" className="text-ink-faint" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
             </div>
 
@@ -178,19 +203,6 @@ export default function Home() {
                         pointerEvents: solved ? "auto" : "none",
                     }}
                 >
-                    <div
-                        className="absolute top-8 left-1/2 -translate-x-1/2 transition-all duration-700 z-20"
-                        style={{ opacity: solved ? 1 : 0 }}
-                    >
-                        <div className="flex flex-col items-center gap-2">
-                            <svg className="animate-bounce [filter:drop-shadow(0_0_8px_rgba(252,212,53,0.8))]" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2L14.09 8.26L20 9.27L15.55 13.97L16.91 20L12 16.9L7.09 20L8.45 13.97L4 9.27L9.91 8.26L12 2Z" fill="#fcd435" />
-                            </svg>
-                            <span className="text-[0.6rem] tracking-[0.45em] uppercase font-bold text-[#fcd435] [text-shadow:0_0_15px_rgba(252,212,53,0.5)]">
-                                Cube Solved
-                            </span>
-                        </div>
-                    </div>
                     <Footer />
                 </section>
             </main>

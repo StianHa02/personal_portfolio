@@ -78,23 +78,16 @@ const filterButtons = [
     { label: "Fullstack", value: "fullstack" },
 ];
 
-const categoryColors: Record<string, { color: string; bg: string; border: string }> = {
-    frontend:  { color: "rgba(147,197,253,0.85)", bg: "rgba(59,130,246,0.08)",  border: "rgba(59,130,246,0.2)"  },
-    fullstack: { color: "rgba(110,231,183,0.85)", bg: "rgba(16,185,129,0.08)",  border: "rgba(16,185,129,0.2)"  },
-    personal:  { color: "rgba(251,191,36,0.85)",  bg: "rgba(251,191,36,0.08)",  border: "rgba(251,191,36,0.2)"  },
-};
-
 function ProjectCard({ project }: { project: Project }) {
-    const cat = categoryColors[project.category] ?? categoryColors.personal;
     const isComingSoon = project.imageUrl === "Coming Soon";
 
     return (
         <div
             data-project-card
-            className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-[#0b0b12] shadow-[0_10px_40px_rgba(0,0,0,0.4)] transition-[transform,box-shadow] duration-300 ease-[ease] hover:-translate-y-1 hover:shadow-[0_20px_60px_rgba(0,0,0,0.55)]"
+            className="flex h-full flex-col overflow-hidden rounded-lg border border-line bg-card shadow-card transition-[transform,box-shadow] duration-300 ease-[ease] hover:-translate-y-1 hover:shadow-card-hover"
         >
             {/* Image — edge to edge */}
-            <div className="relative w-full h-[200px] shrink-0 overflow-hidden bg-white/[0.04]">
+            <div className="relative w-full h-[200px] shrink-0 overflow-hidden bg-inset">
                 {project.imageUrl && !isComingSoon ? (
                     <Image
                         src={project.imageUrl}
@@ -105,41 +98,37 @@ function ProjectCard({ project }: { project: Project }) {
                     />
                 ) : (
                     <div className="flex w-full h-full items-center justify-center">
-                        <span className="text-[0.6rem] tracking-[0.3em] uppercase text-white/20 font-bold [font-family:var(--font-inter),sans-serif]">
+                        <span className="text-[0.75rem] tracking-[0.3em] uppercase text-ink-faint font-bold">
                             {isComingSoon ? "In Development" : "No Preview"}
                         </span>
                     </div>
                 )}
                 {/* Gradient bleed into card body */}
-                <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 [background:linear-gradient(to_bottom,transparent,#0b0b12)]" />
+                <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 [background:linear-gradient(to_bottom,transparent,var(--color-card))]" />
             </div>
 
             {/* Card body */}
-            <div className="flex grow flex-col gap-3.5 pt-6 px-7 pb-7">
+            <div className="flex grow flex-col gap-3.5 p-7">
 
                 {/* Title + category badge */}
                 <div className="flex items-start justify-between gap-3">
-                    <h3 className="flex-1 text-base font-semibold text-[rgba(237,233,223,0.92)] leading-[1.35] tracking-[-0.01em] [font-family:var(--font-inter),sans-serif]">
+                    <h3 className="flex-1 text-base font-semibold text-ink leading-[1.35] tracking-[-0.01em]">
                         {project.title}
                     </h3>
-                    <span className="shrink-0 whitespace-nowrap rounded-[0.4rem] border py-[0.28rem] px-[0.6rem] text-[0.58rem] font-semibold tracking-[0.2em] uppercase [font-family:var(--font-inter),sans-serif]" style={{
-                        color: cat.color,
-                        background: cat.bg,
-                        borderColor: cat.border,
-                    }}>
+                    <span className="shrink-0 whitespace-nowrap rounded-sm border border-line py-[0.28rem] px-[0.6rem] text-[0.75rem] font-semibold tracking-[0.2em] uppercase text-ink-faint">
                         {project.category}
                     </span>
                 </div>
 
                 {/* Description */}
-                <p className="overflow-hidden text-[0.85rem] leading-[1.65] text-white/[0.42] [display:-webkit-box] [-webkit-line-clamp:3] [-webkit-box-orient:vertical] [font-family:var(--font-inter),sans-serif]">
+                <p className="overflow-hidden text-[0.85rem] leading-[1.75] text-ink-dim [display:-webkit-box] [-webkit-line-clamp:3] [-webkit-box-orient:vertical]">
                     {project.description}
                 </p>
 
                 {/* Tech stack */}
                 <div className="flex flex-wrap gap-[0.4rem]">
                     {project.techStack.map((tech, i) => (
-                        <span key={i} className="rounded-[0.4rem] border border-white/[0.08] bg-white/[0.04] py-[0.28rem] px-[0.65rem] text-[0.65rem] font-medium tracking-[0.04em] text-white/[0.38] [font-family:var(--font-inter),sans-serif]">
+                        <span key={i} className="rounded-sm border border-line bg-inset py-[0.28rem] px-[0.65rem] text-[0.75rem] font-medium tracking-[0.04em] text-ink-faint">
                             {tech}
                         </span>
                     ))}
@@ -149,15 +138,15 @@ function ProjectCard({ project }: { project: Project }) {
                 <div className="grow" />
 
                 {/* Buttons */}
-                <div className="flex gap-2.5 pt-[1.125rem] border-t border-white/[0.07]">
+                <div className="flex gap-2.5 pt-[1.125rem] border-t border-line">
                     {project.demoUrl && !isComingSoon && (
                         <a
                             href={project.demoUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-[rgba(59,130,246,0.22)] bg-[rgba(59,130,246,0.1)] py-2.5 px-4 text-[0.72rem] font-semibold tracking-[0.1em] uppercase no-underline text-[rgba(147,197,253,0.9)] transition-[background,border-color,color] duration-200 hover:border-[rgba(59,130,246,0.4)] hover:bg-[rgba(59,130,246,0.18)] [font-family:var(--font-inter),sans-serif]"
+                            className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-sm border border-accent-line bg-accent py-2.5 px-4 text-[0.75rem] font-semibold tracking-[0.1em] uppercase no-underline text-ink transition-[background,border-color,color] duration-200 hover:border-line-strong hover:bg-accent-hover"
                         >
-                            <FaExternalLinkAlt className="shrink-0 text-[0.6rem]" />
+                            <FaExternalLinkAlt className="shrink-0 text-[0.75rem]" />
                             {project.demoLabel ?? "Live Demo"}
                         </a>
                     )}
@@ -166,7 +155,7 @@ function ProjectCard({ project }: { project: Project }) {
                             href={project.githubUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/[0.05] py-2.5 px-4 text-[0.72rem] font-semibold tracking-[0.1em] uppercase no-underline text-white/60 transition-[background,border-color,color] duration-200 hover:border-white/20 hover:bg-white/[0.09] hover:text-white/90 [font-family:var(--font-inter),sans-serif]"
+                            className="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-sm border border-line bg-transparent py-2.5 px-4 text-[0.75rem] font-semibold tracking-[0.1em] uppercase no-underline text-ink-dim transition-[background,border-color,color] duration-200 hover:border-line-mid hover:bg-inset hover:text-ink-soft"
                         >
                             <FaGithub className="shrink-0 text-[0.8rem]" />
                             Source
@@ -200,7 +189,7 @@ export default function Projects() {
 
                 {/* Header */}
                 <div className="text-center mb-10">
-                    <h1 className="text-[clamp(2rem,5vw,3.5rem)] font-light leading-none tracking-[-0.02em] text-[#ede9df] [font-family:var(--font-inter),sans-serif]">
+                    <h1 className="text-[clamp(2rem,5vw,3.5rem)] font-light leading-none tracking-[-0.02em] text-ink">
                         Projects and freelance work
                     </h1>
                 </div>
@@ -208,20 +197,20 @@ export default function Projects() {
                 {/* Filter */}
                 <div className="flex justify-center mb-10">
                     <LayoutGroup>
-                        <div className="relative flex w-full sm:inline-flex sm:w-auto items-center gap-1.5 rounded-[0.875rem] border border-white/[0.08] bg-white/[0.04] p-1.5">
+                        <div className="relative flex w-full sm:inline-flex sm:w-auto items-center gap-1.5 rounded-md border border-line bg-inset p-1.5">
                             {filterButtons.map(btn => {
                                 const isActive = filter === btn.value;
                                 return (
                                     <button
                                         key={btn.value}
                                         onClick={() => setFilter(btn.value as typeof filter)}
-                                        className="relative z-[1] flex-1 min-w-0 sm:flex-none sm:min-w-[6.5rem] cursor-pointer rounded-[0.625rem] border-0 bg-transparent py-2 px-2 sm:px-6 text-[0.72rem] font-semibold tracking-[0.04em] sm:tracking-[0.08em] uppercase [font-family:var(--font-inter),sans-serif]"
-                                        style={{ color: isActive ? "rgba(147,197,253,0.95)" : "rgba(255,255,255,0.35)" }}
+                                        className="relative z-[1] flex-1 min-w-0 sm:flex-none sm:min-w-[6.5rem] cursor-pointer rounded-sm border-0 bg-transparent py-2 px-2 sm:px-6 text-[0.75rem] font-semibold tracking-[0.04em] sm:tracking-[0.08em] uppercase transition-colors duration-200"
+                                        style={{ color: isActive ? "var(--color-ink)" : "var(--color-ink-faint)" }}
                                     >
                                         {isActive && (
                                             <motion.div
                                                 layoutId="filter-indicator"
-                                                className="absolute inset-0 z-[-1] rounded-[10px] border border-[rgba(59,130,246,0.5)] bg-[rgba(59,130,246,0.32)] shadow-[0_0_12px_rgba(59,130,246,0.25)]"
+                                                className="absolute inset-0 z-[-1] rounded-sm border border-accent-line bg-accent"
                                                 transition={{ type: "spring", stiffness: 500, damping: 35, borderRadius: { duration: 0 } }}
                                             />
                                         )}

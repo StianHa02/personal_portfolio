@@ -22,6 +22,8 @@ export default function CubeRenderer(props: {
     logoSrc?: string;
     interactionEnabled?: boolean;
     turnsEnabled?: boolean;
+    /** Only the WebGL cube can be turned by hand, so only it ever fires this. */
+    onUserSolve?: () => void;
 }) {
     // `null` until we've checked — render the 2D cube meanwhile so there's never a blank hero.
     const [webgl, setWebgl] = useState<boolean | null>(null);

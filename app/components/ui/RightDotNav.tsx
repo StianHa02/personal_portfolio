@@ -15,6 +15,16 @@ interface RightDotNavProps {
 const ROW_HEIGHT = 32;
 const DOT_SIZE = 8;
 const ACTIVE_SIZE = 13;
+// Each row is `pr-3`, so a dot's centre sits this far in from the column's right edge.
+// The track is positioned off the same number rather than a hardcoded one, otherwise
+// the two drift apart the moment DOT_SIZE or the padding changes.
+const DOT_INSET = 12;
+const TRACK_W = 1;
+const DOT_CENTRE = DOT_INSET + DOT_SIZE / 2;
+// Deliberately opaque rather than a translucent ink token: the track line runs behind
+// the dots, and any alpha here lets it show straight through them. This is the flat
+// equivalent of rgba(237,233,223,0.38) over --color-page.
+const INACTIVE_DOT = "#636161";
 
 export default function RightDotNav({ sections, activeSection, onNavigate }: RightDotNavProps) {
     const [hovered, setHovered] = useState(false);
@@ -58,12 +68,12 @@ export default function RightDotNav({ sections, activeSection, onNavigate }: Rig
         >
             {/* Track line */}
             <div
-                className="absolute bg-white/10"
+                className="absolute bg-line-strong"
                 style={{
-                    width: 1,
+                    width: TRACK_W,
                     top: ROW_HEIGHT / 2 + DOT_SIZE / 2,
                     height: totalHeight - DOT_SIZE,
-                    right: 15,
+                    right: DOT_CENTRE - TRACK_W / 2,
                 }}
             />
 
@@ -83,12 +93,12 @@ export default function RightDotNav({ sections, activeSection, onNavigate }: Rig
                         >
                             {/* Label */}
                             <span
-                                className="pointer-events-none text-[0.6rem] tracking-[0.2em] uppercase whitespace-nowrap transition-[opacity,transform] duration-200 [font-family:var(--font-inter),sans-serif]"
+                                className="pointer-events-none text-[0.7rem] tracking-[0.2em] uppercase whitespace-nowrap transition-[opacity,transform] duration-200"
                                 style={{
                                     color: isActive
-                                        ? "rgba(255,255,255,0.9)"
-                                        : "rgba(255,255,255,0.7)",
-                                    fontWeight: isActive ? 500 : 400,
+                                        ? "var(--color-ink)"
+                                        : "var(--color-ink-soft)",
+                                    fontWeight: isActive ? 600 : 500,
                                     opacity: hovered || isActive ? 1 : 0,
                                     transform: `translateX(${hovered || isActive ? 0 : 6}px)`,
                                 }}
@@ -104,12 +114,12 @@ export default function RightDotNav({ sections, activeSection, onNavigate }: Rig
                                         : isActive
                                         ? ACTIVE_SIZE / DOT_SIZE
                                         : 1,
-                                    background: isActive ? "#ffffff" : "#555555",
+                                    background: isActive ? "var(--color-ink)" : INACTIVE_DOT,
                                     boxShadow: isActive
-                                        ? "0 0 8px rgba(255,255,255,0.5)"
+                                        ? "0 0 8px rgba(237,233,223,0.45)"
                                         : hoveredIndex === i
-                                        ? "0 0 6px rgba(255,255,255,0.15)"
-                                        : "0 0 0px rgba(255,255,255,0)",
+                                        ? "0 0 6px rgba(237,233,223,0.2)"
+                                        : "0 0 0px rgba(237,233,223,0)",
                                 }}
                                 transition={{
                                     type: "spring",

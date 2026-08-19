@@ -70,24 +70,68 @@ const skillCategories: SkillCategory[] = [
     },
 ];
 
+/**
+ * Pull a brand colour toward the page's neutral. Hue survives — React still reads
+ * cyan, Python still blue — but the chroma comes down so 23 logos side by side stop
+ * reading as a rainbow. Clamping lightness handles the outliers for free: Next.js's
+ * pure #ffffff and GitHub's #cccccc come down off white without needing a special case.
+ */
+function mute(hex: string, sMul = 0.5, lMin = 0.45, lMax = 0.72): string {
+    const n = parseInt(hex.replace("#", ""), 16);
+    const r = ((n >> 16) & 255) / 255, g = ((n >> 8) & 255) / 255, b = (n & 255) / 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b);
+    const l = (max + min) / 2;
+    const d = max - min;
+    let h = 0, sat = 0;
+    if (d !== 0) {
+        sat = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        h = max === r ? ((g - b) / d + (g < b ? 6 : 0))
+          : max === g ? (b - r) / d + 2
+          : (r - g) / d + 4;
+        h /= 6;
+    }
+    const s2 = sat * sMul;
+    const l2 = Math.min(Math.max(l, lMin), lMax);
+
+    const hue = (t: number) => {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1 / 6) return p2 + (q - p2) * 6 * t;
+        if (t < 1 / 2) return q;
+        if (t < 2 / 3) return p2 + (q - p2) * (2 / 3 - t) * 6;
+        return p2;
+    };
+    const q = l2 < 0.5 ? l2 * (1 + s2) : l2 + s2 - l2 * s2;
+    const p2 = 2 * l2 - q;
+    const to = (v: number) => Math.round(v * 255).toString(16).padStart(2, "0");
+    return s2 === 0
+        ? `#${to(l2)}${to(l2)}${to(l2)}`
+        : `#${to(hue(h + 1 / 3))}${to(hue(h))}${to(hue(h - 1 / 3))}`;
+}
+
+// Muted more gently than the logos — these drive the dots and the legend, and need to
+// stay tellable apart at 5px.
 const levelConfig = {
-    Expert:     { color: "#6ee7b7", filled: 3 },
-    Proficient: { color: "#93c5fd", filled: 2 },
-    Learning:   { color: "#fbbf24", filled: 1 },
+    Expert:     { color: mute("#6ee7b7", 0.7), filled: 3 },
+    Proficient: { color: mute("#93c5fd", 0.7), filled: 2 },
+    Learning:   { color: mute("#fbbf24", 0.7), filled: 1 },
 };
 
 function SkillCard({ skill }: { skill: Skill }) {
     const Icon = skill.icon;
     const lvl = levelConfig[skill.level];
+    const muted = mute(skill.color);
     const [hovered, setHovered] = useState(false);
 
     return (
         <div
             data-skill-card
-            className="relative flex min-w-[88px] flex-[1_1_88px] flex-col items-center justify-center gap-2.5 rounded-2xl pt-5 px-3 pb-4 cursor-default transition-all duration-200 select-none"
+            className="relative flex min-w-[88px] flex-[1_1_88px] flex-col items-center justify-center gap-2.5 rounded-lg pt-5 px-3 pb-4 cursor-default border transition-all duration-200 select-none"
             style={{
-                background: hovered ? lvl.color : `${lvl.color}50`,
-                border: `1px solid ${lvl.color}bb`,
+                // Neutral plate in both states. The tech's own colour lives in the
+                // icon and the level's colour lives in the dots — nowhere else.
+                background: hovered ? "var(--color-accent)" : "var(--color-card)",
+                borderColor: hovered ? "var(--color-line-mid)" : "var(--color-line)",
                 transform: hovered ? "translateY(-3px)" : "translateY(0)",
             }}
             onMouseEnter={() => setHovered(true)}
@@ -97,16 +141,13 @@ function SkillCard({ skill }: { skill: Skill }) {
             <Icon
                 className="text-3xl shrink-0"
                 style={{
-                    color: hovered ? "rgba(0,0,0,0.75)" : skill.color,
-                    filter: hovered ? "none" : `drop-shadow(0 0 8px ${skill.color}55)`,
+                    color: muted,
+                    filter: `drop-shadow(0 0 8px ${muted}33)`,
                 }}
             />
 
             {/* Name */}
-            <span
-                className="text-center whitespace-nowrap text-[0.68rem] font-medium tracking-wide leading-tight"
-                style={{ color: hovered ? "rgba(0,0,0,0.7)" : "rgba(255,255,255,0.75)" }}
-            >
+            <span className="text-center whitespace-nowrap text-[0.75rem] font-medium tracking-wide leading-tight text-ink-soft">
                 {skill.name}
             </span>
 
@@ -136,7 +177,7 @@ export default function Skills() {
                 {/* Header */}
                 <div className="text-center mb-0">
                     <h1
-                        className="mb-5 text-[clamp(2rem,5vw,3.5rem)] font-light leading-none tracking-[-0.02em] text-[#ede9df] [font-family:var(--font-inter),sans-serif]"
+                        className="mb-5 text-[clamp(2rem,5vw,3.5rem)] font-light leading-none tracking-[-0.02em] text-ink"
                     >
                         Skills &amp; Technologies
                     </h1>
@@ -159,7 +200,7 @@ export default function Skills() {
                                     ))}
                                 </div>
                                 <span
-                                    className="text-[0.65rem] tracking-[0.15em] uppercase font-medium [font-family:var(--font-inter),sans-serif]"
+                                    className="text-[0.75rem] tracking-[0.15em] uppercase font-medium"
                                     style={{
                                         color: levelConfig[level].color,
                                     }}
@@ -176,7 +217,7 @@ export default function Skills() {
                     {skillCategories.map((cat, ci) => (
                         <div key={ci}>
                             <p
-                                className="mb-2 text-[0.6rem] tracking-[0.35em] uppercase font-medium text-white/30 [font-family:var(--font-inter),sans-serif]"
+                                className="mb-2 text-[0.75rem] tracking-[0.35em] uppercase font-medium text-ink-faint"
                             >
                                 {cat.title}
                             </p>

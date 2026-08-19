@@ -1,20 +1,63 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ─────────────────────────────────────────────────────────────
+   Design tokens
+   One ramp drives every surface, text step, border and radius.
+   The page is dark-only by design — there is no light theme.
+   ───────────────────────────────────────────────────────────── */
+@theme {
+  /* Surfaces. Cards sit *darker* than the page on purpose: it is what
+     makes them read as solid plates over the WebGL cube behind them. */
+  --color-page:    #0e0e14;
+  --color-card:    #0a0a10;
+  --color-overlay: #0d0d13;
+  --color-inset:   rgba(237, 233, 223, 0.03);
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-}
+  /* Text ramp — all five steps share the warm off-white base, so warm
+     headings and cool body copy stop clashing.
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+     Alphas are derived from contrast targets, NOT spaced evenly: the ratios
+     below are measured against --color-card, the darker of the two surfaces.
+     Every step that carries text clears WCAG AA (4.5:1). Do not lower these
+     without re-measuring — evenly spaced alphas are what put real content at
+     2.5:1 and 1.6:1 here previously.
+
+       ink        16.3:1   headings
+       ink-soft   10.4:1   primary body            (AAA)
+       ink-dim     6.9:1   secondary body
+       ink-faint   4.6:1   labels, chips, meta     (AA floor)
+       ink-ghost   3.1:1   DECORATION ONLY — never text */
+  --color-ink:       #ede9df;
+  --color-ink-soft:  rgba(237, 233, 223, 0.80);
+  --color-ink-dim:   rgba(237, 233, 223, 0.64);
+  --color-ink-faint: rgba(237, 233, 223, 0.50);
+  --color-ink-ghost: rgba(237, 233, 223, 0.38);
+
+  /* Hairlines */
+  --color-line:        rgba(237, 233, 223, 0.07);
+  --color-line-mid:    rgba(237, 233, 223, 0.12);
+  --color-line-strong: rgba(237, 233, 223, 0.20);
+
+  /* Accent — a raised neutral surface, never a hue. */
+  --color-accent:       rgba(237, 233, 223, 0.08);
+  --color-accent-hover: rgba(237, 233, 223, 0.12);
+  --color-accent-line:  rgba(237, 233, 223, 0.16);
+
+  /* Signal colours. The cube's yellow, so the scroll cue points at the thing
+     it refers to; the level hues survive only in dots and toast bars. */
+  --color-signal:     #fcd435;
+  --color-expert:     #6ee7b7;
+  --color-proficient: #93c5fd;
+  --color-learning:   #fbbf24;
+
+  /* Tight enough to read as precise rather than friendly. */
+  --radius-sm: 0.375rem;  /* buttons, badges, inputs */
+  --radius-md: 0.5rem;    /* the filter rail */
+  --radius-lg: 0.625rem;  /* cards */
+
+  --shadow-card:       0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 32px rgba(0, 0, 0, 0.35);
+  --shadow-card-hover: 0 2px 4px rgba(0, 0, 0, 0.45), 0 18px 50px rgba(0, 0, 0, 0.5);
+  --shadow-overlay:    0 24px 60px rgba(0, 0, 0, 0.6);
 }
 
 html {
@@ -23,9 +66,9 @@ html {
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-page);
+  color: var(--color-ink-soft);
+  font-family: var(--font-inter), system-ui, sans-serif;
   cursor: default;
   overscroll-behavior: none;
   -webkit-tap-highlight-color: transparent;
@@ -62,3 +105,4 @@ body {
   75% { transform: rotate(10deg); }
   100% { transform: rotate(0deg); }
 }
+
