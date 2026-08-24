@@ -10,7 +10,7 @@ export default function Hero() {
             <div className="flex flex-col items-start gap-6 w-full max-w-lg font-[family-name:var(--font-playfair)]">
 
                 <p className="text-[0.75rem] tracking-[0.3em] uppercase text-ink-soft font-medium [text-shadow:0_1px_8px_rgba(0,0,0,0.5)]">
-                    Data Science Student &amp;  <br /> aspiring Full-Stack Developer
+                    Full-Stack Developer &middot; <br /> Data Science MSc
                 </p>
 
                 <h1 className={`${displayHeading} [text-shadow:0_2px_20px_rgba(0,0,0,0.4)]`}>

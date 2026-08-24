@@ -169,24 +169,37 @@ export default function About() {
 
                         {/* Contact — compact */}
                         <BentoBox title="Contact Me">
+                            {/* Labels are real elements rather than placeholders: a
+                                placeholder is not an accessible name, and it disappears
+                                the moment someone starts typing. `sr-only` keeps the
+                                compact look while screen readers still get them. */}
                             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                                    <input
-                                        type="text" name="name" placeholder="Name" required
-                                        className={inputField}
-                                    />
-                                    <input
-                                        type="email" name="email" placeholder="Email" required
-                                        className={inputField}
-                                    />
+                                    <div>
+                                        <label htmlFor="contact-name" className="sr-only">Name (required)</label>
+                                        <input
+                                            id="contact-name" type="text" name="name" placeholder="Name" required
+                                            autoComplete="name"
+                                            className={inputField}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label htmlFor="contact-email" className="sr-only">Email (required)</label>
+                                        <input
+                                            id="contact-email" type="email" name="email" placeholder="Email" required
+                                            autoComplete="email"
+                                            className={inputField}
+                                        />
+                                    </div>
                                 </div>
+                                <label htmlFor="contact-message" className="sr-only">Your message (required)</label>
                                 <textarea
-                                    name="message" placeholder="Your message..." rows={2} required
+                                    id="contact-message" name="message" placeholder="Your message..." rows={2} required
                                     className={`${inputField} resize-none`}
                                 />
                                 <div className="flex items-center justify-between gap-3">
                                     <p className="text-[0.75rem] font-medium tracking-[0.02em] text-ink-faint">
-                                        I&apos;ll get back to you within 24 hours.
+                                        All fields required. I&apos;ll get back to you within 24 hours.
                                     </p>
                                     <button
                                         type="submit"

@@ -67,13 +67,25 @@ export const badgeWin =
 
 /* ── Controls ────────────────────────────────────────────────── */
 
+/**
+ * Keyboard focus. The page is near-black, so the browser's default outline is
+ * effectively invisible on these surfaces — every interactive control opts into
+ * the signal ring instead. `focus-visible` (not `focus`) so pointer users never
+ * see it.
+ */
+export const focusRing =
+    "outline-none focus-visible:[outline:2px_solid_var(--color-signal)] focus-visible:outline-offset-2";
+
 /** Filled: Live Demo, Send. */
 export const buttonPrimary =
+    `${focusRing} ` +
     "flex cursor-pointer items-center justify-center gap-2 rounded-sm border border-accent-line bg-accent py-2.5 px-4 text-[0.75rem] font-semibold tracking-[0.1em] uppercase no-underline text-ink transition-[background,border-color,color] duration-200 hover:border-line-strong hover:bg-accent-hover";
 
 /** Outlined: Source, social links. */
 export const buttonGhost =
+    `${focusRing} ` +
     "flex cursor-pointer items-center justify-center gap-2 rounded-sm border border-line bg-transparent py-2.5 px-4 text-[0.75rem] font-semibold tracking-[0.1em] uppercase no-underline text-ink-dim transition-[background,border-color,color] duration-200 hover:border-line-mid hover:bg-inset hover:text-ink-soft";
 
 export const inputField =
-    "w-full box-border rounded-sm border border-line bg-inset py-2.5 px-4 text-[0.8rem] font-normal tracking-[0.01em] text-ink-soft outline-none transition-[border-color,background] duration-200 focus:border-line-strong focus:bg-accent";
+    `${focusRing} ` +
+    "w-full box-border rounded-sm border border-line bg-inset py-2.5 px-4 text-[0.8rem] font-normal tracking-[0.01em] text-ink-soft transition-[border-color,background] duration-200 focus:border-line-strong focus:bg-accent";

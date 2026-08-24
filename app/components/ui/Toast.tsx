@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { FaCircleCheck, FaCircleExclamation, FaCircleInfo, FaXmark } from "react-icons/fa6";
+import { focusRing } from "./styles";
 
 interface ToastProps {
     message: string;
@@ -33,6 +34,8 @@ export default function Toast({
 
     return (
         <div
+            role="status"
+            aria-live="polite"
             className="fixed bottom-10 right-10 z-50 flex min-w-[340px] items-center gap-5 rounded-lg border border-l-[3px] border-line-mid bg-overlay py-5 px-7 [animation:slide-up_0.3s_cubic-bezier(0.16,1,0.3,1)]"
             style={{
                 borderLeftColor: accent.bar,
@@ -50,7 +53,7 @@ export default function Toast({
             {/* Close */}
             <button
                 onClick={onClose}
-                className="shrink-0 cursor-pointer border-0 bg-transparent p-1 text-sm leading-none text-ink-faint transition-colors duration-200 hover:text-ink-soft"
+                className={`${focusRing} shrink-0 cursor-pointer border-0 bg-transparent p-1 text-sm leading-none text-ink-faint transition-colors duration-200 hover:text-ink-soft`}
                 aria-label="Dismiss"
             >
                 <FaXmark />

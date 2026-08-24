@@ -5,11 +5,12 @@ import {
     SiHtml5, SiCss, SiReact, SiNextdotjs, SiTypescript,
     SiTailwindcss, SiJavascript, SiNodedotjs, SiPython,
     SiFastapi, SiSupabase, SiPostgresql,
-    SiGit, SiGithub, SiVercel, SiJetbrains,
+    SiGit, SiVercel,
     SiDocker, SiNumpy, SiPandas,
     SiJupyter, SiScikitlearn, SiPytorch,
 } from "react-icons/si";
 import { FaAws } from "react-icons/fa";
+import { PlaywrightIcon } from "./ui/PlaywrightIcon";
 import { IconType } from "react-icons";
 import { eyebrow, sectionHeading, sectionInner } from "./ui";
 
@@ -29,13 +30,13 @@ const skillCategories: SkillCategory[] = [
     {
         title: "Frontend",
         skills: [
-            { name: "HTML5",       icon: SiHtml5,       color: "#E34F26", level: "Expert"     },
-            { name: "CSS3",        icon: SiCss,        color: "#1572B6", level: "Expert"     },
+            { name: "HTML5",       icon: SiHtml5,       color: "#E34F26", level: "Proficient" },
+            { name: "CSS3",        icon: SiCss,        color: "#1572B6", level: "Proficient" },
             { name: "JavaScript",  icon: SiJavascript,  color: "#F7DF1E", level: "Proficient"     },
-            { name: "TypeScript",  icon: SiTypescript,  color: "#3178C6", level: "Proficient" },
-            { name: "React",       icon: SiReact,       color: "#61DAFB", level: "Proficient" },
-            { name: "Next.js",     icon: SiNextdotjs,   color: "#ffffff", level: "Proficient" },
-            { name: "Tailwind",    icon: SiTailwindcss, color: "#06B6D4", level: "Proficient" },
+            { name: "TypeScript",  icon: SiTypescript,  color: "#3178C6", level: "Expert" },
+            { name: "React",       icon: SiReact,       color: "#61DAFB", level: "Expert" },
+            { name: "Next.js",     icon: SiNextdotjs,   color: "#ffffff", level: "Expert" },
+            { name: "Tailwind",    icon: SiTailwindcss, color: "#06B6D4", level: "Expert" },
         ],
     },
     {
@@ -51,16 +52,15 @@ const skillCategories: SkillCategory[] = [
     {
         title: "Tools & DevOps",
         skills: [
-            { name: "Git",         icon: SiGit,      color: "#F05032", level: "Expert"     },
-            { name: "GitHub",      icon: SiGithub,   color: "#cccccc", level: "Expert"     },
-            { name: "Vercel",      icon: SiVercel,   color: "#cccccc", level: "Proficient" },
-            { name: "JetBrains",   icon: SiJetbrains,color: "#FF318C", level: "Proficient" },
-            { name: "AWS",         icon: FaAws,   color: "#FF9900", level: "Learning"   },
-            { name: "Docker",      icon: SiDocker,   color: "#2496ED", level: "Learning"   },
+            { name: "Git",         icon: SiGit,             color: "#F05032", level: "Proficient" },
+            { name: "Vercel",      icon: SiVercel,          color: "#cccccc", level: "Proficient" },
+            { name: "Playwright",  icon: PlaywrightIcon,    color: "#2EAD33", level: "Proficient" },
+            { name: "AWS",         icon: FaAws,             color: "#FF9900", level: "Proficient" },
+            { name: "Docker",      icon: SiDocker,          color: "#2496ED", level: "Proficient" },
         ],
     },
     {
-        title: "Data Science & ML",
+        title: "Data & ML (MSc)",
         skills: [
             { name: "NumPy",        icon: SiNumpy,      color: "#4DABCF", level: "Expert"     },
             { name: "Pandas",       icon: SiPandas,     color: "#e70488", level: "Expert"     },

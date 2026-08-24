@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { motion, useSpring } from "motion/react";
+import { focusRing } from "./styles";
 
 interface NavSection { id: string; label: string }
 
@@ -88,7 +89,7 @@ export default function RightDotNav({ sections, activeSection, onNavigate }: Rig
                             onClick={() => onNavigate(section.id)}
                             onMouseEnter={() => setHoveredIndex(i)}
                             onMouseLeave={() => setHoveredIndex(null)}
-                            className={`flex h-8 items-center gap-2 pr-3 ${isActive ? "cursor-default" : "cursor-pointer"}`}
+                            className={`${focusRing} rounded-sm flex h-8 items-center gap-2 pr-3 ${isActive ? "cursor-default" : "cursor-pointer"}`}
                             aria-label={section.label}
                         >
                             {/* Label */}
