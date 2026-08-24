@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import CubeRenderer from "./components/CubeRenderer";
 import RightDotNav from "./components/ui/RightDotNav";
 import Confetti from "./components/ui/Confetti";
+import { eyebrow } from "./components/ui";
 
 const NAV_SECTIONS = [
     { id: "hero",     label: "Home"     },
@@ -170,7 +171,7 @@ export default function Home() {
                     opacity: handSolved ? 0 : sp < 0.015 ? 1 : 0,
                 }}
             >
-                <span className="text-[0.75rem] tracking-[0.35em] uppercase font-medium text-ink-dim">
+                <span className={`${eyebrow} text-ink-dim`}>
                     Scroll to solve
                 </span>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -179,19 +180,19 @@ export default function Home() {
             </div>
 
             <main className="relative z-10">
-                <section id="hero" className="w-full min-h-[100lvh]">
+                <section id="hero" className="flex w-full min-h-[100lvh]">
                     <Hero />
                 </section>
 
-                <section id="projects" className="w-full min-h-[100lvh] flex items-center justify-center">
+                <section id="projects" className="w-full min-h-[100lvh]">
                     <Projects />
                 </section>
 
-                <section id="skills" className="w-full min-h-[100lvh] flex items-center justify-center">
+                <section id="skills" className="w-full min-h-[100lvh]">
                     <Skills />
                 </section>
 
-                <section id="about" className="w-full min-h-[100lvh] flex items-center justify-center">
+                <section id="about" className="w-full min-h-[100lvh]">
                     <About />
                 </section>
 

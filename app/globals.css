@@ -60,6 +60,28 @@
   --shadow-overlay:    0 24px 60px rgba(0, 0, 0, 0.6);
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Spacing & layout insets
+   Kept out of @theme deliberately: these are fluid clamps, not scale
+   steps, and `--inset-*` would collide with Tailwind's inset namespace.
+   Reach for them as pl-[var(--inset-edge-l)]. Everything that is NOT
+   one of these six belongs on Tailwind's 4px scale — no arbitrary
+   padding values anywhere in the components.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  /* Hero and Footer bookend the page and share one edge. The left curve is
+     generous because the cube needs air behind the type; the right is capped
+     tighter since nothing anchors to it. */
+  --inset-edge-l: clamp(1.5rem, 6vw, 9rem);
+  --inset-edge-r: clamp(1.5rem, 6vw, 4rem);
+  --inset-edge-b: clamp(4rem, 12vh, 10rem);
+
+  /* Section shell — Projects, Skills and About share this exactly. */
+  --inset-section-t: clamp(2rem, 5dvh, 3.5rem);
+  --inset-section-b: clamp(4rem, 8dvh, 6rem);
+  --inset-section-x: clamp(1.5rem, 5vw, 2rem);
+}
+
 html {
   scroll-behavior: smooth;
   overscroll-behavior: none;

@@ -11,6 +11,7 @@ import {
 } from "react-icons/si";
 import { FaAws } from "react-icons/fa";
 import { IconType } from "react-icons";
+import { eyebrow, sectionHeading, sectionInner } from "./ui";
 
 interface Skill {
     name: string;
@@ -170,68 +171,56 @@ function SkillCard({ skill }: { skill: Skill }) {
 
 export default function Skills() {
     return (
-        <div className="relative w-full min-h-screen flex items-start justify-center">
-            <div
-                className="relative w-full max-w-5xl mx-auto pt-[clamp(2rem,5dvh,3.5rem)] pb-[clamp(4rem,8dvh,6rem)] px-[clamp(1.5rem,5vw,2rem)]"
-            >
-                {/* Header */}
-                <div className="text-center mb-0">
-                    <h1
-                        className="mb-5 text-[clamp(2rem,5vw,3.5rem)] font-light leading-none tracking-[-0.02em] text-ink"
-                    >
-                        Skills &amp; Technologies
-                    </h1>
+        <div className={`${sectionInner} max-w-5xl`}>
+            {/* Header — same rhythm as Projects and About: one mb-10 below it. */}
+            <div className="text-center mb-10">
+                <h1 className={sectionHeading}>
+                    Skills &amp; Technologies
+                </h1>
 
-                    {/* Legend */}
-                    <div className="flex items-center justify-between sm:justify-center sm:gap-8 w-full mb-0">
-                        {(["Expert", "Proficient", "Learning"] as const).map(level => (
-                            <div key={level} className="flex items-center gap-2">
-                                {/* 3-dot pattern in legend */}
-                                <div className="flex items-center gap-[3px]">
-                                    {[0, 1, 2].map(i => (
-                                        <span
-                                            key={i}
-                                            className="inline-block w-[5px] h-[5px] rounded-full"
-                                            style={{
-                                                background: i < levelConfig[level].filled ? levelConfig[level].color : `${levelConfig[level].color}28`,
-                                                boxShadow: i < levelConfig[level].filled ? `0 0 5px ${levelConfig[level].color}` : "none",
-                                            }}
-                                        />
-                                    ))}
-                                </div>
-                                <span
-                                    className="text-[0.75rem] tracking-[0.15em] uppercase font-medium"
-                                    style={{
-                                        color: levelConfig[level].color,
-                                    }}
-                                >
-                                    {level}
-                                </span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Categories */}
-                <div className="flex flex-col gap-10 mt-5">
-                    {skillCategories.map((cat, ci) => (
-                        <div key={ci}>
-                            <p
-                                className="mb-1 text-[0.75rem] tracking-[0.35em] uppercase font-medium text-ink-faint"
-                            >
-                                {cat.title}
-                            </p>
-
-                            <div className="flex flex-wrap gap-2.5">
-                                {cat.skills.map((skill, si) => (
-                                    <SkillCard key={si} skill={skill} />
+                {/* Legend */}
+                <div className="mt-5 flex items-center justify-between sm:justify-center sm:gap-8 w-full">
+                    {(["Expert", "Proficient", "Learning"] as const).map(level => (
+                        <div key={level} className="flex items-center gap-2">
+                            {/* 3-dot pattern in legend */}
+                            <div className="flex items-center gap-[3px]">
+                                {[0, 1, 2].map(i => (
+                                    <span
+                                        key={i}
+                                        className="inline-block w-[5px] h-[5px] rounded-full"
+                                        style={{
+                                            background: i < levelConfig[level].filled ? levelConfig[level].color : `${levelConfig[level].color}28`,
+                                            boxShadow: i < levelConfig[level].filled ? `0 0 5px ${levelConfig[level].color}` : "none",
+                                        }}
+                                    />
                                 ))}
                             </div>
+                            <span
+                                className="text-[0.75rem] tracking-[0.15em] uppercase font-medium"
+                                style={{ color: levelConfig[level].color }}
+                            >
+                                {level}
+                            </span>
                         </div>
                     ))}
                 </div>
+            </div>
 
+            {/* Categories */}
+            <div className="flex flex-col gap-10">
+                {skillCategories.map((cat, ci) => (
+                    <div key={ci}>
+                        <p className={`${eyebrow} mb-2`}>
+                            {cat.title}
+                        </p>
 
+                        <div className="flex flex-wrap gap-2.5">
+                            {cat.skills.map((skill, si) => (
+                                <SkillCard key={si} skill={skill} />
+                            ))}
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     );

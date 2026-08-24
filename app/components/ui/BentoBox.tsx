@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
+import { eyebrow } from "./styles";
 
 interface BentoBoxProps {
     title?: string | ReactNode;
@@ -16,9 +17,7 @@ export function BentoBox({ title, children, className = ""}: BentoBoxProps) {
         >
             <div className="relative flex flex-col gap-6 p-7">
                 {title && (
-                    <div
-                        className="text-[0.75rem] tracking-[0.35em] uppercase font-medium text-ink-faint"
-                    >
+                    <div className={eyebrow}>
                         {title}
                     </div>
                 )}

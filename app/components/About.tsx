@@ -1,13 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { BentoBox, Toast } from "./ui";
+import { BentoBox, Toast, buttonGhost, buttonPrimary, chipInline, inputField, sectionHeading, sectionInner } from "./ui";
 import { FaPaperPlane, FaGithub, FaLinkedin, FaEnvelope, FaCube } from "react-icons/fa";
 import Image from "next/image";
 
 type ToastType = "success" | "error" | "info";
-
-const inputClassName = "w-full box-border rounded-sm border border-line bg-inset py-[0.65rem] px-[0.875rem] text-[0.8rem] font-normal tracking-[0.01em] text-ink-soft outline-none transition-[border-color,background] duration-200 focus:border-line-strong focus:bg-accent";
 
 export default function About() {
     const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
@@ -45,15 +43,14 @@ export default function About() {
     };
 
     return (
-        <div className="relative w-full min-h-screen flex items-start justify-center">
-            <div className="relative w-full max-w-6xl mx-auto pt-[clamp(2rem,5dvh,3.5rem)] pb-[clamp(4rem,8dvh,6rem)] px-[clamp(1.5rem,5vw,2rem)]">
+        <div className={`${sectionInner} max-w-6xl`}>
                 <div className="text-center mb-10">
-                    <h1 className="text-[clamp(2rem,5vw,3.5rem)] font-light leading-none tracking-[-0.02em] text-ink">
+                    <h1 className={sectionHeading}>
                         About Me
                     </h1>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-4 md:gap-5">
+                <div className="grid md:grid-cols-2 gap-5">
 
                     {/* Left — About Me card */}
                     <BentoBox>
@@ -102,7 +99,7 @@ export default function About() {
                                 </p>
                                 <p className="text-[0.85rem] leading-[1.75] text-ink-dim">
                                     I build full-stack apps with{" "}
-                                    <span className="inline-flex items-center rounded-sm border border-line-mid bg-inset py-[0.1rem] px-[0.45rem] text-[0.78rem] text-ink-soft">
+                                    <span className={chipInline}>
                                         Next.js
                                     </span>
                                     , designing interfaces on the front and working with Supabase on the back.
@@ -126,7 +123,7 @@ export default function About() {
                                             href={href}
                                             target={href.startsWith("mailto") ? undefined : "_blank"}
                                             rel="noopener noreferrer"
-                                            className="flex cursor-pointer items-center justify-center gap-2.5 rounded-sm border border-line bg-transparent py-[0.7rem] px-4 text-[0.78rem] font-medium tracking-[0.12em] uppercase no-underline text-ink-dim transition-[color,background,border-color] duration-200 hover:border-line-mid hover:bg-inset hover:text-ink-soft"
+                                            className={buttonGhost}
                                         >
                                             <Icon className="text-base" />
                                             {label}
@@ -138,7 +135,7 @@ export default function About() {
                     </BentoBox>
 
                     {/* Right column — Academic Journey + Contact */}
-                    <div className="flex flex-col gap-4 md:gap-5">
+                    <div className="flex flex-col gap-5">
 
                         {/* Academic Journey */}
                         <BentoBox title="Academic Journey">
@@ -152,7 +149,7 @@ export default function About() {
                                     </p>
                                 </div>
                                 {/* Progress bar */}
-                                <div className="flex flex-col gap-[0.3rem]">
+                                <div className="flex flex-col gap-1.5">
                                     <div className="relative w-full h-1 rounded-full bg-inset">
                                         <div className="h-full rounded-full bg-[rgba(237,233,223,0.38)]" style={{
                                             width: `${Math.min(Math.max(((new Date().getFullYear() - 2023) / (2028 - 2023)) * 100, 0), 100)}%`,
@@ -176,16 +173,16 @@ export default function About() {
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                                     <input
                                         type="text" name="name" placeholder="Name" required
-                                        className={inputClassName}
+                                        className={inputField}
                                     />
                                     <input
                                         type="email" name="email" placeholder="Email" required
-                                        className={inputClassName}
+                                        className={inputField}
                                     />
                                 </div>
                                 <textarea
                                     name="message" placeholder="Your message..." rows={2} required
-                                    className={`${inputClassName} resize-none`}
+                                    className={`${inputField} resize-none`}
                                 />
                                 <div className="flex items-center justify-between gap-3">
                                     <p className="text-[0.75rem] font-medium tracking-[0.02em] text-ink-faint">
@@ -193,7 +190,7 @@ export default function About() {
                                     </p>
                                     <button
                                         type="submit"
-                                        className="flex shrink-0 cursor-pointer items-center gap-2 rounded-sm border border-accent-line bg-accent py-[0.55rem] px-5 text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-ink transition-all duration-200 ease-[ease] hover:border-line-strong hover:bg-accent-hover"
+                                        className={`shrink-0 ${buttonPrimary}`}
                                     >
                                         <FaPaperPlane className="text-[0.75rem]" />
                                         Send
@@ -204,11 +201,11 @@ export default function About() {
                     </div>
 
                 </div>
-            </div>
 
-            {toast && (
-                <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} duration={4000} />
-            )}
+                {/* Fixed-position overlay — placed last so it is not inside the grid. */}
+                {toast && (
+                    <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} duration={4000} />
+                )}
         </div>
     );
 }
